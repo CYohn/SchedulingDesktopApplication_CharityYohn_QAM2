@@ -23,10 +23,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
     }
 
-    @Override
-    public void getAllAppointments() {
 
-    }
 
 }
 
