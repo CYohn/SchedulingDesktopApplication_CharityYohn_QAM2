@@ -2,7 +2,7 @@ package Objects;
 
 import java.time.LocalDateTime;
 
-public class Appointments {
+public class Appointment {
 
     private int appointmentId;
     private String title;
@@ -10,15 +10,19 @@ public class Appointments {
     private String location;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private int userId;
+    private int contactId;
 
 
-    public Appointments(int appointmentId, String title, String description, String location, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public Appointment(int appointmentId, String title, String description, String location, LocalDateTime startDateTime, LocalDateTime endDateTime, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
         this.location = location;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.userId = userId;
+        this.contactId = contactId;
     }
 
 
@@ -70,5 +74,19 @@ public class Appointments {
         this.endDateTime = endDateTime;
     }
 
+    public int getUserId() {
+        return userId;
+    }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
+    }
 }
