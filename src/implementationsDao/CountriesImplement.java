@@ -2,26 +2,25 @@ package implementationsDao;
 
 
 import Objects.Country;
-import interfacesDao.ContactsInterface;
 import interfacesDao.CountriesInterface;
 import javafx.collections.ObservableList;
 
-public class CountriesImplement implements ContactsInterface {
+public class CountriesImplement implements CountriesInterface {
 
     ObservableList<Country> getAllCountries = CountriesInterface.getAllCountries();
 
     @Override
-    public void updateContact() {
+    public void updateCountry() {
 
     }
 
     @Override
-    public void deleteContact() {
+    public void deleteCountry() {
 
     }
 
     @Override
-    public void addContact() {
+    public void addCountry() {
 
     }
 }
