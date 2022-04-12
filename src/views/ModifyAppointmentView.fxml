@@ -4,13 +4,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18"
             fx:controller="controllers.ModifyAppointmentController">
    <children>
-      <Label layoutX="180.0" layoutY="37.0" text="Modify Appointment">
+      <Label layoutX="162.0" layoutY="14.0" text="Modify Appointment">
          <font>
-            <Font size="26.0"/>
+            <Font size="30.0"/>
          </font>
       </Label>
    </children>

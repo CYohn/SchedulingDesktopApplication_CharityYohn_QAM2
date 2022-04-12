@@ -4,13 +4,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18"
             fx:controller="controllers.ReportsController">
     <children>
-        <Label layoutX="244.0" layoutY="38.0" text="Reports">
+        <Label layoutX="249.0" layoutY="14.0" text="Reports">
             <font>
-                <Font size="33.0"/>
+                <Font size="30.0"/>
             </font>
         </Label>
     </children>
