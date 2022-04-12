@@ -6,12 +6,12 @@
 
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18"
-            fx:controller="controllers.AddCustomerController">
-    <children>
-        <Label layoutX="205.0" layoutY="35.0" text="Add Customer">
-            <font>
-                <Font size="30.0"/>
-            </font>
-        </Label>
-    </children>
+            fx:controller="controllers.ModifyAppointmentController">
+   <children>
+      <Label layoutX="180.0" layoutY="37.0" text="Modify Appointment">
+         <font>
+            <Font size="26.0"/>
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

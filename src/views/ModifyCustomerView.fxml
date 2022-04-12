@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="controllers.UpdateAndDeleteAppointmentController"
+            fx:controller="controllers.ModifyCustomerController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>
