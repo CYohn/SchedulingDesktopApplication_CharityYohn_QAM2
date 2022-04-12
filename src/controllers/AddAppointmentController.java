@@ -8,6 +8,8 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// Idea for future revisions: If the User ID is the same as the person who loggs in, assign the user ID based on the login
+
 public class AddAppointmentController implements Initializable {
 
     @FXML
