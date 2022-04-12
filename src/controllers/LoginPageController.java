@@ -3,6 +3,7 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 
@@ -18,11 +19,10 @@ public class LoginPageController implements Initializable {
     private Button loginButton;
 
     @FXML
-    private TextArea passwordField;
+    private PasswordField passwordField;
 
     @FXML
     private TextArea userNameField;
-
 
 
     @FXML
