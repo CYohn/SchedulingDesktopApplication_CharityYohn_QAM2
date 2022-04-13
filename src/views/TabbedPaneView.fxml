@@ -4,45 +4,46 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="657.0" prefWidth="922.0" xmlns="http://javafx.com/javafx/18"
-            fx:controller="controllers.TabbedPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1175.0"
+            xmlns="http://javafx.com/javafx/18" fx:controller="controllers.TabbedPaneController">
     <children>
-        <TabPane prefHeight="629.0" prefWidth="922.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1302.0"
+                 tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab fx:id="addCustomerTab" text="Add Customer">
                     <content>
-                        <AnchorPane fx:id="addCustomerAnchor" minHeight="0.0" minWidth="0.0" prefHeight="560.0"
-                                    prefWidth="745.0"/>
+                        <AnchorPane fx:id="addCustomerAnchor" minHeight="-Infinity" minWidth="-Infinity"
+                                    prefHeight="785.0" prefWidth="1175.0"/>
                     </content>
                 </Tab>
                 <Tab fx:id="modifyCustomerTab" text="Modify Customer">
                     <content>
-                        <AnchorPane fx:id="modifyCustomerAnchor" minHeight="0.0" minWidth="0.0" prefHeight="560.0"
-                                    prefWidth="745.0"/>
+                        <AnchorPane fx:id="modifyCustomerAnchor" minHeight="-Infinity" minWidth="-Infinity"
+                                    prefHeight="785.0" prefWidth="1175.0"/>
                     </content>
                 </Tab>
                 <Tab fx:id="addAppointmentTab" text="Add Appointment">
                     <content>
-                        <AnchorPane fx:id="addAppointmentAnchor" minHeight="0.0" minWidth="0.0" prefHeight="560.0"
-                                    prefWidth="745.0"/>
+                        <AnchorPane fx:id="addAppointmentAnchor" minHeight="-Infinity" minWidth="-Infinity"
+                                    prefHeight="785.0" prefWidth="1175.0"/>
                     </content>
                 </Tab>
                 <Tab fx:id="modifyAppointmentTab" text="Modify Appointment">
                     <content>
-                        <AnchorPane fx:id="modifyAppointmentAnchor" minHeight="0.0" minWidth="0.0" prefHeight="560.0"
-                                    prefWidth="745.0"/>
+                        <AnchorPane fx:id="modifyAppointmentAnchor" minHeight="-Infinity" minWidth="-Infinity"
+                                    prefHeight="850.0" prefWidth="1302.0"/>
                     </content>
                 </Tab>
                 <Tab fx:id="schedulingTab" text="Scheduling">
                     <content>
-                        <AnchorPane fx:id="schedulingAnchor" minHeight="0.0" minWidth="0.0" prefHeight="560.0"
-                                    prefWidth="720.0"/>
+                        <AnchorPane fx:id="schedulingAnchor" minHeight="-Infinity" minWidth="-Infinity"
+                                    prefHeight="785.0" prefWidth="1175.0"/>
                     </content>
                 </Tab>
                 <Tab fx:id="reportsTab" text="Reports">
                     <content>
-                        <AnchorPane fx:id="reportsAnchor" minHeight="0.0" minWidth="0.0" prefHeight="560.0"
-                                    prefWidth="745.0"/>
+                        <AnchorPane fx:id="reportsAnchor" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0"
+                                    prefWidth="1175.0"/>
                     </content>
                 </Tab>
             </tabs>
