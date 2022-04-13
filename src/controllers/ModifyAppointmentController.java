@@ -2,12 +2,7 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -15,7 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ModifyAppointmentController implements Initializable {
-
 
         @FXML
         private GridPane applicationFormLeft;
@@ -27,10 +21,43 @@ public class ModifyAppointmentController implements Initializable {
         private TableView<?> appointmentTable;
 
         @FXML
+        private TableColumn<?, ?> aptContactColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptDescriptioncolumn;
+
+        @FXML
+        private TableColumn<?, ?> aptEndDateColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptEndTimeColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptIdColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptLocationColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptStartDateColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptStartTimeColumn;
+
+        @FXML
+        private TableColumn<?, ?> aptTitleColum;
+
+        @FXML
+        private TableColumn<?, ?> aptTypeColumn;
+
+        @FXML
         private Button clearButton;
 
         @FXML
         private ComboBox<?> contactComboBox;
+
+        @FXML
+        private TableColumn<?, ?> custIdColumn;
 
         @FXML
         private TextField locationTxtField;
@@ -40,6 +67,12 @@ public class ModifyAppointmentController implements Initializable {
 
         @FXML
         private Button saveButton;
+
+        @FXML
+        private MenuButton searchSelectorMenu;
+
+        @FXML
+        private TextField searchTxtField;
 
         @FXML
         private DatePicker startDatePicker;
@@ -55,6 +88,9 @@ public class ModifyAppointmentController implements Initializable {
 
         @FXML
         private ComboBox<?> typeComboBox;
+
+        @FXML
+        private TableColumn<?, ?> userIdColumn;
 
 
         @Override
