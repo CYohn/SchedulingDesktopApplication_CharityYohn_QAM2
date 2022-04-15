@@ -1,16 +1,22 @@
 package controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 // Idea for future revisions: If the User ID is the same as the person who loggs in, assign the user ID based on the login
 
 public class AddAppointmentController implements Initializable {
+
+    private ObservableList<String> contactsList = FXCollections.observableArrayList();
 
     @FXML
     private GridPane applicationFormLeft;
@@ -22,7 +28,7 @@ public class AddAppointmentController implements Initializable {
     private Button clearButton;
 
     @FXML
-    private ComboBox<?> contactComboBox;
+    private ComboBox<String> contactComboBox = new ComboBox<>();
 
     @FXML
     private TableColumn<?, ?> customerId;
@@ -69,8 +75,10 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TableView<?> userTable;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        contactComboBox.setItems(contactsList);
 
     }
 }
