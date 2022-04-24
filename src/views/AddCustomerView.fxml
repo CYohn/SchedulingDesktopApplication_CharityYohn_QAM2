@@ -68,8 +68,8 @@
                             <children>
                                 <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0"
                                         text="Save"/>
-                                <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0"
-                                        text="Clear" GridPane.columnIndex="1"/>
+                                <Button fx:id="clearButton" mnemonicParsing="false" onMouseClicked="#clearForm"
+                                        prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1"/>
                             </children>
                         </GridPane>
                         <TextField fx:id="postalCodeTxtField" promptText="Postal Code" GridPane.columnIndex="1"

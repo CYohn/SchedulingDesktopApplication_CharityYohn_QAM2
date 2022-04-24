@@ -12,7 +12,7 @@ public class Country {
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
 
-    public Country(int countryId, String country, LocalDateTime createDate, LocalDateTime createdBy, Timestamp lastUpdate, String lastUpdatedBy) {
+    public Country(int countryId, String country) {
         this.countryId = countryId;
         this.country = country;
         this.createDate = createDate;

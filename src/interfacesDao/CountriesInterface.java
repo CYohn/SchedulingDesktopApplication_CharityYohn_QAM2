@@ -5,7 +5,10 @@ import Objects.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+
 public interface CountriesInterface {
+
+
     ObservableList<Country> allCountries = FXCollections.observableArrayList();
 
     static ObservableList<Country> getAllCountries() {
