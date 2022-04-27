@@ -18,8 +18,12 @@ public class DatabaseConnection {
     private static Connection connection = null;  // Connection Interface
     private static PreparedStatement preparedStatement;
 
+    public static Connection getConnection() {
+        return connection;
+    }
 
-    public static void makeConnection() {
+
+    public static Connection makeConnection() {
         try {
             Class.forName(driver); // Locate Driver
             // password = Details.getPassword(); //Assign password
@@ -30,26 +34,25 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.out.println("Error:" + e.getMessage());
         }
-    }
-
-    public static Connection getConnection() {
-        return connection;
+        return null;
     }
 
 
-    public static void closeConnection() {
+    public static Connection closeConnection() {
         try {
             connection.close();
             System.out.println("Connection closed!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
-    public static void makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
+    public static PreparedStatement makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
         if (conn != null) preparedStatement = conn.prepareStatement(sqlStatement);
         else
             System.out.println("Prepared Statement Creation Failed!");
+        return null;
     }
 
     public static PreparedStatement getPreparedStatement() throws SQLException {

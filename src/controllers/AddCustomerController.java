@@ -2,6 +2,7 @@ package controllers;
 
 import Objects.Country;
 import Objects.FirstLevelDivision;
+import implementationsDao.CountriesImplement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
@@ -21,7 +23,9 @@ import java.util.ResourceBundle;
 public class AddCustomerController implements Initializable {
 
 
-    private ObservableList country = FXCollections.observableArrayList();
+    private ObservableList<Country> allCountries;
+    private ObservableList<Country> countryNames = CountriesImplement.getCountryNamesFromDB();
+
 
     @FXML
     private TextField addressTxtField;
@@ -50,23 +54,29 @@ public class AddCustomerController implements Initializable {
     @FXML
     private ComboBox<FirstLevelDivision> stateComboBox;
 
+    public AddCustomerController() throws SQLException {
+    }
+
     @FXML
     void clearForm(MouseEvent event) {
         custNameTxtField.clear();
         addressTxtField.clear();
         postalCodeTxtField.clear();
         custPhoneTxtField.clear();
+        countryComboBox.setPromptText("Country");
+        stateComboBox.setPromptText("State/Province");
     }
 
     @FXML
     void getCountries(ActionEvent event) {
+        final ComboBox countryComboBox = new ComboBox();
+        countryComboBox.getItems().addAll(countryNames);
         // This action occurs just before the popup of the Countries combobox is shown
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String customerName = custNameTxtField.getText();
-        String customerCountry;
         String customerDivision;
         String customerStreetAddress = addressTxtField.getText();
         String customerPostalCode = postalCodeTxtField.getText();
