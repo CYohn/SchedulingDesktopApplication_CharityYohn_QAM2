@@ -19,6 +19,8 @@ public class Customer {
         this.customerDivisionId = customerDivisionId;
     }
 
+    public Customer(String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId){};
+
     public int getCustomerId() {
         return customerId;
     }

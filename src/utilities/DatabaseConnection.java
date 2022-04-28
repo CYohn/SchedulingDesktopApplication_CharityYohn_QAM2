@@ -51,14 +51,14 @@ public class DatabaseConnection {
     public static PreparedStatement makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
         if (conn != null) preparedStatement = conn.prepareStatement(sqlStatement);
         else
-            System.out.println("Prepared Statement Creation Failed!");
+            System.out.println("Prepared Statement Creation Failed IN THE DATABASE CONNECTION UTILITY!");
         return null;
     }
 
     public static PreparedStatement getPreparedStatement() throws SQLException {
         if (preparedStatement != null)
             return preparedStatement;
-        else System.out.println("Null reference to Prepared Statement");
+        else System.out.println("Null reference to Prepared Statement IN THE DATABASE CONNECTION UTILITY FILE");
         return null;
     }
 

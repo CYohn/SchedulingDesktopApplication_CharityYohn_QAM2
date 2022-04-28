@@ -1,6 +1,7 @@
 package controllers;
 
 import Objects.Country;
+import Objects.Customer;
 import Objects.FirstLevelDivision;
 import implementationsDao.CountriesImplement;
 import javafx.collections.FXCollections;
@@ -22,9 +23,12 @@ import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
 
-
-    private ObservableList<Country> allCountries;
-    private ObservableList<Country> countryNames = CountriesImplement.getCountryNamesFromDB();
+    /**
+     * THE PROGRAM WAS HAVING ISSUES WITH THESE OBSERVABLE LISTS. THEY CAUSED A NULL POINTER EXCEPTION WHICH CAUSED THE
+     * ADDCUSTOMER PANE TO NOT LOAD.
+     */
+    //private ObservableList<Country> allCountries;
+    //private ObservableList<Country> countryNames = CountriesImplement.getCountryNamesFromDB();
 
 
     @FXML
@@ -63,24 +67,34 @@ public class AddCustomerController implements Initializable {
         addressTxtField.clear();
         postalCodeTxtField.clear();
         custPhoneTxtField.clear();
-        countryComboBox.setPromptText("Country");
-        stateComboBox.setPromptText("State/Province");
+        //countryComboBox.setPromptText("Country");
+       // stateComboBox.setPromptText("State/Province");
     }
 
     @FXML
     void getCountries(ActionEvent event) {
-        final ComboBox countryComboBox = new ComboBox();
-        countryComboBox.getItems().addAll(countryNames);
+       // final ComboBox countryComboBox = new ComboBox();
+      //  countryComboBox.getItems().addAll(countryNames);
         // This action occurs just before the popup of the Countries combobox is shown
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String customerName = custNameTxtField.getText();
-        String customerDivision;
+        String customerCountry = "United States";
+        int customerDivisionId = 0;
         String customerStreetAddress = addressTxtField.getText();
         String customerPostalCode = postalCodeTxtField.getText();
         String customerPhone = custPhoneTxtField.getText();
+        String customerAddress = customerStreetAddress + customerDivisionId + customerPostalCode;
+
+        Customer newCustomer = new Customer(
+                customerName,
+                customerAddress,
+                customerPostalCode,
+                customerPhone,
+                customerDivisionId
+        );
 
     }
 }

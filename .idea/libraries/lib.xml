@@ -3,13 +3,29 @@
     <CLASSES>
       <root url="file://$PATH_TO_FX$" />
       <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" />
+      <root url="file://$PATH_TO_FX$" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" />
+      <root url="file://$PATH_TO_FX$" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/build/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/demo/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/generated/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/legacy/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/main/core-api/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/main/core-impl/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/main/protocol-impl/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/main/user-api/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/main/user-impl/java" />
+      <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/test/java" />
     </SOURCES>
-    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
+    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
+    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" type="SOURCES" />
   </library>
 </component>
