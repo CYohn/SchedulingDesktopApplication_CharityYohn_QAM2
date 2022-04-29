@@ -14,51 +14,65 @@ public class DatabaseConnection {
 
     private static final String driver = ".idea/libraries/mysql-connector-java-8.0.25/mysql-connector-java-8.0.25.jar"; // Driver reference
     private static final String userName = "sqlUser"; // Username
-    private static String password = "Passw0rd!"; // Password
+    private static final String password = "Passw0rd!"; // Password
     private static Connection connection = null;  // Connection Interface
     private static PreparedStatement preparedStatement;
 
-    public static Connection getConnection() {
-        return connection;
-    }
 
-
+    /**
+     * Connects to the database
+     *
+     * @return null
+     */
     public static Connection makeConnection() {
         try {
             Class.forName(driver); // Locate Driver
             // password = Details.getPassword(); //Assign password
             connection = DriverManager.getConnection(jdbcUrl, userName, password); // reference Connection object
-            System.out.println("Connection successful!");
+            System.out.println("Successfully connected to the database");
         } catch (ClassNotFoundException e) {
-            System.out.println("Error:" + e.getMessage());
+            System.out.println("Error: ClassNotFoundException in connection method in the DatabaseConnection file:" + e.getMessage());
         } catch (SQLException e) {
-            System.out.println("Error:" + e.getMessage());
+            System.out.println("Error: SQLException in connection method in the DatabaseConnection file:" + e.getMessage());
         }
         return null;
     }
 
+    /**
+     * Returns database connection
+     *
+     * @return connection
+     */
+    public static Connection getConnection() {
+        return connection;
+    }
 
+    /**
+     * Closes the database connection
+     *
+     * @return null
+     */
     public static Connection closeConnection() {
         try {
             connection.close();
-            System.out.println("Connection closed!");
+            System.out.println("Successfully closed the database connection");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
 
-    public static PreparedStatement makePreparedStatement(String sqlStatement, Connection conn) throws SQLException {
-        if (conn != null) preparedStatement = conn.prepareStatement(sqlStatement);
+    public static PreparedStatement makePreparedStatement(String sqlStatement, Connection connection) throws SQLException {
+        if (connection != null) preparedStatement = connection.prepareStatement(sqlStatement);
         else
-            System.out.println("Prepared Statement Creation Failed IN THE DATABASE CONNECTION UTILITY!");
+            System.out.println("Prepared Statement Creation Failed in the file DatabaseConnection");
         return null;
     }
 
     public static PreparedStatement getPreparedStatement() throws SQLException {
         if (preparedStatement != null)
             return preparedStatement;
-        else System.out.println("Null reference to Prepared Statement IN THE DATABASE CONNECTION UTILITY FILE");
+        else System.out.println("Null reference to Prepared Statement in the file DatabaseConnection");
         return null;
     }
 

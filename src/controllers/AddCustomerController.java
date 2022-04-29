@@ -4,6 +4,7 @@ import Objects.Country;
 import Objects.Customer;
 import Objects.FirstLevelDivision;
 import implementationsDao.CountriesImplement;
+import interfacesDao.FirstLevelDivisionsInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,12 +24,9 @@ import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
 
-    /**
-     * THE PROGRAM WAS HAVING ISSUES WITH THESE OBSERVABLE LISTS. THEY CAUSED A NULL POINTER EXCEPTION WHICH CAUSED THE
-     * ADDCUSTOMER PANE TO NOT LOAD.
-     */
-    //private ObservableList<Country> allCountries;
-    //private ObservableList<Country> countryNames = CountriesImplement.getCountryNamesFromDB();
+
+    private ObservableList<Country> allCountries = CountriesImplement.getAllCountriesFromDB();
+    private ObservableList<Country> countryNames = CountriesImplement.getAllCountryNamesFromDB();
 
 
     @FXML
@@ -67,34 +65,34 @@ public class AddCustomerController implements Initializable {
         addressTxtField.clear();
         postalCodeTxtField.clear();
         custPhoneTxtField.clear();
-        //countryComboBox.setPromptText("Country");
-       // stateComboBox.setPromptText("State/Province");
+        countryComboBox.setPromptText("Country");
+        stateComboBox.setPromptText("State/Province");
     }
 
     @FXML
     void getCountries(ActionEvent event) {
-       // final ComboBox countryComboBox = new ComboBox();
-      //  countryComboBox.getItems().addAll(countryNames);
+        final ComboBox countryComboBox = new ComboBox();
+        countryComboBox.getItems().addAll(countryNames);
         // This action occurs just before the popup of the Countries combobox is shown
     }
+
+    //int getDivisionID(){return divisionID;}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String customerName = custNameTxtField.getText();
-        String customerCountry = "United States";
-        int customerDivisionId = 0;
+        String customerDivision = stateComboBox.getItems().toString();
         String customerStreetAddress = addressTxtField.getText();
         String customerPostalCode = postalCodeTxtField.getText();
         String customerPhone = custPhoneTxtField.getText();
-        String customerAddress = customerStreetAddress + customerDivisionId + customerPostalCode;
+        String customerAddress = customerStreetAddress + customerPostalCode + customerDivision;
+        //int customerDivisionId = getDivisionID();
 
-        Customer newCustomer = new Customer(
-                customerName,
-                customerAddress,
-                customerPostalCode,
-                customerPhone,
-                customerDivisionId
-        );
-
+//        //Customer newCustomer = new Customer (
+//                customerName,
+//                customerAddress,
+//                customerPostalCode,
+//                customerPhone,
+//                customerDivisionId);
     }
 }

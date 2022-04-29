@@ -9,7 +9,8 @@ import utilities.DatabaseConnection;
 import java.sql.*;
 
 public class CountriesImplement extends DatabaseConnection {
-
+    public CountriesImplement() throws SQLException {
+    }
 
     static String allCountriesSearchStatement = "SELECT * FROM countries;";
     static String countryNamesSearchStatement = "SELECT country FROM countries";
@@ -37,8 +38,7 @@ public class CountriesImplement extends DatabaseConnection {
 
     Connection closeConnection = DatabaseConnection.closeConnection();
 
-    public CountriesImplement() throws SQLException {
-    }
+
 
     /**
      * Method creates an observable list of all the country objects in the database
@@ -48,18 +48,26 @@ public class CountriesImplement extends DatabaseConnection {
      *                      for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
      */
     public static ObservableList<Country> getAllCountriesFromDB() throws SQLException {
-        ObservableList<Country> allCountries = CountriesInterface.getAllCountries();
+        ObservableList<Country> allCountries = CountriesInterface.getAllCountriesFromDB();
         try {
-            DatabaseConnection.makeConnection();
+            DatabaseConnection.getConnection().prepareStatement(allCountriesSearchStatement);
             allCountriesPreparedStatement.executeQuery();
+
+            ResultSet allCountriesResults = allCountriesPreparedStatement.getResultSet();
+
+            if (allCountriesResults.next()) {
+                Country country = new Country(
+                        allCountriesResults.getInt("countryId"),
+                        allCountriesResults.getString("country"));
+
+                allCountries.addAll(country);
+            }
+            DatabaseConnection.closeConnection();
+
         } catch (SQLException e) {
             System.out.println("getAllCountriesFromDB method in class CountriesImplement encountered an error: ");
             e.printStackTrace();
         }
-        ResultSet allCountriesResults = allCountriesPreparedStatement.getResultSet();
-        allCountries.addAll((Country) allCountriesResults);
-        DatabaseConnection.closeConnection();
-
         return allCountries;
     }
 
@@ -71,21 +79,27 @@ public class CountriesImplement extends DatabaseConnection {
      * @throws SQLException Provides information about database access errors and possibly other errors
      *                      for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
      */
-    public static ObservableList<Country> getCountryNamesFromDB() throws SQLException {
-        ObservableList<Country> countryNames = CountriesInterface.getAllCountries();
+    public static ObservableList<Country> getAllCountryNamesFromDB() {
+        ObservableList<Country> allCountryNames = CountriesInterface.getAllCountriesFromDB();
         try {
-            DatabaseConnection.makeConnection();
+            DatabaseConnection.getConnection().prepareStatement(countryNamesSearchStatement);
             countryNamesPreparedStatement.executeQuery();
+
+            ResultSet allCountryNamesResults = countryNamesPreparedStatement.getResultSet();
+
+            if (allCountryNamesResults.next()) {
+                Country countryName = new Country(
+                        allCountryNamesResults.getString("country"));
+                allCountryNames.addAll(countryName);
+            }
+            DatabaseConnection.closeConnection();
+
         } catch (SQLException e) {
-            System.out.println("getCountryNamesFromDB method in class CountriesImplement encountered an error");
+            System.out.println("getAllCountriesFromDB method in class CountriesImplement encountered an error: ");
             e.printStackTrace();
         }
-        ResultSet allCountriesResults = countryNamesPreparedStatement.getResultSet();
-        countryNames.addAll((Country) allCountriesResults);
-        DatabaseConnection.closeConnection();
-        return countryNames;
+        return allCountryNames;
     }
-
 
     //@Override
     public void updateCountry() {
