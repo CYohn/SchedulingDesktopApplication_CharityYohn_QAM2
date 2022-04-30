@@ -52,7 +52,7 @@
                             </font>
                         </Label>
                         <TextField fx:id="custNameTxtField" promptText="Customer Name" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="countryComboBox" onContextMenuRequested="#getCountries" onShowing="#getCountries" prefHeight="25.0" prefWidth="243.0" promptText="Select Country" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="countryComboBox" prefHeight="25.0" prefWidth="243.0" promptText="Select Country" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

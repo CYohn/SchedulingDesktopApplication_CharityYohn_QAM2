@@ -29,6 +29,7 @@ public class AddCustomerController implements Initializable {
     ObservableList<String> countryNames = CountriesImplement.populateCountryNamesList();
 
 
+
     @FXML
     private TextField addressTxtField;
 
@@ -39,7 +40,8 @@ public class AddCustomerController implements Initializable {
     private Button clearButton;
 
     @FXML
-    private ComboBox<Country> countryComboBox;
+    private ComboBox<String> countryComboBox;
+
 
     @FXML
     private TextField custNameTxtField;
@@ -69,32 +71,24 @@ public class AddCustomerController implements Initializable {
         stateComboBox.setPromptText("State/Province");
     }
 
-    @FXML
-    void getCountries(ContextMenuEvent event) throws SQLException {
-        final ComboBox countryComboBox = new ComboBox();
-        ObservableList<String> countryNames = CountriesImplement.populateCountryNamesList();
-        countryComboBox.setItems(countryNames);
 
-        // This action occurs just before the popup of the Countries combobox is shown
-    }
+
 
     //int getDivisionID(){return divisionID;}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Printing the observable list of names from the AddCustomer controller: " + countryNames);
+        countryComboBox.setItems(countryNames);
+
         String customerName = custNameTxtField.getText();
         String customerDivision = stateComboBox.getItems().toString();
         String customerStreetAddress = addressTxtField.getText();
         String customerPostalCode = postalCodeTxtField.getText();
         String customerPhone = custPhoneTxtField.getText();
         String customerAddress = customerStreetAddress + customerPostalCode + customerDivision;
-        //int customerDivisionId = getDivisionID();
 
-//        //Customer newCustomer = new Customer (
-//                customerName,
-//                customerAddress,
-//                customerPostalCode,
-//                customerPhone,
-//                customerDivisionId);
+
+
     }
 }
