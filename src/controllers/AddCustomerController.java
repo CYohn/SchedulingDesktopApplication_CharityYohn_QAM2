@@ -24,8 +24,8 @@ import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
 
-    ObservableList<Country> allCountries = CountriesImplement.allCountries;
-    ObservableList<String> countryNames = CountriesImplement.countryNames;
+    ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
+    ObservableList<String> countryNames = CountriesImplement.populateCountryNamesList();
 
 
     @FXML
@@ -71,7 +71,7 @@ public class AddCustomerController implements Initializable {
     @FXML
     void getCountries(ActionEvent event) {
         final ComboBox countryComboBox = new ComboBox();
-        countryComboBox.getItems().addAll(countryNames);
+        countryComboBox.setItems(countryNames);
         // This action occurs just before the popup of the Countries combobox is shown
     }
 

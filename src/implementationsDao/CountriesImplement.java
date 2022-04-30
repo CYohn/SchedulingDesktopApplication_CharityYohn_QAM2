@@ -9,22 +9,20 @@ import utilities.DatabaseConnection;
 
 import java.sql.*;
 
-public class CountriesImplement extends DatabaseConnection {
+public class CountriesImplement extends DatabaseConnection implements CountriesInterface {
     public CountriesImplement() throws SQLException {
     }
 
-    public static ObservableList<Country> allCountries = FXCollections.observableArrayList();
-    public static ObservableList<String> countryNames = FXCollections.observableArrayList();
 
-    static String allCountriesSearchStatement = "SELECT * FROM countries;";
-    static String countryNamesSearchStatement = "SELECT country FROM countries";
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement allCountriesPreparedStatement;
     static PreparedStatement countryNamesPreparedStatement;
+    static String sqlQuerry = "SELECT * FROM countries";
 
     static {
         try {
-            allCountriesPreparedStatement = DatabaseConnection.makePreparedStatement(allCountriesSearchStatement, connection);
+            allCountriesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
+            System.out.println("allCountriesPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("allCountriesPreparedStatement in the file CountriesImplement encountered an error");
             e.printStackTrace();
@@ -33,15 +31,13 @@ public class CountriesImplement extends DatabaseConnection {
 
     static {
         try {
-            countryNamesPreparedStatement = DatabaseConnection.makePreparedStatement(countryNamesSearchStatement, connection);
+            countryNamesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
+            System.out.println("countryNamesPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("countryNamesPreparedStatement in the file CountriesImplement encountered an error:");
             e.printStackTrace();
         }
     }
-
-    Connection closeConnection = DatabaseConnection.closeConnection();
-
 
     /**
      * Method creates an observable list of all the country objects in the database
@@ -49,26 +45,35 @@ public class CountriesImplement extends DatabaseConnection {
      * @throws SQLException Provides information about database access errors and possibly other errors
      *                      for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
      */
-    private void populateCountriesList() throws SQLException {
+    public static ObservableList<Country> populateCountriesList() throws SQLException {
+        ObservableList<Country> allCountries = null;
+        ResultSet allCountryResults;
         try {
+            allCountries = FXCollections.observableArrayList();
+            String allCountriesSearchStatement = "SELECT Country_ID, Country FROM countries;";
             PreparedStatement getCountriesFromDB = DatabaseConnection.getConnection().prepareStatement(allCountriesSearchStatement);
-            ResultSet allCountryResults = getCountriesFromDB.executeQuery();
+            allCountryResults = getCountriesFromDB.executeQuery();
 
             while (allCountryResults.next()) {
-                String countryIDString = allCountryResults.getString("countryID");
-                int countryIdNumber = Integer.parseInt(countryIDString);
-                String countryName = allCountryResults.getString("country");
+                int countryId = allCountryResults.getInt("Country_ID");
+                System.out.println(countryId);
 
-                Country country = new Country(countryIdNumber, countryName);
-                allCountries.addAll(country);
+                String countryName = allCountryResults.getString("Country");
+                System.out.println(countryName);
+
+                Country country = new Country(countryId, countryName);
+                allCountries.add(country);
+                System.out.println("Country object populated in all countries list");
             }
 
-            allCountryResults.close();
-            closeConnection();
         } catch (SQLException throwables) {
             System.out.println("SQLException thrown in populateCountriesList() method in the CountriesImplement file");
             throwables.printStackTrace();
         }
+        return allCountries;
+
+        //allCountryResults.close();
+        //closeConnection();
     }
 
 
@@ -79,23 +84,29 @@ public class CountriesImplement extends DatabaseConnection {
      * @throws SQLException Provides information about database access errors and possibly other errors
      *                      for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
      */
-    private void populateCountryNamesList() throws SQLException {
+    public static ObservableList<String> populateCountryNamesList() throws SQLException {
+        ObservableList<String> countryNames = null;
         try {
+            countryNames = FXCollections.observableArrayList();
+            String countryNamesSearchStatement = "SELECT Country FROM countries";
             countryNamesPreparedStatement = DatabaseConnection.getConnection().prepareStatement(countryNamesSearchStatement);
             ResultSet countryNamesResults = countryNamesPreparedStatement.executeQuery(countryNamesSearchStatement);
 
             while (countryNamesResults.next()) {
                 String countryName = countryNamesResults.getString("country");
-                countryNames.addAll(countryName);
+                System.out.println(countryName);
+                countryNames.add(countryName);
+                System.out.println("Name was populated in Names list");
             }
 
-            countryNamesResults.close();
-            closeConnection();
+            //countryNamesResults.close();
+            //closeConnection();
 
         } catch (Exception e) {
             System.out.println("SQLException thrown in populateCountryNamesList() method in the CountriesImplement file");
             e.printStackTrace();
         }
+        return countryNames;
     }
 
     //@Override
