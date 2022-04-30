@@ -3,6 +3,7 @@ package implementationsDao;
 
 import Objects.Country;
 import interfacesDao.CountriesInterface;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
@@ -11,6 +12,9 @@ import java.sql.*;
 public class CountriesImplement extends DatabaseConnection {
     public CountriesImplement() throws SQLException {
     }
+
+    public static ObservableList<Country> allCountries = FXCollections.observableArrayList();
+    public static ObservableList<String> countryNames = FXCollections.observableArrayList();
 
     static String allCountriesSearchStatement = "SELECT * FROM countries;";
     static String countryNamesSearchStatement = "SELECT country FROM countries";
@@ -39,36 +43,32 @@ public class CountriesImplement extends DatabaseConnection {
     Connection closeConnection = DatabaseConnection.closeConnection();
 
 
-
     /**
      * Method creates an observable list of all the country objects in the database
      *
-     * @return an observable list of all the countries in the database
      * @throws SQLException Provides information about database access errors and possibly other errors
      *                      for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
      */
-    public static ObservableList<Country> getAllCountriesFromDB() throws SQLException {
-        ObservableList<Country> allCountries = CountriesInterface.getAllCountriesFromDB();
+    private void populateCountriesList() throws SQLException {
         try {
-            DatabaseConnection.getConnection().prepareStatement(allCountriesSearchStatement);
-            allCountriesPreparedStatement.executeQuery();
+            PreparedStatement getCountriesFromDB = DatabaseConnection.getConnection().prepareStatement(allCountriesSearchStatement);
+            ResultSet allCountryResults = getCountriesFromDB.executeQuery();
 
-            ResultSet allCountriesResults = allCountriesPreparedStatement.getResultSet();
+            while (allCountryResults.next()) {
+                String countryIDString = allCountryResults.getString("countryID");
+                int countryIdNumber = Integer.parseInt(countryIDString);
+                String countryName = allCountryResults.getString("country");
 
-            if (allCountriesResults.next()) {
-                Country country = new Country(
-                        allCountriesResults.getInt("countryId"),
-                        allCountriesResults.getString("country"));
-
+                Country country = new Country(countryIdNumber, countryName);
                 allCountries.addAll(country);
             }
-            DatabaseConnection.closeConnection();
 
-        } catch (SQLException e) {
-            System.out.println("getAllCountriesFromDB method in class CountriesImplement encountered an error: ");
-            e.printStackTrace();
+            allCountryResults.close();
+            closeConnection();
+        } catch (SQLException throwables) {
+            System.out.println("SQLException thrown in populateCountriesList() method in the CountriesImplement file");
+            throwables.printStackTrace();
         }
-        return allCountries;
     }
 
 
@@ -79,26 +79,23 @@ public class CountriesImplement extends DatabaseConnection {
      * @throws SQLException Provides information about database access errors and possibly other errors
      *                      for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
      */
-    public static ObservableList<Country> getAllCountryNamesFromDB() {
-        ObservableList<Country> allCountryNames = CountriesInterface.getAllCountriesFromDB();
+    private void populateCountryNamesList() throws SQLException {
         try {
-            DatabaseConnection.getConnection().prepareStatement(countryNamesSearchStatement);
-            countryNamesPreparedStatement.executeQuery();
+            countryNamesPreparedStatement = DatabaseConnection.getConnection().prepareStatement(countryNamesSearchStatement);
+            ResultSet countryNamesResults = countryNamesPreparedStatement.executeQuery(countryNamesSearchStatement);
 
-            ResultSet allCountryNamesResults = countryNamesPreparedStatement.getResultSet();
-
-            if (allCountryNamesResults.next()) {
-                Country countryName = new Country(
-                        allCountryNamesResults.getString("country"));
-                allCountryNames.addAll(countryName);
+            while (countryNamesResults.next()) {
+                String countryName = countryNamesResults.getString("country");
+                countryNames.addAll(countryName);
             }
-            DatabaseConnection.closeConnection();
 
-        } catch (SQLException e) {
-            System.out.println("getAllCountriesFromDB method in class CountriesImplement encountered an error: ");
+            countryNamesResults.close();
+            closeConnection();
+
+        } catch (Exception e) {
+            System.out.println("SQLException thrown in populateCountryNamesList() method in the CountriesImplement file");
             e.printStackTrace();
         }
-        return allCountryNames;
     }
 
     //@Override

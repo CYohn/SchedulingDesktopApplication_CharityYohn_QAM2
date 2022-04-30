@@ -12,19 +12,6 @@ import java.sql.SQLException;
 public interface CountriesInterface {
 
 
-    ObservableList<Country> countryNames = FXCollections.observableArrayList();
-    ObservableList<Country> allCountries = FXCollections.observableArrayList();
-
-    static ObservableList<Country> getAllCountriesFromDB() {
-        return allCountries;
-    }
-
-
-    static ObservableList<Country> getAllCountryNamesFromDB() {
-        return countryNames;
-    }
-
-
     public void updateCountry();
 
     public void deleteCountry();

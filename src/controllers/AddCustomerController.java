@@ -24,9 +24,8 @@ import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
 
-
-    private ObservableList<Country> allCountries = CountriesImplement.getAllCountriesFromDB();
-    private ObservableList<Country> countryNames = CountriesImplement.getAllCountryNamesFromDB();
+    ObservableList<Country> allCountries = CountriesImplement.allCountries;
+    ObservableList<String> countryNames = CountriesImplement.countryNames;
 
 
     @FXML
