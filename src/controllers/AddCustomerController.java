@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -69,9 +70,11 @@ public class AddCustomerController implements Initializable {
     }
 
     @FXML
-    void getCountries(ActionEvent event) {
+    void getCountries(ContextMenuEvent event) throws SQLException {
         final ComboBox countryComboBox = new ComboBox();
+        ObservableList<String> countryNames = CountriesImplement.populateCountryNamesList();
         countryComboBox.setItems(countryNames);
+
         // This action occurs just before the popup of the Countries combobox is shown
     }
 
