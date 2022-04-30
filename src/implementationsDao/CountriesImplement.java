@@ -18,13 +18,13 @@ public class CountriesImplement extends DatabaseConnection {
 
     static String allCountriesSearchStatement = "SELECT * FROM countries;";
     static String countryNamesSearchStatement = "SELECT country FROM countries";
-    static Connection makeConnection = DatabaseConnection.makeConnection();
+    static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement allCountriesPreparedStatement;
     static PreparedStatement countryNamesPreparedStatement;
 
     static {
         try {
-            allCountriesPreparedStatement = DatabaseConnection.makePreparedStatement(allCountriesSearchStatement, makeConnection);
+            allCountriesPreparedStatement = DatabaseConnection.makePreparedStatement(allCountriesSearchStatement, connection);
         } catch (SQLException e) {
             System.out.println("allCountriesPreparedStatement in the file CountriesImplement encountered an error");
             e.printStackTrace();
@@ -33,7 +33,7 @@ public class CountriesImplement extends DatabaseConnection {
 
     static {
         try {
-            countryNamesPreparedStatement = DatabaseConnection.makePreparedStatement(countryNamesSearchStatement, makeConnection);
+            countryNamesPreparedStatement = DatabaseConnection.makePreparedStatement(countryNamesSearchStatement, connection);
         } catch (SQLException e) {
             System.out.println("countryNamesPreparedStatement in the file CountriesImplement encountered an error:");
             e.printStackTrace();
