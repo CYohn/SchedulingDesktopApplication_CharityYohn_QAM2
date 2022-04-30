@@ -65,15 +65,11 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
                 allCountries.add(country);
                 System.out.println("Country object populated in all countries list");
             }
-
         } catch (SQLException throwables) {
             System.out.println("SQLException thrown in populateCountriesList() method in the CountriesImplement file");
             throwables.printStackTrace();
         }
         return allCountries;
-
-        //allCountryResults.close();
-        //closeConnection();
     }
 
 
