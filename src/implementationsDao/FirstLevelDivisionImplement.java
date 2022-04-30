@@ -49,23 +49,23 @@ public class FirstLevelDivisionImplement extends DatabaseConnection implements F
         ResultSet allDivisionsResults;
         try {
             allDivisions = FXCollections.observableArrayList();
-            String allDivisionsSearchStatement = "SELECT Division_ID, Division, Country_ID FROM first_level_divisions;";
+            String allDivisionsSearchStatement = "SELECT Division_ID, Division, Country_ID FROM first_level_divisions ORDER BY Country_ID ASC;";
             PreparedStatement getDivisionsFromDB = DatabaseConnection.getConnection().prepareStatement(allDivisionsSearchStatement);
             allDivisionsResults = getDivisionsFromDB.executeQuery();
 
             while (allDivisionsResults.next()) {
                 int divisionId = allDivisionsResults.getInt("Division_ID");
-                System.out.println("allDivisionsResults divisionId: " + divisionId);
+                //System.out.println("allDivisionsResults divisionId: " + divisionId);
 
                 String divisionName = allDivisionsResults.getString("Division");
-                System.out.println("allDivisionsResults divisionName: " + divisionName);
+                //System.out.println("allDivisionsResults divisionName: " + divisionName);
 
                 int countryId = allDivisionsResults.getInt("Country_ID");
-                System.out.println("allDivisionsResults countryId: " + countryId);
+                //System.out.println("allDivisionsResults countryId: " + countryId);
 
                 FirstLevelDivision division = new FirstLevelDivision(divisionId, divisionName, countryId);
                 allDivisions.add(division);
-                System.out.println("Division object populated in all divisions list: " + division);
+                //System.out.println("Division object populated in all divisions list: " + division);
             }
         } catch (SQLException throwables) {
             System.out.println("SQLException thrown in populateDivisionsList() method in the FirstLevelDivisionImplement file");

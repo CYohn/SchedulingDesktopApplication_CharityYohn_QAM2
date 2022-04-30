@@ -4,6 +4,7 @@ import Objects.Country;
 import Objects.Customer;
 import Objects.FirstLevelDivision;
 import implementationsDao.CountriesImplement;
+import implementationsDao.FirstLevelDivisionImplement;
 import interfacesDao.FirstLevelDivisionsInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,16 +21,18 @@ import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
 
 public class AddCustomerController implements Initializable {
+    public AddCustomerController() throws SQLException {
+    }
 
     ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
     ObservableList<String> countryNames = CountriesImplement.populateCountryNamesList();
-
-
+    ObservableList<FirstLevelDivision> allDivisions = FirstLevelDivisionImplement.populateDivisionsList();
 
     @FXML
     private TextField addressTxtField;
@@ -56,9 +60,15 @@ public class AddCustomerController implements Initializable {
     private Button saveButton;
 
     @FXML
-    private ComboBox<FirstLevelDivision> stateComboBox;
+    private ComboBox<FirstLevelDivision> divisionComboBox;
 
-    public AddCustomerController() throws SQLException {
+    @FXML
+    void populateDivisionComboBox(ActionEvent event) throws SQLException {
+
+    ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
+    ObservableList<FirstLevelDivision> allDivisions = FirstLevelDivisionImplement.populateDivisionsList();
+    String countryName = countryComboBox.getValue();
+
     }
 
     @FXML
@@ -68,7 +78,7 @@ public class AddCustomerController implements Initializable {
         postalCodeTxtField.clear();
         custPhoneTxtField.clear();
         countryComboBox.setPromptText("Country");
-        stateComboBox.setPromptText("State/Province");
+        divisionComboBox.setPromptText("State/Province");
     }
 
 
@@ -81,8 +91,9 @@ public class AddCustomerController implements Initializable {
         System.out.println("Printing the observable list of names from the AddCustomer controller: " + countryNames);
         countryComboBox.setItems(countryNames);
 
+
         String customerName = custNameTxtField.getText();
-        String customerDivision = stateComboBox.getItems().toString();
+        String customerDivision = divisionComboBox.getItems().toString();
         String customerStreetAddress = addressTxtField.getText();
         String customerPostalCode = postalCodeTxtField.getText();
         String customerPhone = custPhoneTxtField.getText();

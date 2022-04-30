@@ -74,7 +74,7 @@
                             </font>
                         </Label>
                         <TextField fx:id="addressTxtField" promptText="123 Software Lane" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ComboBox fx:id="stateComboBox" prefHeight="25.0" prefWidth="246.0" promptText="Select State" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="divisionComboBox" prefHeight="25.0" prefWidth="246.0" promptText="Select State" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="State" GridPane.rowIndex="2">
                             <font>
                                 <Font size="19.0" />

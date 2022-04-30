@@ -56,14 +56,14 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
 
             while (allCountryResults.next()) {
                 int countryId = allCountryResults.getInt("Country_ID");
-                System.out.println(countryId);
+                //System.out.println(countryId);
 
                 String countryName = allCountryResults.getString("Country");
-                System.out.println(countryName);
+                //System.out.println(countryName);
 
                 Country country = new Country(countryId, countryName);
                 allCountries.add(country);
-                System.out.println("Country object populated in all countries list");
+                //System.out.println("Country object populated in all countries list");
             }
         } catch (SQLException throwables) {
             System.out.println("SQLException thrown in populateCountriesList() method in the CountriesImplement file");
@@ -92,7 +92,7 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
                 String countryName = countryNamesResults.getString("country");
                 System.out.println(countryName);
                 countryNames.add(countryName);
-                System.out.println("Name was populated in Names list");
+                //System.out.println("Name was populated in Names list");
             }
 
             //countryNamesResults.close();
