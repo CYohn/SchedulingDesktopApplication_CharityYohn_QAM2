@@ -19,6 +19,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -27,7 +28,10 @@ import java.util.ResourceBundle;
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
 
 public class AddCustomerController implements Initializable {
+
+
     public AddCustomerController() throws SQLException {
+
     }
 
     ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
@@ -65,11 +69,17 @@ public class AddCustomerController implements Initializable {
     @FXML
     void populateDivisionComboBox(ActionEvent event) throws SQLException {
 
-    ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
-    ObservableList<FirstLevelDivision> allDivisions = FirstLevelDivisionImplement.populateDivisionsList();
-    String countryName = countryComboBox.getValue();
+        ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
+        ObservableList<FirstLevelDivision> allDivisions = FirstLevelDivisionImplement.populateDivisionsList();
+        String countryName = countryComboBox.getValue();
 
     }
+
+    public String getSelectedCountry() {
+        String selectedCountry = countryComboBox.getValue();
+        return selectedCountry;
+    }
+
 
     @FXML
     void clearForm(MouseEvent event) {

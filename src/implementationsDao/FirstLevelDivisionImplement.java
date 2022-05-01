@@ -3,6 +3,7 @@ package implementationsDao;
 import Objects.Country;
 import Objects.Customer;
 import Objects.FirstLevelDivision;
+import controllers.AddCustomerController;
 import interfacesDao.CustomersInterface;
 import interfacesDao.FirstLevelDivisionsInterface;
 import javafx.collections.FXCollections;
@@ -26,6 +27,7 @@ public class FirstLevelDivisionImplement extends DatabaseConnection implements F
     static PreparedStatement allDivisionsPreparedStatement;
     static String sqlQuerry = "SELECT * FROM first_level_divisions";
 
+
     static {
         try {
             allDivisionsPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
@@ -35,7 +37,6 @@ public class FirstLevelDivisionImplement extends DatabaseConnection implements F
             e.printStackTrace();
         }
     }
-
 
 
     /**
