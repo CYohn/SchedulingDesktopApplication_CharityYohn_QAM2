@@ -1,27 +1,23 @@
 package controllers;
 
 import Objects.Country;
+import Objects.Customer;
 import implementationsDao.CountriesImplement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import utilities.DatabaseConnection;
 
 
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
@@ -36,8 +32,8 @@ public class AddCustomerController implements Initializable {
     }
 
     ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
-    ObservableList<String> countryNames = CountriesImplement.populateCountryNamesList();
-  //  ObservableList<String> selectedDivisions = DivisionSortsAndSearches.populateDivisionNamesList();
+    ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
+
 
 
     @FXML
@@ -51,8 +47,6 @@ public class AddCustomerController implements Initializable {
 
     @FXML
     private ComboBox<String> countryComboBox;
-    //public static String getCountrySelection(){return countryComboBox.getValue();}
-
 
     @FXML
     private TextField custNameTxtField;
@@ -68,6 +62,18 @@ public class AddCustomerController implements Initializable {
 
     @FXML
     private ComboBox<String> divisionComboBox;
+
+    @FXML
+    private Label addressLengthAlert;
+
+    @FXML
+    private Label nameLengthAlert;
+
+    @FXML
+    private Label phoneLengthAlert;
+
+    @FXML
+    private Label postalLengthAlert;
 
 
     /**
@@ -117,10 +123,40 @@ public class AddCustomerController implements Initializable {
                 e.getCause();
                 e.getMessage();
                 e.printStackTrace();
-
             }
         }
 
+
+        public int getDivisionID() {
+            PreparedStatement findDivisionIDPreparedStatement;
+            String selectedDivision = divisionComboBox.getValue(); //Get the User's division selection
+            int customerDivisionID = 0;
+
+            try {
+                //Find the associated division ID based on the selected division name
+                String FindDivisionIDSearchStatement = ("SELECT Division_ID from first_level_divisions WHERE Division = '" + selectedDivision + "'");
+                findDivisionIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindDivisionIDSearchStatement);
+                ResultSet divisionIDResult = findDivisionIDPreparedStatement.executeQuery(FindDivisionIDSearchStatement);
+
+
+                while (divisionIDResult.next()) {
+                    customerDivisionID = divisionIDResult.getInt("Division_ID");
+                    System.out.println("Division ID was found in the getDivisionID method: " + customerDivisionID);
+                    return customerDivisionID;
+                }
+            } catch (SQLException throwables) {
+                System.out.println("getDivisionID method in the AddCustomerController encountered an error: ");
+                throwables.getCause();
+                throwables.getMessage();
+                throwables.printStackTrace();
+            }
+            return customerDivisionID;
+        }
+
+    /**
+     * Clears the Add Customer form.
+     * @param event User presses the clear button.
+     */
     @FXML
     void clearForm(MouseEvent event) {
         custNameTxtField.clear();
@@ -131,24 +167,112 @@ public class AddCustomerController implements Initializable {
         divisionComboBox.setValue(null);
     }
 
+    public void alert(){
+        Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
+        infoRequiredAlert.setTitle("Information Required");
+        infoRequiredAlert.setHeaderText("Please enter all information.  Thank you! ");
+        infoRequiredAlert.setContentText("Please enter missing information");
+        infoRequiredAlert.showAndWait();
+    }
+
+    public void lengthAlert(){
+        Alert lengthAlert = new Alert(Alert.AlertType.WARNING);
+        lengthAlert.setTitle("Too Many Characters in the Field");
+        lengthAlert.setHeaderText("Please adjust the length of your entry");
+        lengthAlert.setContentText("Thank you");
+        lengthAlert.showAndWait();
+    }
+
+    public void emptyFieldAlert(){
+        if(custNameTxtField.getText().isEmpty()){alert();}
+        if(addressTxtField.getText().isEmpty()){alert();}
+        if(postalCodeTxtField.getText().isEmpty()){alert();}
+        if(custPhoneTxtField.getText().isEmpty()){alert();}
+        if(countryComboBox.getValue().isEmpty()){alert();}
+        if(divisionComboBox.getValue().isEmpty()){alert();}
+    }
+
+    public void fieldLengthAlert(){
+        if(custNameTxtField.getLength() > 50){nameLengthAlert.setVisible(true);}
+        if(addressTxtField.getLength() > 100){addressLengthAlert.setVisible(true);}
+        if(postalCodeTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
+        if(custPhoneTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
+    }
+
+    public void hideLengthAlerts(){
+        addressLengthAlert.setVisible(false);
+        nameLengthAlert.setVisible(false);
+        phoneLengthAlert.setVisible(false);
+        postalLengthAlert.setVisible(false);
+    }
+
+    @FXML
+    void onSave(MouseEvent event) {
+        fieldLengthAlert();
+        emptyFieldAlert();
+
+        if((!custNameTxtField.getText().isEmpty()) && (custNameTxtField.getLength() < 50) &&
+        (!addressTxtField.getText().isEmpty()) && (addressTxtField.getLength() < 100) &&
+        (!postalCodeTxtField.getText().isEmpty()) && (postalCodeTxtField.getLength() < 50) &&
+        (!custPhoneTxtField.getText().isEmpty()) && (custPhoneTxtField.getLength() < 50) &&
+        (!countryComboBox.getValue().isEmpty()) &&
+        (!divisionComboBox.getValue().isEmpty())) {
+
+            String customerName = custNameTxtField.getText();
+            String customerAddress = addressTxtField.getText();
+            String customerPostalCode = postalCodeTxtField.getText();
+            String customerPhone = custPhoneTxtField.getText();
+            int customerDivisionId = getDivisionID();
+
+            Customer customer = new Customer(customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            System.out.println("Customer Object was created on save: " + customer);
+            System.out.println("Name: " + customer.getCustomerName() + " Address: " + customer.getCustomerAddress());
+            System.out.println("Phone: " + customer.getCustomerPhone() + "Postal: " + customer.getCustomerPostalCode() + "Division: " + customer.getCustomerDivisionId());
+        }
+    }
+
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Printing the observable list of names from the AddCustomer controller: " + countryNames);
-        countryComboBox.setItems(countryNames);
+        System.out.println("Printing the observable list of names from the AddCustomer controller: " + divisionIDResult);
+        countryComboBox.setItems(divisionIDResult);
         divisionComboBox.setDisable(true);
 
+        hideLengthAlerts();
 
+        //Change listeners to validate text fields and warn the user in real time if input is over the allowed length
+        custNameTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                if(custNameTxtField.getLength() > 50) {
+                    nameLengthAlert.setVisible(true);}
+                else if(custNameTxtField.getLength() < 50){nameLengthAlert.setVisible(false);}
+                }
+        });
 
-        String customerName = custNameTxtField.getText();
-        String customerDivision = divisionComboBox.getValue();
-        String customerStreetAddress = addressTxtField.getText();
-        String customerPostalCode = postalCodeTxtField.getText();
-        String customerPhone = custPhoneTxtField.getText();
-        String customerAddress = customerStreetAddress + customerPostalCode + customerDivision;
+        addressTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                if(addressTxtField.getLength() > 100) {
+                    addressLengthAlert.setVisible(true);}
+                else if(addressTxtField.getLength() < 100){addressLengthAlert.setVisible(false);}
+            }
+        });
 
+        postalCodeTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                if(postalCodeTxtField.getLength() > 50) {
+                    postalLengthAlert.setVisible(true);}
+                else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
+            }
+        });
 
+        custPhoneTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                if(custPhoneTxtField.getLength() > 50) {
+                    phoneLengthAlert.setVisible(true);}
+                else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}
+            }
+        });
 
     }
 }
