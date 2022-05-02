@@ -17,11 +17,11 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement allCountriesPreparedStatement;
     static PreparedStatement countryNamesPreparedStatement;
-    static String sqlQuerry = "SELECT * FROM countries";
+    static String sqlQuery = "SELECT * FROM countries";
 
     static {
         try {
-            allCountriesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
+            allCountriesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
             System.out.println("allCountriesPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("allCountriesPreparedStatement in the file CountriesImplement encountered an error");
@@ -31,7 +31,7 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
 
     static {
         try {
-            countryNamesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
+            countryNamesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
             System.out.println("countryNamesPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("countryNamesPreparedStatement in the file CountriesImplement encountered an error:");
@@ -52,7 +52,7 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
             allCountries = FXCollections.observableArrayList();
             String allCountriesSearchStatement = "SELECT Country_ID, Country FROM countries;";
             PreparedStatement getCountriesFromDB = DatabaseConnection.getConnection().prepareStatement(allCountriesSearchStatement);
-            allCountryResults = getCountriesFromDB.executeQuery();
+            allCountryResults = getCountriesFromDB.executeQuery(allCountriesSearchStatement);
 
             while (allCountryResults.next()) {
                 int countryId = allCountryResults.getInt("Country_ID");
