@@ -18,6 +18,6 @@ public interface CustomersInterface {
 
     public void deleteCustomer();
 
-    public void addCustomer();
+    public void addCustomer(Customer customer);
 
 }

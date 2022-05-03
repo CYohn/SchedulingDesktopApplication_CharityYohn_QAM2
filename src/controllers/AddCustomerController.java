@@ -3,6 +3,7 @@ package controllers;
 import Objects.Country;
 import Objects.Customer;
 import implementationsDao.CountriesImplement;
+import implementationsDao.CustomersImplement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -225,6 +226,8 @@ public class AddCustomerController implements Initializable {
             int customerDivisionId = getDivisionID();
 
             Customer customer = new Customer(customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            CustomersImplement.customersToSave.add(customer);
+
             System.out.println("Customer Object was created on save: " + customer);
             System.out.println("Name: " + customer.getCustomerName() + " Address: " + customer.getCustomerAddress());
             System.out.println("Phone: " + customer.getCustomerPhone() + "Postal: " + customer.getCustomerPostalCode() + "Division: " + customer.getCustomerDivisionId());
