@@ -95,8 +95,6 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
                 //System.out.println("Name was populated in Names list");
             }
 
-            //countryNamesResults.close();
-            //closeConnection();
 
         } catch (Exception e) {
             System.out.println("SQLException thrown in populateCountryNamesList() method in the CountriesImplement file");
