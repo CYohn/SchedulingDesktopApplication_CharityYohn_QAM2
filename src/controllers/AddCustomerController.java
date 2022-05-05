@@ -4,6 +4,7 @@ import Objects.Country;
 import Objects.Customer;
 import implementationsDao.CountriesImplement;
 import implementationsDao.CustomersImplement;
+import interfacesDao.CustomersInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -243,6 +244,7 @@ public class AddCustomerController implements Initializable {
         divisionComboBox.setDisable(true);
 
         hideLengthAlerts();
+        CustomersImplement.printCustomerToSave(CustomersImplement.customersToSave);
 
         //Change listeners to validate text fields and warn the user in real time if input is over the allowed length
         custNameTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {

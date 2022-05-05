@@ -12,21 +12,25 @@ import java.sql.PreparedStatement;
 
 public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
 
-
-
     ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
+
     public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
 
+    static PreparedStatement sendCustomerPreparedStatement;
 
     static Connection connection = DatabaseConnection.getConnection();
-    static PreparedStatement allDivisionsPreparedStatement;
+
+    public static void printCustomerToSave(ObservableList<Customer> customersToSave) {
+        for (Customer customer : customersToSave) {
+            System.out.println(customer);
+        }
+    }
+
     String Customer_Name;
     String Address;
     String Postal_Code;
     String Phone;
     int Division_ID;
-
-
 
 
     @Override
