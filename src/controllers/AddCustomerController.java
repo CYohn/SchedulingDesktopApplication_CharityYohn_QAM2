@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import static implementationsDao.CustomersImplement.addCustomer;
+
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
 
 public class AddCustomerController implements Initializable {
@@ -36,7 +38,11 @@ public class AddCustomerController implements Initializable {
     ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
     ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
 
+    @FXML
+    private Label saveErrorLabel;
 
+    @FXML
+    private Label saveSuccessfulLabel;
 
     @FXML
     private TextField addressTxtField;
@@ -167,6 +173,8 @@ public class AddCustomerController implements Initializable {
         custPhoneTxtField.clear();
         countryComboBox.setValue(null);
         divisionComboBox.setValue(null);
+        saveSuccessfulLabel.setVisible(false);
+        saveErrorLabel.setVisible(false);
     }
 
     public void alert(){
@@ -237,17 +245,34 @@ public class AddCustomerController implements Initializable {
             CustomersImplement.customersToSave.add(customerToSave);
 
             System.out.println("Printing out customers to save list (from the customers controller onSave method):");
-            CustomersImplement.addCustomer(CustomersImplement.customersToSave);
+            addCustomer(CustomersImplement.customersToSave);
+            getAddCustomerResponse();
+
+
         }
     }
 
+    public void getAddCustomerResponse() throws SQLException {
+        int databaseResponseToAddCustomer = addCustomer(CustomersImplement.customersToSave);
+        System.out.println("databaseResponseToAddCustomer: " + databaseResponseToAddCustomer);
+        if (databaseResponseToAddCustomer == 1){
+            saveSuccessfulLabel.setVisible(true);
+            System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
 
+        }
+        else {
+            saveErrorLabel.setVisible(true);
+            System.out.println("Customer not added");}
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Printing the observable list of names from the AddCustomer controller: " + divisionIDResult);
         countryComboBox.setItems(divisionIDResult);
         divisionComboBox.setDisable(true);
+        saveErrorLabel.setVisible(false);
+        saveSuccessfulLabel.setVisible(false);
 
         hideLengthAlerts();
 
@@ -256,6 +281,8 @@ public class AddCustomerController implements Initializable {
         //Change listeners to validate text fields and warn the user in real time if input is over the allowed length
         custNameTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
                 if(custNameTxtField.getLength() > 50) {
                     nameLengthAlert.setVisible(true);}
                 else if(custNameTxtField.getLength() < 50){nameLengthAlert.setVisible(false);}
@@ -264,6 +291,8 @@ public class AddCustomerController implements Initializable {
 
         addressTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
                 if(addressTxtField.getLength() > 100) {
                     addressLengthAlert.setVisible(true);}
                 else if(addressTxtField.getLength() < 100){addressLengthAlert.setVisible(false);}
@@ -272,6 +301,8 @@ public class AddCustomerController implements Initializable {
 
         postalCodeTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
                 if(postalCodeTxtField.getLength() > 50) {
                     postalLengthAlert.setVisible(true);}
                 else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
@@ -280,6 +311,8 @@ public class AddCustomerController implements Initializable {
 
         custPhoneTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
                 if(custPhoneTxtField.getLength() > 50) {
                     phoneLengthAlert.setVisible(true);}
                 else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}

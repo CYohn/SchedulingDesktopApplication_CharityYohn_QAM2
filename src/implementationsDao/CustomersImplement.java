@@ -91,16 +91,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     }
 
 
-    public static int getAddCustomerResponse(int databaseResponseToAddCustomer) throws SQLException {
-        databaseResponseToAddCustomer = addCustomer(customersToSave);
-        System.out.println("databaseResponseToAddCustomer: " + databaseResponseToAddCustomer);
-        if (databaseResponseToAddCustomer == 1){
-            System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
-            return 1;
-        }
-        else {System.out.println("Customer not added");}
-        return 0;
-    }
+
 
     @Override
     public void updateCustomer() {

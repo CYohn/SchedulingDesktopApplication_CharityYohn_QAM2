@@ -102,8 +102,18 @@
                 </Label>
             <Label fx:id="nameLengthAlert" layoutX="739.0" layoutY="233.0" text="Name must be less than 50 characters" textFill="#970101" />
             <Label fx:id="addressLengthAlert" layoutX="739.0" layoutY="358.0" text="Address must be less than 100 characters" textFill="#970101" />
-            <Label fx:id="postalLengthAlert" layoutX="739.0" layoutY="392.0" text="Postal code must be less than 50 characters" textFill="#970101" />
+            <Label fx:id="postalLengthAlert" layoutX="739.0" layoutY="400.0" text="Postal code must be less than 50 characters" textFill="#970101" />
             <Label fx:id="phoneLengthAlert" layoutX="739.0" layoutY="436.0" text="Name must be less than 50 characters" textFill="#970101" />
+            <Label fx:id="saveSuccessfulLabel" layoutX="494.0" layoutY="577.0" text="Customer Successfully Saved!" textFill="#04ae1b">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="saveErrorLabel" layoutX="448.0" layoutY="607.0" text="An Error Occured, Customer Not Saved" textFill="#b90e05">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
     </children>
