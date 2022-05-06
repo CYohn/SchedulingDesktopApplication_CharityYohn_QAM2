@@ -2,18 +2,24 @@ package controllers;
 
 import interfacesDao.UsersInterface;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginPageController implements Initializable {
+
+    Stage stage;
+    Parent scene;
 
     @FXML
     private Button clearButton;
@@ -22,26 +28,53 @@ public class LoginPageController implements Initializable {
     private Button loginButton;
 
     @FXML
-    private PasswordField passwordField;
-    String password = passwordField.getText();
-
+    private static PasswordField passwordField;
 
     @FXML
-    private TextArea userNameField;
-    String userName = userNameField.getText();
-
+    private static TextField userNameField;
 
     @FXML
-    void clearButton(MouseEvent event) {
+    private Label incorrectInfoLabel;
+
+    @FXML
+    private Label passwordRequiredLabel;
+
+    @FXML
+    private Label userNameReqLabel;
+
+    public static String getPasswordField() {
+        return passwordField.toString();
+    }
+
+    public void setPasswordField(PasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
+
+    public void setUserNameField(TextField userNameField) {
+        this.userNameField = userNameField;
+    }
+
+    public static String getUserNameField() {
+        return userNameField.toString();
+    }
+
+    @FXML
+    void clearButtonClick(MouseEvent event) {
         userNameField.clear();
         passwordField.clear();
     }
 
     @FXML
-    void loginButton(MouseEvent event) {
-        UsersInterface.getAllUsers();
+    void loginButtonClick(MouseEvent event) throws IOException {
 
-    }
+
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load((getClass().getResource("/views/TabbedPaneView.fxml")));
+        stage.setScene(new Scene(scene));
+        stage.show();
+        }
+
+
 
 
     @Override
@@ -49,3 +82,4 @@ public class LoginPageController implements Initializable {
         System.out.println("Initialized!");
     }
 }
+

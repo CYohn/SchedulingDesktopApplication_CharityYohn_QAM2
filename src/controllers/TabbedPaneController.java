@@ -53,6 +53,18 @@ public class TabbedPaneController implements Initializable {
         //Load FXML Tabs
         //Load AddCustomerTab
         FXMLLoader loader = new FXMLLoader();
+
+        //Load SchedulingTab
+        try {
+            AnchorPane schedulingAnchor = loader.load(getClass().getResource("/views/ScheduleView.fxml"));
+            schedulingTab.setContent(schedulingAnchor);
+
+        } catch (IOException e) {
+            System.out.println("I/O exception ScheduleView not found (Tabbed pane controller fxml loader)");
+            e.printStackTrace();
+        }
+
+        loader = new FXMLLoader();
         try {
             AnchorPane addCustomerAnchor = loader.load(getClass().getResource("/views/AddCustomerView.fxml"));
             addCustomerTab.setContent(addCustomerAnchor);
@@ -92,17 +104,6 @@ public class TabbedPaneController implements Initializable {
 
         } catch (IOException e) {
             System.out.println("I/O exception ModifyAppointmentView not found (Tabbed pane controller fxml loader)");
-            e.printStackTrace();
-        }
-
-        //Load SchedulingTab
-        loader = new FXMLLoader();
-        try {
-            AnchorPane schedulingAnchor = loader.load(getClass().getResource("/views/ScheduleView.fxml"));
-            schedulingTab.setContent(schedulingAnchor);
-
-        } catch (IOException e) {
-            System.out.println("I/O exception ScheduleView not found (Tabbed pane controller fxml loader)");
             e.printStackTrace();
         }
 
