@@ -19,15 +19,10 @@ public class Customer {
         this.customerDivisionId = customerDivisionId;
     }
 
-    public Customer (){};
-
     public Customer(String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
-        this.customerName = customerName;
-        this.customerAddress = customerAddress;
-        this.customerPostalCode = customerPostalCode;
-        this.customerPhone = customerPhone;
-        this.customerDivisionId = customerDivisionId;
     }
+
+    ;
 
     public int getCustomerId() {
         return customerId;
