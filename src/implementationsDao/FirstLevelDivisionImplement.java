@@ -34,6 +34,8 @@ public class FirstLevelDivisionImplement extends DatabaseConnection implements F
             System.out.println("allDivisionsPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("allDivisionsPreparedStatement in the file FirstLevelDivisionsImplement encountered an error");
+            e.getMessage();
+            e.getCause();
             e.printStackTrace();
         }
     }

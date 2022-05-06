@@ -5,6 +5,8 @@ import Objects.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.SQLException;
+
 public interface CustomersInterface {
 
     ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
@@ -18,6 +20,6 @@ public interface CustomersInterface {
 
     public void deleteCustomer();
 
-    public void addCustomer(Customer customer);
+    public static void addCustomer(ObservableList<Customer>customersToSave) throws SQLException{};
 
 }

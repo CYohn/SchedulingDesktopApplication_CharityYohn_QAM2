@@ -4,7 +4,6 @@ import Objects.Country;
 import Objects.Customer;
 import implementationsDao.CountriesImplement;
 import implementationsDao.CustomersImplement;
-import interfacesDao.CustomersInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import utilities.DatabaseConnection;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -186,12 +186,18 @@ public class AddCustomerController implements Initializable {
     }
 
     public void emptyFieldAlert(){
-        if(custNameTxtField.getText().isEmpty()){alert();}
-        if(addressTxtField.getText().isEmpty()){alert();}
-        if(postalCodeTxtField.getText().isEmpty()){alert();}
-        if(custPhoneTxtField.getText().isEmpty()){alert();}
-        if(countryComboBox.getValue().isEmpty()){alert();}
-        if(divisionComboBox.getValue().isEmpty()){alert();}
+        String name = custNameTxtField.getText();
+        String address = addressTxtField.getText();
+        String postalCode = postalCodeTxtField.getText();
+        String phone = custPhoneTxtField.getText();
+        String country = countryComboBox.getValue();
+        String division = divisionComboBox.getValue();
+        if(name.trim().isEmpty()){alert();}
+        if(address.trim().isEmpty()){alert();}
+        if(postalCode.trim().isEmpty()){alert();}
+        if(phone.trim().isEmpty()){alert();}
+        if(country.isEmpty()){alert();}
+        if(division.isEmpty()){alert();}
     }
 
     public void fieldLengthAlert(){
@@ -209,7 +215,7 @@ public class AddCustomerController implements Initializable {
     }
 
     @FXML
-    void onSave(MouseEvent event) {
+    void onSave(MouseEvent event) throws IOException, SQLException {
         fieldLengthAlert();
         emptyFieldAlert();
 
@@ -226,12 +232,12 @@ public class AddCustomerController implements Initializable {
             String customerPhone = custPhoneTxtField.getText();
             int customerDivisionId = getDivisionID();
 
-            Customer customer = new Customer(customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
-            CustomersImplement.customersToSave.add(customer);
+            Customer customerToSave = new Customer(customerName,
+                    customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            CustomersImplement.customersToSave.add(customerToSave);
 
-            System.out.println("Customer Object was created on save: " + customer);
-            System.out.println("Name: " + customer.getCustomerName() + " Address: " + customer.getCustomerAddress());
-            System.out.println("Phone: " + customer.getCustomerPhone() + "Postal: " + customer.getCustomerPostalCode() + "Division: " + customer.getCustomerDivisionId());
+            System.out.println("Printing out customers to save list (from the customers controller onSave method):");
+            CustomersImplement.addCustomer(CustomersImplement.customersToSave);
         }
     }
 
@@ -244,7 +250,8 @@ public class AddCustomerController implements Initializable {
         divisionComboBox.setDisable(true);
 
         hideLengthAlerts();
-        CustomersImplement.printCustomerToSave(CustomersImplement.customersToSave);
+
+
 
         //Change listeners to validate text fields and warn the user in real time if input is over the allowed length
         custNameTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
