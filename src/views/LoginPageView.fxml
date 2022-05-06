@@ -21,12 +21,12 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="136.0" layoutY="175.0" text="User Name">
+            <Label layoutX="136.0" layoutY="175.0" text="User Name*">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="136.0" layoutY="251.0" text="Password">
+            <Label layoutX="136.0" layoutY="251.0" text="Password*">
                <font>
                   <Font size="20.0" />
                </font>
@@ -35,6 +35,15 @@
             <Button fx:id="clearButton" alignment="CENTER" layoutX="450.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#clearButtonClick" prefHeight="37.0" prefWidth="84.0" text="Clear" />
             <PasswordField fx:id="passwordField" layoutX="249.0" layoutY="247.0" prefHeight="37.0" prefWidth="357.0" promptText="Please enter your password" />
             <TextField fx:id="userNameField" layoutX="249.0" layoutY="172.0" prefHeight="37.0" prefWidth="357.0" promptText="Please enter your user name" />
+            <Label fx:id="incorrectInfoLabel" layoutX="246.0" layoutY="312.0" text="User Name or Password was incorrect. Please try again." textFill="#a40202">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="userNameReqLabel" layoutX="8.0" layoutY="182.0" text="User Name is Required" textFill="#970202" />
+            <Label fx:id="passwordRequiredLabel" layoutX="8.0" layoutY="257.0" text="Password is Required" textFill="#970202" />
+            <Label layoutX="55.0" layoutY="462.0" text="User Location: " />
+            <Label fx:id="locationLabel" layoutX="136.0" layoutY="462.0" text="Location Label" />
          </children>
       </AnchorPane>
    </children>

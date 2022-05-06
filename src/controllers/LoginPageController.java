@@ -1,6 +1,6 @@
 package controllers;
 
-import interfacesDao.UsersInterface;
+import implementationsDao.UsersImplement;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,16 +8,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginPageController implements Initializable {
 
+    public static String password = getPasswordField().getText();
+    public static String userName = getUserNameField().getText();
     Stage stage;
     Parent scene;
 
@@ -42,20 +42,16 @@ public class LoginPageController implements Initializable {
     @FXML
     private Label userNameReqLabel;
 
-    public static String getPasswordField() {
-        return passwordField.toString();
+    @FXML
+    private Label locationLabel;
+
+
+    public static PasswordField getPasswordField() {
+        return passwordField;
     }
 
-    public void setPasswordField(PasswordField passwordField) {
-        this.passwordField = passwordField;
-    }
-
-    public void setUserNameField(TextField userNameField) {
-        this.userNameField = userNameField;
-    }
-
-    public static String getUserNameField() {
-        return userNameField.toString();
+    public static TextField getUserNameField() {
+        return userNameField;
     }
 
     @FXML
@@ -66,20 +62,25 @@ public class LoginPageController implements Initializable {
 
     @FXML
     void loginButtonClick(MouseEvent event) throws IOException {
-
-
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load((getClass().getResource("/views/TabbedPaneView.fxml")));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        boolean validationStatus = UsersImplement.validateUser(passwordField.getText());
+        if (validationStatus == true){
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load((getClass().getResource("/views/TabbedPaneView.fxml")));
+            stage.setScene(new Scene(scene));
+            stage.show();
         }
+        else{incorrectInfoLabel.setVisible(true);}
+    }
 
 
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initialized!");
+        System.out.println("Login Form Initialized!");
+        passwordRequiredLabel.setVisible(false);
+        userNameReqLabel.setVisible(false);
+        incorrectInfoLabel.setVisible(false);
     }
 }
 
