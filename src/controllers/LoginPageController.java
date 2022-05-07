@@ -1,6 +1,5 @@
 package controllers;
 
-import implementationsDao.UsersImplement;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -24,6 +24,24 @@ public class LoginPageController implements Initializable {
 
     Stage stage;
     Parent scene;
+
+
+    private ResourceBundle languageResource;
+
+    @FXML
+    private Label welcomeBackLabel;
+
+    @FXML
+    private Label userNameReqLabel;
+
+    @FXML
+    private Label userNameLabel;
+
+    @FXML
+    private Label passwordLabel;
+
+    @FXML
+    private Label loginInstructionLabel;
 
     @FXML
     private Button clearButton;
@@ -33,8 +51,6 @@ public class LoginPageController implements Initializable {
 
     @FXML
     private PasswordField passwordField;
-
-
 
     @FXML
     private TextField userNameField;
@@ -47,12 +63,12 @@ public class LoginPageController implements Initializable {
     private Label passwordRequiredLabel;
 
     @FXML
-    private Label userNameReqLabel;
-
-    @FXML
     private Label locationLabel;
 
     private static String dbPassword;
+
+    @FXML
+    private Label userLocationLabel;
 
 
     @FXML
@@ -64,7 +80,7 @@ public class LoginPageController implements Initializable {
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement allUsersPreparedStatement;
 
-    public String getUserPassword(String userName) throws SQLException{
+    public String getUserPassword(String userName) throws SQLException {
 
         ResultSet getUserResults;
         try {
@@ -119,15 +135,44 @@ public class LoginPageController implements Initializable {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        System.out.println("Login Form Initialized!");
+        passwordRequiredLabel.setVisible(false);
+        userNameReqLabel.setVisible(false);
+        incorrectInfoLabel.setVisible(false);
+
+        Locale location = new Locale("fr","FR");
+        String displayLanguage = location.getLanguage();
+//        Locale location = Locale.getDefault();
+//        System.out.println(location);
+//        String displayLanguage = location.getDisplayLanguage();
+        System.out.println(displayLanguage);
+
+        this.languageResource = ResourceBundle.getBundle("Language", location);
+
+        if (displayLanguage.equals("fr") || displayLanguage.equals("en")) {
+
+            welcomeBackLabel.setText(languageResource.getString("welcomeBackLabel"));
+            loginInstructionLabel.setText(languageResource.getString("loginInstructionLabel"));
+            userNameLabel.setText(languageResource.getString("userNameLabel"));
+            passwordLabel.setText(languageResource.getString("passwordLabel"));
+            userNameReqLabel.setText(languageResource.getString("userNameReqLabel"));
+            incorrectInfoLabel.setText(languageResource.getString("incorrectInfoLabel"));
+            passwordRequiredLabel.setText(languageResource.getString("passwordRequiredLabel"));
+            locationLabel.setText(languageResource.getString("locationLabel"));
+            userNameField.setPromptText(languageResource.getString("userNameFieldPrompt"));
+            passwordField.setPromptText(languageResource.getString("passwordFieldPrompt"));
+            loginButton.setText(languageResource.getString("loginButtonText"));
+            clearButton.setText(languageResource.getString("clearButtonText"));
+            userLocationLabel.setText(String.valueOf(location));
 
 
-        @Override
-        public void initialize (URL url, ResourceBundle resourceBundle){
-            System.out.println("Login Form Initialized!");
-            passwordRequiredLabel.setVisible(false);
-            userNameReqLabel.setVisible(false);
-            incorrectInfoLabel.setVisible(false);
+
+
         }
     }
+}
 
 
