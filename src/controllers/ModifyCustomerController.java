@@ -73,6 +73,8 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Label custIdLabel;
 
+    @FXML
+    private Label customerRemovedLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
