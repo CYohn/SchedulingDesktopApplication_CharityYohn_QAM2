@@ -143,14 +143,15 @@ public class LoginPageController implements Initializable {
         userNameReqLabel.setVisible(false);
         incorrectInfoLabel.setVisible(false);
 
-        Locale location = new Locale("fr","FR");
-        String displayLanguage = location.getLanguage();
-//        Locale location = Locale.getDefault();
-//        System.out.println(location);
-//        String displayLanguage = location.getDisplayLanguage();
+//        Locale location = new Locale("fr","FR"); //For testing French
+//        String displayLanguage = location.getLanguage(); //For testing French
+        Locale location = Locale.getDefault();
+        System.out.println(location);
+        String displayLanguage = location.getDisplayLanguage();
         System.out.println(displayLanguage);
+        userLocationLabel.setText(String.valueOf(location));
 
-        this.languageResource = ResourceBundle.getBundle("Language", location);
+        this.languageResource = ResourceBundle.getBundle("utilities/Language", location);
 
         if (displayLanguage.equals("fr") || displayLanguage.equals("en")) {
 
@@ -166,11 +167,6 @@ public class LoginPageController implements Initializable {
             passwordField.setPromptText(languageResource.getString("passwordFieldPrompt"));
             loginButton.setText(languageResource.getString("loginButtonText"));
             clearButton.setText(languageResource.getString("clearButtonText"));
-            userLocationLabel.setText(String.valueOf(location));
-
-
-
-
         }
     }
 }
