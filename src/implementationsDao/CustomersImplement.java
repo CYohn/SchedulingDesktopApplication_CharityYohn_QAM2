@@ -2,13 +2,16 @@ package implementationsDao;
 
 
 import Objects.Customer;
+import Objects.FirstLevelDivision;
 import interfacesDao.CustomersInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
@@ -25,21 +28,21 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     private static String Phone;
     private static int Division_ID;
 
-    ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
+    static ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
 
     public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
 
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement customersImplementPreparedStatement;
-    static String sqlQuerry = "SELECT * customers";
+    static String sqlQuery = "SELECT * customers";
 
 
     static {
         try {
-            customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
-            System.out.println("allDivisionsPreparedStatement was successful");
+            customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
+            System.out.println("customersImplementPreparedStatement was successful");
         } catch (SQLException e) {
-            System.out.println("allDivisionsPreparedStatement in the file FirstLevelDivisionsImplement encountered an error");
+            System.out.println("customerImplementPreparedStatement in the file CustomersImplement encountered an error");
             e.getMessage();
             e.getCause();
             e.printStackTrace();
@@ -90,6 +93,46 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         return databaseResponseToUpdate;
     }
 
+
+    public static void getAllCustomers() throws SQLException {
+        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
+        System.out.println("customersImplementPreparedStatement was successful");
+        ResultSet allCustomersResults;
+
+        try{
+
+        allCustomersResults = customersImplementPreparedStatement.executeQuery();
+
+        while (allCustomersResults.next()) {
+            int customerId = allCustomersResults.getInt("Customer_ID");
+            System.out.println("allCustomersResults customerId: " + customerId);
+
+            String customerName = allCustomersResults.getString("Customer_Name");
+            System.out.println("allCustomersResults customerName: " + customerName);
+
+            String address = allCustomersResults.getString("Address");
+            System.out.println("allCustomersResults address: " + address);
+
+            String postalCode = allCustomersResults.getString("Postal_Code");
+            System.out.println("allCustomersResults postalCode: " + postalCode);
+
+            String phone = allCustomersResults.getString("Phone");
+            System.out.println("allCustomersResults phone: " + phone);
+
+            int divisionId = allCustomersResults.getInt("Division_ID");
+            System.out.println("allCustomersResults divisionId: " + divisionId);
+
+            Customer customer = new Customer(customerId, customerName, address, postalCode, phone, divisionId);
+            getAllCustomers.add(customer);
+            System.out.println("Customer object populated in getAllCustomers list: " + customer);
+        }
+    } catch (SQLException throwables) {
+        System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
+        throwables.getMessage();
+        throwables.getCause();
+        throwables.printStackTrace();
+    }
+}
 
 
 

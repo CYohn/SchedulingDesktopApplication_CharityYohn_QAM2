@@ -1,11 +1,14 @@
 package controllers;
 
+import Objects.Customer;
+import implementationsDao.CustomersImplement;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ModifyCustomerController implements Initializable {
@@ -20,7 +23,7 @@ public class ModifyCustomerController implements Initializable {
     private TextField addressTxtField;
 
     @FXML
-    private TableView<?> allCustomersTable;
+    private TableView<Customer> allCustomersTable;
 
     @FXML
     private GridPane applicationFormLeft;
@@ -76,8 +79,18 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Label customerRemovedLabel;
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+//        try {
+//            CustomersImplement.getAllCustomers();
+//        } catch (SQLException throwables) {
+//            System.out.println("SQL exception triggered in ModifyCustomerController - initialize, CustomersImplement.getAllCustomers() method call");
+//            throwables.getMessage();
+//            throwables.getCause();
+//            throwables.printStackTrace();
+//        }
 
     }
 }
