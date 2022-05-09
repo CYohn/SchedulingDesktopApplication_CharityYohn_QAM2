@@ -70,6 +70,9 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private ComboBox<?> stateComboBox;
 
+    @FXML
+    private Label custIdLabel;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
