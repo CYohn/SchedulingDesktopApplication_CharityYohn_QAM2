@@ -26,15 +26,15 @@
                   <Font size="20.0" />
                </font>
             </Label>
+            <TextField fx:id="userNameField" layoutX="279.0" layoutY="172.0" prefHeight="37.0" prefWidth="357.0" promptText="Please enter your user name" />
             <Label fx:id="passwordLabel" layoutX="106.0" layoutY="252.0" text="Password*">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
+            <PasswordField fx:id="passwordField" layoutX="279.0" layoutY="248.0" prefHeight="37.0" prefWidth="357.0" promptText="Please enter your password" />
             <Button fx:id="loginButton" alignment="CENTER" layoutX="305.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#loginButtonClick" prefHeight="37.0" prefWidth="84.0" text="Login" />
             <Button fx:id="clearButton" alignment="CENTER" layoutX="463.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#clearButtonClick" prefHeight="37.0" prefWidth="84.0" text="Clear" />
-            <PasswordField fx:id="passwordField" layoutX="279.0" layoutY="248.0" prefHeight="37.0" prefWidth="357.0" promptText="Please enter your password" />
-            <TextField fx:id="userNameField" layoutX="279.0" layoutY="172.0" prefHeight="37.0" prefWidth="357.0" promptText="Please enter your user name" />
             <Label fx:id="incorrectInfoLabel" layoutX="246.0" layoutY="312.0" text="User Name or Password was incorrect. Please try again." textFill="#a40202">
                <font>
                   <Font name="System Bold" size="14.0" />

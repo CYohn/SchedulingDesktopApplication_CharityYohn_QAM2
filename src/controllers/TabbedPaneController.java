@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
 
 public class TabbedPaneController implements Initializable {
 
+    //TODO: ADD THE ALERT FOR APPOINTMENTS WITHIN 15 MINUTES TO INITIALIZE
+
     @FXML
     private AnchorPane addAppointmentAnchor;
 

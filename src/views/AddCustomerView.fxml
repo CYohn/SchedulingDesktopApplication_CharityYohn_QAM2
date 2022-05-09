@@ -37,26 +37,50 @@
                                 <Font size="19.0" />
                             </font>
                         </Label>
+                        <TextField fx:id="custNameTxtField" promptText="Customer Name" GridPane.columnIndex="1">
+                     <tooltip>
+                        <Tooltip text="Field character limit: 50" />
+                     </tooltip></TextField>
                         <Label text="Country *" GridPane.rowIndex="1">
                             <font>
                                 <Font size="19.0" />
                             </font>
                         </Label>
+                        <ComboBox fx:id="countryComboBox" onAction="#populateDivisionComboBox" prefHeight="25.0" prefWidth="243.0" promptText="Select Country" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="State/Province *" GridPane.rowIndex="2">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="divisionComboBox" prefHeight="25.0" prefWidth="246.0" promptText="Select State" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Street Address *" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="addressTxtField" promptText="123 Software Lane" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <tooltip>
+                        <Tooltip text="Field character limit: 100" />
+                     </tooltip>
+                  </TextField>
                         <Label text="Postal Code *" GridPane.rowIndex="4">
                             <font>
                                 <Font size="19.0" />
                             </font>
                         </Label>
+                        <TextField fx:id="postalCodeTxtField" promptText="Postal Code" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <tooltip>
+                        <Tooltip text="Field character limit: 50" />
+                     </tooltip></TextField>
                         <Label text="Phone * " GridPane.rowIndex="5">
                             <font>
                                 <Font size="19.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="custNameTxtField" promptText="Customer Name" GridPane.columnIndex="1">
+                        <TextField fx:id="custPhoneTxtField" promptText="123-456-7890" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <tooltip>
                         <Tooltip text="Field character limit: 50" />
                      </tooltip></TextField>
-                        <ComboBox fx:id="countryComboBox" onAction="#populateDivisionComboBox" prefHeight="25.0" prefWidth="243.0" promptText="Select Country" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -70,32 +94,9 @@
                                 <Button fx:id="clearButton" mnemonicParsing="false" onMouseClicked="#clearForm" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1" />
                             </children>
                         </GridPane>
-                        <TextField fx:id="postalCodeTxtField" promptText="Postal Code" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <tooltip>
-                        <Tooltip text="Field character limit: 50" />
-                     </tooltip></TextField>
-                        <TextField fx:id="custPhoneTxtField" promptText="123-456-7890" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                     <tooltip>
-                        <Tooltip text="Field character limit: 50" />
-                     </tooltip></TextField>
-                        <Label text="Street Address *" GridPane.rowIndex="3">
-                            <font>
-                                <Font size="19.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="addressTxtField" promptText="123 Software Lane" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <tooltip>
-                        <Tooltip text="Field character limit: 100" />
-                     </tooltip></TextField>
-                        <ComboBox fx:id="divisionComboBox" prefHeight="25.0" prefWidth="246.0" promptText="Select State" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="State/Province *" GridPane.rowIndex="2">
-                            <font>
-                                <Font size="19.0" />
-                            </font>
-                        </Label>
                     </children>
                 </GridPane>
-                <Label layoutX="458.0" layoutY="21.0" text="Add Customer">
+                <Label layoutX="492.0" layoutY="70.0" text="Add Customer">
                     <font>
                         <Font size="30.0" />
                     </font>
