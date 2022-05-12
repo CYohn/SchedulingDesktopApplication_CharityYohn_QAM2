@@ -34,11 +34,12 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement customersImplementPreparedStatement;
-    static String sqlQuery = "SELECT * customers";
+
 
 
     static {
         try {
+            String sqlQuery = "SELECT * customers";
             customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
             System.out.println("customersImplementPreparedStatement was successful");
         } catch (SQLException e) {
@@ -74,7 +75,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                         "" + division + ");";
 
                 PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
-                databaseResponseToUpdate = insertPreparedStatement.executeUpdate(insertCustomerIntoDB);
+                databaseResponseToUpdate = insertPreparedStatement.executeUpdate();
 
                 // Updating Query
                 if (databaseResponseToUpdate == 1) {
@@ -95,6 +96,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
 
     public static void getAllCustomers() throws SQLException {
+        String sqlQuery = "SELECT * customers";
         customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
         System.out.println("customersImplementPreparedStatement was successful");
         ResultSet allCustomersResults;
@@ -127,23 +129,38 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
             System.out.println("Customer object populated in getAllCustomers list: " + customer);
         }
     } catch (SQLException throwables) {
-        System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
-        throwables.getMessage();
-        throwables.getCause();
-        throwables.printStackTrace();
-    }
-}
-
-
-
-    @Override
-    public void updateCustomer() {
-
+            System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
+            throwables.getMessage();
+            throwables.getCause();
+            throwables.printStackTrace();
+        }
     }
 
-    @Override
-    public void deleteCustomer() {
 
+    public static int updateCustomer(int customerId, String name, String address, String postalCode, String phone, int division) throws SQLException {
+        String updateSql = "UPDATE customer SET Customer_Name = ?," +
+                "Address = ?, " +
+                "Postal_Code = ?, " +
+                "Phone = ?, " +
+                "Division = ?, " +
+                "WHERE Customer_ID = " + customerId;
+        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(updateSql, connection);
+        customersImplementPreparedStatement.setString(1, name);
+        customersImplementPreparedStatement.setString(2, address);
+        customersImplementPreparedStatement.setString(3, postalCode);
+        customersImplementPreparedStatement.setString(4, phone);
+        customersImplementPreparedStatement.setInt(5, division);
+        int dbResponse = customersImplementPreparedStatement.executeUpdate(); //returns number of rows affected
+        return dbResponse;
+    }
+
+
+    public static int deleteCustomer(int customerId) throws SQLException {
+        String deleteSql = "DELETE FROM customers WHERE Customer_ID = ?";
+        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(deleteSql, connection);
+        customersImplementPreparedStatement.setInt(1, customerId);
+        int dbResponse = customersImplementPreparedStatement.executeUpdate(); // returns the number of rows affected
+        return dbResponse;
     }
 
 

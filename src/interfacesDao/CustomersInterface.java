@@ -16,10 +16,17 @@ public interface CustomersInterface {
     }
 
 
-    public void updateCustomer();
+    public static int updateCustomer(String name, String address, String postalCode, String phone, int division) {
+        return 0;
+    }
 
-    public void deleteCustomer();
+    public static int deleteCustomer(int customerId) {
+        return 0;
+    }
 
-    public static void addCustomer(ObservableList<Customer>customersToSave) throws SQLException{};
+    public static void addCustomer(ObservableList<Customer> customersToSave) throws SQLException {
+    }
+
+    ;
 
 }
