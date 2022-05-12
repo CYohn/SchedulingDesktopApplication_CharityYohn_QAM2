@@ -2,6 +2,7 @@ package controllers;
 
 import Objects.Customer;
 import implementationsDao.CustomersImplement;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ModifyCustomerController implements Initializable {
+
+
 
     @FXML
     private MenuButton searchSelectorMenu;
@@ -79,18 +82,13 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Label customerRemovedLabel;
 
+    public ModifyCustomerController() throws SQLException {
+    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        try {
-//            CustomersImplement.getAllCustomers();
-//        } catch (SQLException throwables) {
-//            System.out.println("SQL exception triggered in ModifyCustomerController - initialize, CustomersImplement.getAllCustomers() method call");
-//            throwables.getMessage();
-//            throwables.getCause();
-//            throwables.printStackTrace();
-//        }
+
 
     }
 }

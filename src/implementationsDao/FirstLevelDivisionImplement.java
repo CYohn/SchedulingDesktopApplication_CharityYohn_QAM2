@@ -1,10 +1,6 @@
 package implementationsDao;
 
-import Objects.Country;
-import Objects.Customer;
 import Objects.FirstLevelDivision;
-import controllers.AddCustomerController;
-import interfacesDao.CustomersInterface;
 import interfacesDao.FirstLevelDivisionsInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,12 +21,12 @@ public class FirstLevelDivisionImplement extends DatabaseConnection implements F
 
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement allDivisionsPreparedStatement;
-    static String sqlQuerry = "SELECT * FROM first_level_divisions";
+    static String sqlQuery = "SELECT * FROM first_level_divisions";
 
 
     static {
         try {
-            allDivisionsPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuerry, connection);
+            allDivisionsPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
             System.out.println("allDivisionsPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("allDivisionsPreparedStatement in the file FirstLevelDivisionsImplement encountered an error");

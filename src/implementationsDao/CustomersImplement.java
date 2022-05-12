@@ -66,15 +66,17 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
                 System.out.println("Customer to send to the DB: " + customer);
 
-                String insertCustomerIntoDB = "INSERT INTO customers (" +
-                        "Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (" +
-                        "'" + name + "'," +
-                        "'" + address + "'," +
-                        "'" + postalCode + "'," +
-                        "'" + phone + "'," +
-                        "" + division + ");";
+                String insertCustomerIntoDB = "INSERT INTO client_schedule.customers (" +
+                "Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
+                "VALUES(?,?,?,?,?);";
 
                 PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
+                insertPreparedStatement.setString(1, name);
+                insertPreparedStatement.setString(2, address);
+                insertPreparedStatement.setString(3, postalCode);
+                insertPreparedStatement.setString(4, phone);
+                insertPreparedStatement.setInt(5, division);
+
                 databaseResponseToUpdate = insertPreparedStatement.executeUpdate();
 
                 // Updating Query
@@ -86,7 +88,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
             }
         } catch (SQLException e) {
-            System.out.println("printCustomerToSave encountered an error in th CustomersImplement file:");
+            System.out.println("addCustomer encountered an error in the CustomersImplement file:");
             e.getCause();
             e.getMessage();
             e.printStackTrace();

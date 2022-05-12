@@ -97,6 +97,8 @@ public class LoginPageController implements Initializable {
                 System.out.println("Results from getUserPassword: Password from DB: " + dbPassword);
                 return dbPassword;
             }
+            //getDivisionsFromDB.close();
+            //connection.close();
 
         } catch (SQLException throwables) {
             System.out.println("SQLException thrown in getUserPassword(String userName) method in the LoginPageController file");
