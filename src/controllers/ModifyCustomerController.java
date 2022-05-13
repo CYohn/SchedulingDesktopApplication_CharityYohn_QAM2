@@ -1,11 +1,14 @@
 package controllers;
 
+import Objects.Country;
 import Objects.Customer;
+import Objects.FirstLevelDivision;
 import implementationsDao.CustomersImplement;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -15,72 +18,75 @@ import java.util.ResourceBundle;
 public class ModifyCustomerController implements Initializable {
 
 
-
-    @FXML
-    private MenuButton searchSelectorMenu;
-
-    @FXML
-    private TextField searchTxtField;
-
-    @FXML
-    private TextField addressTxtField;
+    String division = CustomersImplement.getDivisionName(CustomersImplement.allCustomers);
 
     @FXML
     private TableView<Customer> allCustomersTable;
 
+    //Table Columns
+    //Search Type menu comboBox
     @FXML
-    private GridPane applicationFormLeft;
-
+    private MenuButton searchSelectorMenu;
     @FXML
-    private Button clearButton;
-
+    private TableColumn<Customer, String> custAddressColumn;
     @FXML
-    private ComboBox<?> countryComboBox;
-
+    private TableColumn<Customer, String> custCountryColumn;
     @FXML
-    private TableColumn<?, ?> custAddressColumn;
-
+    private TableColumn<Customer, Integer> custIdColumn;
     @FXML
-    private TableColumn<?, ?> custCountryColumn;
-
+    private TableColumn<Customer, String> custNameColumn;
     @FXML
-    private TableColumn<?, ?> custIdColumn;
-
+    private TableColumn<Customer, String> custPhoneColumn;
     @FXML
-    private TableColumn<?, ?> custNameColumn;
-
+    private TableColumn<Customer, String> custPostalCodeColumn;
     @FXML
-    private TextField custNameTxtField;
-
-    @FXML
-    private TableColumn<?, ?> custPhoneColumn;
-
+    private TableColumn<Customer, String> custStateColumn;
+    //Form text fields
     @FXML
     private TextField custPhoneTxtField;
-
     @FXML
-    private TableColumn<?, ?> custPostalCodeColumn;
-
+    private TextField custNameTxtField;
     @FXML
-    private TableColumn<?, ?> custStateColumn;
-
-    @FXML
-    private Button deleteCustButton;
+    private TextField searchTxtField;
 
     @FXML
     private TextField postalCodeTxtField;
-
     @FXML
-    private Button saveButton;
-
+    private TextField addressTxtField;
+    //Form ComboBoxes
     @FXML
-    private ComboBox<?> stateComboBox;
-
+    private ComboBox<String> stateComboBox;
     @FXML
-    private Label custIdLabel;
+    private ComboBox<String> countryComboBox;
 
     @FXML
     private Label customerRemovedLabel;
+    //Form labels
+    @FXML
+    private Label custIdLabel;
+    @FXML
+    private GridPane applicationFormLeft; //Grid pane containing the application form
+    //Form buttons
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button clearButton;
+
+    //Variables
+    @FXML
+    private Button deleteCustButton;
+
+    public void populateCustomerTable() {
+        allCustomersTable.setItems(CustomersImplement.allCustomers);
+
+        custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        custCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
+        custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+    }
 
     public ModifyCustomerController() throws SQLException {
     }
@@ -89,6 +95,7 @@ public class ModifyCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerRemovedLabel.setVisible(false);
+        populateCustomerTable();
 
     }
 }

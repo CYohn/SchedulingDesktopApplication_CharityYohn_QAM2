@@ -33,7 +33,6 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     static PreparedStatement customersImplementPreparedStatement;
 
 
-
     static {
         try {
             String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Country " +
@@ -71,8 +70,8 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 //                String insertDivisionIntoDB ="SELECT FROM first_level_divisions WHERE Division_ID = " + division;
 
                 String insertCustomerIntoDB = "INSERT INTO client_schedule.customers (" +
-                "Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
-                "VALUES(?,?,?,?,?);";
+                        "Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
+                        "VALUES(?,?,?,?,?);";
 
 //                PreparedStatement countryPreparesStatement = DatabaseConnection.getConnection().prepareStatement(insertCountryIntoDB, Statement.RETURN_GENERATED_KEYS);
 //                countryPreparesStatement.executeQuery();
@@ -124,37 +123,37 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
         ResultSet allCustomersResults;
 
-        try{
+        try {
 
-        allCustomersResults = customersImplementPreparedStatement.executeQuery();
+            allCustomersResults = customersImplementPreparedStatement.executeQuery();
 
-        while (allCustomersResults.next()) {
-            int customerId = allCustomersResults.getInt("Customer_ID");
-            System.out.println("allCustomersResults customerId: " + customerId);
+            while (allCustomersResults.next()) {
+                int customerId = allCustomersResults.getInt("Customer_ID");
+                System.out.println("allCustomersResults customerId: " + customerId);
 
-            String customerName = allCustomersResults.getString("Customer_Name");
-            System.out.println("allCustomersResults customerName: " + customerName);
+                String customerName = allCustomersResults.getString("Customer_Name");
+                System.out.println("allCustomersResults customerName: " + customerName);
 
-            String address = allCustomersResults.getString("Address");
-            System.out.println("allCustomersResults address: " + address);
+                String address = allCustomersResults.getString("Address");
+                System.out.println("allCustomersResults address: " + address);
 
-            String postalCode = allCustomersResults.getString("Postal_Code");
-            System.out.println("allCustomersResults postalCode: " + postalCode);
+                String postalCode = allCustomersResults.getString("Postal_Code");
+                System.out.println("allCustomersResults postalCode: " + postalCode);
 
-            String phone = allCustomersResults.getString("Phone");
-            System.out.println("allCustomersResults phone: " + phone);
+                String phone = allCustomersResults.getString("Phone");
+                System.out.println("allCustomersResults phone: " + phone);
 
-            String country = allCustomersResults.getString("Country");
-            System.out.println("allCustomersResults country: " + country);
+                String country = allCustomersResults.getString("Country");
+                System.out.println("allCustomersResults country: " + country);
 
-            int divisionId = allCustomersResults.getInt("Division_ID");
-            System.out.println("allCustomersResults divisionId: " + divisionId);
+                int divisionId = allCustomersResults.getInt("Division_ID");
+                System.out.println("allCustomersResults divisionId: " + divisionId);
 
-            Customer customer = new Customer(customerId, customerName, address, postalCode, phone, country, divisionId);
-            getAllCustomers.add(customer);
-            System.out.println("Customer object populated in getAllCustomers list: " + customer);
-        }
-    } catch (SQLException throwables) {
+                Customer customer = new Customer(customerId, customerName, address, postalCode, phone, country, divisionId);
+                getAllCustomers.add(customer);
+                System.out.println("Customer object populated in getAllCustomers list: " + customer);
+            }
+        } catch (SQLException throwables) {
             System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
             throwables.getMessage();
             throwables.getCause();
@@ -189,5 +188,32 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         return dbResponse;
     }
 
+
+    public static String getDivisionName(ObservableList<Customer> getAllCustomers) throws SQLException {
+        String divisionName = null;
+        for (Customer customer : getAllCustomers) {
+
+            String searchForDivisionQuery = "SELECT from Division first_level_divisions.Division " +
+                    "WHERE customers.Division_ID = first_level_divisions.Division_ID";
+            PreparedStatement searchForDivision = DatabaseConnection.makePreparedStatement(searchForDivisionQuery, connection);
+            System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
+            ResultSet divisionNameResults;
+
+            try {
+
+                divisionNameResults = searchForDivision.executeQuery();
+
+                while (divisionNameResults.next()) {
+                    divisionName = divisionNameResults.getString("Division");
+                    System.out.println("divisionResults in CustomerImplement.getDivisionName(): " + divisionName);
+                    return divisionName;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+        return divisionName;
+    }
 
 }
