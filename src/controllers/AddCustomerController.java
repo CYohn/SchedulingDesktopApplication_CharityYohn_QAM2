@@ -238,16 +238,18 @@ public class AddCustomerController implements Initializable {
             String customerAddress = addressTxtField.getText();
             String customerPostalCode = postalCodeTxtField.getText();
             String customerPhone = custPhoneTxtField.getText();
+            String customerCountry = countryComboBox.getValue();
             int customerDivisionId = getDivisionID();
 
             Customer customerToSave = new Customer(customerName,
-                    customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+                    customerAddress, customerPostalCode, customerPhone,customerCountry, customerDivisionId);
             CustomersImplement.customersToSave.add(customerToSave);
 
             System.out.println("Printing out customers to save list (from the customers controller onSave method):");
             addCustomer(CustomersImplement.customersToSave);
             getAddCustomerResponse();
 
+            saveButton.setDisable(true);
 
         }
     }
@@ -273,6 +275,7 @@ public class AddCustomerController implements Initializable {
         divisionComboBox.setDisable(true);
         saveErrorLabel.setVisible(false);
         saveSuccessfulLabel.setVisible(false);
+        saveButton.setDisable(false);
 
         hideLengthAlerts();
 
@@ -283,6 +286,7 @@ public class AddCustomerController implements Initializable {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
                 if(custNameTxtField.getLength() > 50) {
                     nameLengthAlert.setVisible(true);}
                 else if(custNameTxtField.getLength() < 50){nameLengthAlert.setVisible(false);}
@@ -293,6 +297,7 @@ public class AddCustomerController implements Initializable {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
                 if(addressTxtField.getLength() > 100) {
                     addressLengthAlert.setVisible(true);}
                 else if(addressTxtField.getLength() < 100){addressLengthAlert.setVisible(false);}
@@ -303,6 +308,7 @@ public class AddCustomerController implements Initializable {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
                 if(postalCodeTxtField.getLength() > 50) {
                     postalLengthAlert.setVisible(true);}
                 else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
@@ -313,6 +319,7 @@ public class AddCustomerController implements Initializable {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
                 if(custPhoneTxtField.getLength() > 50) {
                     phoneLengthAlert.setVisible(true);}
                 else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}

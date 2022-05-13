@@ -9,10 +9,7 @@ import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
 import javax.xml.transform.Result;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
 
@@ -39,8 +36,11 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
     static {
         try {
-            String sqlQuery = "SELECT * customers";
-            customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
+            String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Country " +
+                    "FROM client_schedule.customers, first_level_divisions, countries " +
+                    "WHERE customers.Division_ID = first_level_divisions.Division_ID " +
+                    "AND first_level_divisions.Country_ID = countries.Country_ID";
+            customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(allCustomersQuery, connection);
             System.out.println("customersImplementPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("customerImplementPreparedStatement in the file CustomersImplement encountered an error");
@@ -62,15 +62,33 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                 String address = customer.getCustomerAddress();
                 String postalCode = customer.getCustomerPostalCode();
                 String phone = customer.getCustomerPhone();
+                String country = customer.getCountry();
                 int division = customer.getCustomerDivisionId();
 
                 System.out.println("Customer to send to the DB: " + customer);
+
+//                String insertCountryIntoDB = "SELECT FROM countries VALUES (Country_ID) WHERE Country = " + country;
+//                String insertDivisionIntoDB ="SELECT FROM first_level_divisions WHERE Division_ID = " + division;
 
                 String insertCustomerIntoDB = "INSERT INTO client_schedule.customers (" +
                 "Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
                 "VALUES(?,?,?,?,?);";
 
+//                PreparedStatement countryPreparesStatement = DatabaseConnection.getConnection().prepareStatement(insertCountryIntoDB, Statement.RETURN_GENERATED_KEYS);
+//                countryPreparesStatement.executeQuery();
+//                ResultSet countryResult = countryPreparesStatement.getGeneratedKeys();
+//                countryResult.next();
+//                int countryID = countryResult.getInt(1);
+//
+//                PreparedStatement divisionPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertDivisionIntoDB, Statement.RETURN_GENERATED_KEYS);
+//                divisionPreparedStatement.executeQuery();
+//                ResultSet divisionResult = divisionPreparedStatement.getGeneratedKeys();
+//                divisionResult.next();
+//                int divisionId = divisionResult.getInt(1);
+
                 PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
+
+                //countryPreparesStatement.setString(1, country);
                 insertPreparedStatement.setString(1, name);
                 insertPreparedStatement.setString(2, address);
                 insertPreparedStatement.setString(3, postalCode);
@@ -98,9 +116,12 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
 
     public static void getAllCustomers() throws SQLException {
-        String sqlQuery = "SELECT * customers";
-        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
-        System.out.println("customersImplementPreparedStatement was successful");
+        String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Country " +
+                "FROM client_schedule.customers, first_level_divisions, countries " +
+                "WHERE customers.Division_ID = first_level_divisions.Division_ID " +
+                "AND first_level_divisions.Country_ID = countries.Country_ID";
+        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(allCustomersQuery, connection);
+        System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
         ResultSet allCustomersResults;
 
         try{
@@ -123,10 +144,13 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
             String phone = allCustomersResults.getString("Phone");
             System.out.println("allCustomersResults phone: " + phone);
 
+            String country = allCustomersResults.getString("Country");
+            System.out.println("allCustomersResults country: " + country);
+
             int divisionId = allCustomersResults.getInt("Division_ID");
             System.out.println("allCustomersResults divisionId: " + divisionId);
 
-            Customer customer = new Customer(customerId, customerName, address, postalCode, phone, divisionId);
+            Customer customer = new Customer(customerId, customerName, address, postalCode, phone, country, divisionId);
             getAllCustomers.add(customer);
             System.out.println("Customer object populated in getAllCustomers list: " + customer);
         }

@@ -3,11 +3,13 @@
 package Objects;
 
 public class Customer {
+
     private int customerId;
     private String customerName;
     private String customerAddress;
     private String customerPostalCode;
     private String customerPhone;
+    private String country;
     private int customerDivisionId;
 
     public Customer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
@@ -22,7 +24,26 @@ public class Customer {
     public Customer(String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
     }
 
-    ;
+    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, int divisionId) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerAddress = address;
+        this.customerPostalCode = postalCode;
+        this.customerPhone = phone;
+        this.country = country;
+        this.customerDivisionId = divisionId;
+    }
+
+    public Customer(String customerName, String address, String postalCode, String phone, String country, int divisionId) {
+
+        this.customerName = customerName;
+        this.customerAddress = address;
+        this.customerPostalCode = postalCode;
+        this.customerPhone = phone;
+        this.country = country;
+        this.customerDivisionId = divisionId;
+    }
+
 
     public int getCustomerId() {
         return customerId;
@@ -71,4 +92,9 @@ public class Customer {
     public void setCustomerDivisionId(int customerDivisionId) {
         this.customerDivisionId = customerDivisionId;
     }
+
+
+    public String getCountry() { return country; }
+
+    public void setCountry(String country) { this.country = country; }
 }
