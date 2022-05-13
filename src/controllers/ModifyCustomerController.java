@@ -88,7 +88,7 @@ public class ModifyCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        customerRemovedLabel.setVisible(false);
 
     }
 }

@@ -84,10 +84,10 @@ public class LoginPageController implements Initializable {
 
         ResultSet getUserResults;
         try {
-            String getUserSearchStatement = "SELECT User_Name, Password FROM client_schedule.users WHERE User_Name=" + "'" + userName + "';";
-            PreparedStatement getDivisionsFromDB = DatabaseConnection.getConnection().prepareStatement(getUserSearchStatement);
-            getUserResults = getDivisionsFromDB.executeQuery(getUserSearchStatement);
-
+            String getUserSearchStatement = "SELECT User_Name, Password FROM client_schedule.users " +
+                    "WHERE User_Name=" + "'" + userName + "';";
+            PreparedStatement getUserFromDB = DatabaseConnection.getConnection().prepareStatement(getUserSearchStatement);
+            getUserResults = getUserFromDB.executeQuery(getUserSearchStatement);
 
             while (getUserResults.next()) {
                 userName = getUserResults.getString("User_Name");
@@ -97,11 +97,10 @@ public class LoginPageController implements Initializable {
                 System.out.println("Results from getUserPassword: Password from DB: " + dbPassword);
                 return dbPassword;
             }
-            //getDivisionsFromDB.close();
-            //connection.close();
 
         } catch (SQLException throwables) {
             System.out.println("SQLException thrown in getUserPassword(String userName) method in the LoginPageController file");
+            incorrectInfoLabel.setVisible(true);
             throwables.printStackTrace();
         }
         return dbPassword;
@@ -116,6 +115,7 @@ public class LoginPageController implements Initializable {
             System.out.println("validateUser() results returns true");
             return true;
         } else {
+            incorrectInfoLabel.setVisible(true);
             System.out.println("validateUser() results returns false");
             return false;
         }
@@ -124,7 +124,11 @@ public class LoginPageController implements Initializable {
     @FXML
     void loginButtonClick(MouseEvent event) throws IOException, SQLException {
 
+        if (userNameField.getText().isEmpty() == true){userNameReqLabel.setVisible(true);}
+        if (passwordField.getText().isEmpty() == true){passwordRequiredLabel.setVisible(true);}
+
         boolean validationStatus = validateUser();
+        if (validationStatus == false){incorrectInfoLabel.setVisible(true);}
 
         if (validationStatus == true) {
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -147,9 +151,11 @@ public class LoginPageController implements Initializable {
 
 //        Locale location = new Locale("fr","FR"); //For testing French
 //        String displayLanguage = location.getLanguage(); //For testing French
-        Locale location = Locale.getDefault();
+
+        Locale location = Locale.getDefault(); //For using current location
+        String displayLanguage = location.getDisplayLanguage(); //For using current location
+
         System.out.println(location);
-        String displayLanguage = location.getDisplayLanguage();
         System.out.println(displayLanguage);
         userLocationLabel.setText(String.valueOf(location));
 
@@ -170,6 +176,20 @@ public class LoginPageController implements Initializable {
             loginButton.setText(languageResource.getString("loginButtonText"));
             clearButton.setText(languageResource.getString("clearButtonText"));
         }
+
+        userNameField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                userNameReqLabel.setVisible(false);
+                incorrectInfoLabel.setVisible(false);
+            }
+        });
+
+        passwordField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                passwordRequiredLabel.setVisible(false);
+                incorrectInfoLabel.setVisible(false);
+            }
+        });
     }
 }
 
