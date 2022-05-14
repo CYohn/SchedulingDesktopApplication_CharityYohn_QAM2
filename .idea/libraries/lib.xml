@@ -1,6 +1,8 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
+      <root url="file://$PATH_TO_FX$" />
+      <root url="file://$PATH_TO_FX$" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
@@ -24,12 +26,15 @@
       <root url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" />
       <root url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" />
     </SOURCES>
+    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
+    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$PATH_TO_FX$" recursive="false" type="SOURCES" />
   </library>

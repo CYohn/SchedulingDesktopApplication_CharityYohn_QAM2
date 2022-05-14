@@ -5,6 +5,7 @@ import Objects.Customer;
 import Objects.FirstLevelDivision;
 import implementationsDao.CustomersImplement;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -28,7 +29,7 @@ public class ModifyCustomerController implements Initializable {
     //Table Columns
     //Search Type menu comboBox
     @FXML
-    private MenuButton searchSelectorMenu;
+    private MenuButton searchSelectorMenu = new MenuButton("Search Type");
     @FXML
     private TableColumn<Customer, String> custAddressColumn;
     @FXML
@@ -78,6 +79,45 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Button deleteCustButton;
 
+    public void populateMenuButton() {
+        searchSelectorMenu.setMnemonicParsing(true);
+        MenuItem customerId = new MenuItem("ID Number");
+        customerId.setOnAction(a -> {                             //Action listener for the menu item selection
+            getCustomerWithCustomerId(searchTxtField.getText());
+        });
+
+        MenuItem customerName = new MenuItem("Name");
+        customerName.setOnAction(a -> {
+            getCustomerWithName(searchTxtField.getText());
+        });
+
+        MenuItem customerAddress = new MenuItem("Street Address");
+        customerAddress.setOnAction(a -> {
+            getCustomerWithAddress(searchTxtField.getText());
+        });
+
+        MenuItem customerPostalCode = new MenuItem("Postal Code");
+        customerPostalCode.setOnAction(a -> {
+            getCustomerWithPostalCode(searchTxtField.getText());
+        });
+        MenuItem customerDivision = new MenuItem("State / Province");
+        customerDivision.setOnAction(a -> {
+            getCustomerWithDivision(searchTxtField.getText());
+        });
+
+        MenuItem customerCountry = new MenuItem("Country");
+        customerCountry.setOnAction(a -> {
+            getCustomerWithCountry(searchTxtField.getText());
+        });
+
+        MenuItem customerPhone = new MenuItem("Phone");
+        customerPhone.setOnAction(a -> {
+            getCustomerWithPhone(searchTxtField.getText());
+        });
+
+        searchSelectorMenu.getItems().addAll(customerId, customerName, customerAddress, customerPostalCode, customerDivision, customerCountry, customerPhone);
+    }
+
 
     public void populateCustomerTable() throws SQLException {
 
@@ -92,13 +132,93 @@ public class ModifyCustomerController implements Initializable {
             custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
             custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
             custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
-        } catch (SQLException populateCustomerTableException){
+        } catch (SQLException populateCustomerTableException) {
             populateCustomerTableException.getMessage();
             populateCustomerTableException.getCause();
             populateCustomerTableException.printStackTrace();
         }
 
     }
+
+    //Searches for search options menu
+    //Name search
+    private Customer getCustomerWithName(String customerName) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            if (customer.getCustomerName() == customerName) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    //Search by address
+    private Customer getCustomerWithAddress(String customerAddress) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            if (customer.getCustomerAddress() == customerAddress) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    //Search by phone
+    private Customer getCustomerWithPhone(String customerPhone) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            if (customer.getCustomerPhone() == customerPhone) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    //Search by postalCode
+    private Customer getCustomerWithPostalCode(String customerPostalCode) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            if (customer.getCustomerPostalCode() == customerPostalCode) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    //Search by customerId
+    private Customer getCustomerWithCustomerId(String customerId) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            String idInList = String.valueOf(customer.getCustomerId());
+            if (idInList == customerId) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    //Search by division
+    private Customer getCustomerWithDivision(String customerDivision) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            if (customer.getDivision() == customerDivision) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
+    //Search by country
+    private Customer getCustomerWithCountry(String customerCountry) {
+        ObservableList<Customer> allCustomers = getAllCustomers;
+        for (Customer customer : allCustomers) {
+            if (customer.getCountry() == customerCountry) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
 
     public ModifyCustomerController() throws SQLException {
     }
@@ -115,6 +235,8 @@ public class ModifyCustomerController implements Initializable {
             e.getCause();
             e.printStackTrace();
         }
+
+        populateMenuButton();
 
 
     }
