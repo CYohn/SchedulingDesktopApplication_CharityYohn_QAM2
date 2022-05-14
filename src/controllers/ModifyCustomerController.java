@@ -4,6 +4,8 @@ import Objects.Country;
 import Objects.Customer;
 import Objects.FirstLevelDivision;
 import implementationsDao.CustomersImplement;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,8 +30,7 @@ public class ModifyCustomerController implements Initializable {
 
     //Table Columns
     //Search Type menu comboBox
-    @FXML
-    private MenuButton searchSelectorMenu = new MenuButton("Search Type");
+
     @FXML
     private TableColumn<Customer, String> custAddressColumn;
     @FXML
@@ -61,6 +62,9 @@ public class ModifyCustomerController implements Initializable {
     private ComboBox<String> stateComboBox;
     @FXML
     private ComboBox<String> countryComboBox;
+    @FXML
+    private ComboBox<String> searchSelectorMenu;
+
 
     @FXML
     private Label customerRemovedLabel;
@@ -79,44 +83,53 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Button deleteCustButton;
 
-    public void populateMenuButton() {
-        searchSelectorMenu.setMnemonicParsing(true);
-        MenuItem customerId = new MenuItem("ID Number");
-        customerId.setOnAction(a -> {                             //Action listener for the menu item selection
-            getCustomerWithCustomerId(searchTxtField.getText());
-        });
+    public void setMenuButtonItems() {
+        String searchOptions[] =
+                { "ID Number", "Name", "Street Address",
+                        "Postal Code", "State / Province", "Country", "Phone" };
+        ObservableList<String> comboBoxSearchOptions = FXCollections.observableArrayList(searchOptions);
 
-        MenuItem customerName = new MenuItem("Name");
-        customerName.setOnAction(a -> {
-            getCustomerWithName(searchTxtField.getText());
-        });
 
-        MenuItem customerAddress = new MenuItem("Street Address");
-        customerAddress.setOnAction(a -> {
-            getCustomerWithAddress(searchTxtField.getText());
-        });
 
-        MenuItem customerPostalCode = new MenuItem("Postal Code");
-        customerPostalCode.setOnAction(a -> {
-            getCustomerWithPostalCode(searchTxtField.getText());
-        });
-        MenuItem customerDivision = new MenuItem("State / Province");
-        customerDivision.setOnAction(a -> {
-            getCustomerWithDivision(searchTxtField.getText());
-        });
 
-        MenuItem customerCountry = new MenuItem("Country");
-        customerCountry.setOnAction(a -> {
-            getCustomerWithCountry(searchTxtField.getText());
-        });
+//            customerId.setOnAction(b -> {                             //Action listener for the menu item selection
+//                getCustomerWithCustomerId(searchTxtField.getText());
+//            });
+//
+//
+//            customerName.setOnAction(c -> {
+//                getCustomerWithName(searchTxtField.getText());
+//            });
+//
+//            MenuItem customerAddress = new MenuItem("Street Address");
+//            customerAddress.setOnAction(d -> {
+//                getCustomerWithAddress(searchTxtField.getText());
+//            });
+//
+//            MenuItem customerPostalCode = new MenuItem("Postal Code");
+//            customerPostalCode.setOnAction(e -> {
+//                getCustomerWithPostalCode(searchTxtField.getText());
+//            });
+//
+//            MenuItem customerDivision = new MenuItem("State / Province");
+//            customerDivision.setOnAction(f -> {
+//                getCustomerWithDivision(searchTxtField.getText());
+//            });
+//
+//            MenuItem customerCountry = new MenuItem("Country");
+//            customerCountry.setOnAction(g -> {
+//                getCustomerWithCountry(searchTxtField.getText());
+//            });
+//
+//            MenuItem customerPhone = new MenuItem("Phone");
+//            customerPhone.setOnAction(h -> {
+//                getCustomerWithPhone(searchTxtField.getText());
+//            });
 
-        MenuItem customerPhone = new MenuItem("Phone");
-        customerPhone.setOnAction(a -> {
-            getCustomerWithPhone(searchTxtField.getText());
-        });
 
-        searchSelectorMenu.getItems().addAll(customerId, customerName, customerAddress, customerPostalCode, customerDivision, customerCountry, customerPhone);
     }
+
+
 
 
     public void populateCustomerTable() throws SQLException {
@@ -236,7 +249,7 @@ public class ModifyCustomerController implements Initializable {
             e.printStackTrace();
         }
 
-        populateMenuButton();
+        setMenuButtonItems();
 
 
     }
