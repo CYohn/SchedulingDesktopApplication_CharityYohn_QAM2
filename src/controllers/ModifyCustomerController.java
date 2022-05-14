@@ -87,11 +87,11 @@ public class ModifyCustomerController implements Initializable {
 
             custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-            custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+            custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
             custCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
             custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
-            custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-            custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+            custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+            custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
         } catch (SQLException populateCustomerTableException){
             populateCustomerTableException.getMessage();
             populateCustomerTableException.getCause();
