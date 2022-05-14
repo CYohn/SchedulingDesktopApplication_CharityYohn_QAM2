@@ -1,18 +1,15 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="file://$PATH_TO_FX$" />
-      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" />
-      <root url="file://$PATH_TO_FX$" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
       <root url="jar://$USER_HOME$/Desktop/mysql-connector-java-8.0.25.jar!/" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" />
       <root url="file://$PATH_TO_FX$" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/build/java" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/demo/java" />
@@ -25,15 +22,14 @@
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/main/user-impl/java" />
       <root url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25/src/test/java" />
       <root url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" />
+      <root url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Desktop/mysql-connector-java-8.0.25" recursive="false" />
-    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
-    <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-11.0.12/lib" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$USER_HOME$/Desktop/javafx-sdk-17.0.1" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$PATH_TO_FX$" recursive="false" type="SOURCES" />
   </library>

@@ -15,10 +15,12 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import static implementationsDao.CustomersImplement.getAllCustomers;
+
 public class ModifyCustomerController implements Initializable {
 
 
-    String division = CustomersImplement.getDivisionName(CustomersImplement.allCustomers);
+
 
     @FXML
     private TableView<Customer> allCustomersTable;
@@ -76,16 +78,26 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Button deleteCustButton;
 
-    public void populateCustomerTable() {
-        allCustomersTable.setItems(CustomersImplement.allCustomers);
 
-        custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        custCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
-        custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+    public void populateCustomerTable() throws SQLException {
+
+        try {
+            CustomersImplement.getAllCustomers();
+            allCustomersTable.setItems(CustomersImplement.allCustomers);
+
+            custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+            custCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
+            custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+            custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+            custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        } catch (SQLException populateCustomerTableException){
+            populateCustomerTableException.getMessage();
+            populateCustomerTableException.getCause();
+            populateCustomerTableException.printStackTrace();
+        }
+
     }
 
     public ModifyCustomerController() throws SQLException {
@@ -94,8 +106,16 @@ public class ModifyCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("ModifyCustomerController initialized");
         customerRemovedLabel.setVisible(false);
-        populateCustomerTable();
+        try {
+            populateCustomerTable();
+        } catch (SQLException e) {
+            e.getMessage();
+            e.getCause();
+            e.printStackTrace();
+        }
+
 
     }
 }

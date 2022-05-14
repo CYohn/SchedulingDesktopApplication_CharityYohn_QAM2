@@ -10,6 +10,7 @@ import utilities.DatabaseConnection;
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.Objects;
 
 public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
 
@@ -25,7 +26,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     private static String Phone;
     private static int Division_ID;
 
-    static ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
+    public static ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
 
     public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
 
@@ -115,45 +116,54 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
 
     public static void getAllCustomers() throws SQLException {
-        String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Country " +
-                "FROM client_schedule.customers, first_level_divisions, countries " +
-                "WHERE customers.Division_ID = first_level_divisions.Division_ID " +
-                "AND first_level_divisions.Country_ID = countries.Country_ID";
-        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(allCustomersQuery, connection);
+        String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, first_level_divisions.Division, Country" +
+                " FROM client_schedule.customers, first_level_divisions, countries " +
+                " WHERE customers.Division_ID = first_level_divisions.Division_ID " +
+                " AND first_level_divisions.Country_ID = countries.Country_ID;";
+        PreparedStatement getCustomersPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allCustomersQuery);
         System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
         ResultSet allCustomersResults;
 
         try {
 
-            allCustomersResults = customersImplementPreparedStatement.executeQuery();
+            if (getCustomersPreparedStatement != null) {
+                allCustomersResults = getCustomersPreparedStatement.executeQuery();
 
-            while (allCustomersResults.next()) {
-                int customerId = allCustomersResults.getInt("Customer_ID");
-                System.out.println("allCustomersResults customerId: " + customerId);
 
-                String customerName = allCustomersResults.getString("Customer_Name");
-                System.out.println("allCustomersResults customerName: " + customerName);
+                while (allCustomersResults.next()) {
+                    int customerId = allCustomersResults.getInt("Customer_ID");
+                    System.out.println("allCustomersResults customerId: " + customerId);
 
-                String address = allCustomersResults.getString("Address");
-                System.out.println("allCustomersResults address: " + address);
+                    String customerName = allCustomersResults.getString("Customer_Name");
+                    System.out.println("allCustomersResults customerName: " + customerName);
 
-                String postalCode = allCustomersResults.getString("Postal_Code");
-                System.out.println("allCustomersResults postalCode: " + postalCode);
+                    String customerAddress = allCustomersResults.getString("Address");
+                    System.out.println("allCustomersResults customerAddress: " + customerAddress);
 
-                String phone = allCustomersResults.getString("Phone");
-                System.out.println("allCustomersResults phone: " + phone);
+                    String customerPostalCode = allCustomersResults.getString("Postal_Code");
+                    System.out.println("allCustomersResults customerPostalCode: " + customerPostalCode);
 
-                String country = allCustomersResults.getString("Country");
-                System.out.println("allCustomersResults country: " + country);
+                    String customerPhone = allCustomersResults.getString("Phone");
+                    System.out.println("allCustomersResults customerPhone: " + customerPhone);
 
-                int divisionId = allCustomersResults.getInt("Division_ID");
-                System.out.println("allCustomersResults divisionId: " + divisionId);
+                    int customerDivisionId = allCustomersResults.getInt("Division_ID");
+                    System.out.println("allCustomersResults customerDivisionId: " + customerDivisionId);
 
-                Customer customer = new Customer(customerId, customerName, address, postalCode, phone, country, divisionId);
-                getAllCustomers.add(customer);
-                System.out.println("Customer object populated in getAllCustomers list: " + customer);
+                    String division = allCustomersResults.getString("Division");
+
+                    String country = allCustomersResults.getString("Country");
+                    System.out.println("allCustomersResults country: " + country);
+
+                    Customer customer = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId, division, country);
+                    getAllCustomers.add(customer);
+                    System.out.println("Customer object populated in getAllCustomers list: " + customer);
+
+                }
             }
-        } catch (SQLException throwables) {
+            else{System.out.println("ResultSet was null");}
+
+        }
+        catch(SQLException throwables){
             System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
             throwables.getMessage();
             throwables.getCause();
@@ -189,31 +199,31 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     }
 
 
-    public static String getDivisionName(ObservableList<Customer> getAllCustomers) throws SQLException {
-        String divisionName = null;
-        for (Customer customer : getAllCustomers) {
-
-            String searchForDivisionQuery = "SELECT from Division first_level_divisions.Division " +
-                    "WHERE customers.Division_ID = first_level_divisions.Division_ID";
-            PreparedStatement searchForDivision = DatabaseConnection.makePreparedStatement(searchForDivisionQuery, connection);
-            System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
-            ResultSet divisionNameResults;
-
-            try {
-
-                divisionNameResults = searchForDivision.executeQuery();
-
-                while (divisionNameResults.next()) {
-                    divisionName = divisionNameResults.getString("Division");
-                    System.out.println("divisionResults in CustomerImplement.getDivisionName(): " + divisionName);
-                    return divisionName;
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-        }
-        return divisionName;
-    }
+//    public static String getDivisionName(ObservableList<Customer> getAllCustomers) throws SQLException {
+//        String divisionName = null;
+//        for (Customer customer : getAllCustomers) {
+//
+//            String searchForDivisionQuery = "SELECT from Division first_level_divisions.Division " +
+//                    "WHERE customers.Division_ID = first_level_divisions.Division_ID";
+//            PreparedStatement searchForDivision = DatabaseConnection.makePreparedStatement(searchForDivisionQuery, connection);
+//            System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
+//            ResultSet divisionNameResults;
+//
+//            try {
+//
+//                divisionNameResults = searchForDivision.executeQuery();
+//
+//                while (divisionNameResults.next()) {
+//                    divisionName = divisionNameResults.getString("Division");
+//                    System.out.println("divisionResults in CustomerImplement.getDivisionName(): " + divisionName);
+//                    return divisionName;
+//                }
+//            } catch (SQLException throwables) {
+//                throwables.printStackTrace();
+//            }
+//
+//        }
+//        return divisionName;
+//    }
 
 }

@@ -4,6 +4,7 @@ package Objects;
 
 public class Customer {
 
+
     private int customerId;
     private String customerName;
     private String customerAddress;
@@ -11,38 +12,32 @@ public class Customer {
     private String customerPhone;
     private String country;
     private int customerDivisionId;
+    private String division;
 
-    public Customer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
+
+    //Constructor for CustomersImplement.getAllCustomers()
+    public Customer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId, String division, String country) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerPostalCode = customerPostalCode;
         this.customerPhone = customerPhone;
         this.customerDivisionId = customerDivisionId;
-    }
-
-    public Customer(String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
-    }
-
-    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, int divisionId) {
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.customerAddress = address;
-        this.customerPostalCode = postalCode;
-        this.customerPhone = phone;
+        this.division = division;
         this.country = country;
-        this.customerDivisionId = divisionId;
     }
 
-    public Customer(String customerName, String address, String postalCode, String phone, String country, int divisionId) {
+
+    public Customer(String customerName, String customerAddress, String customerPostalCode, String customerPhone, String country, int customerDivisionId) {
 
         this.customerName = customerName;
-        this.customerAddress = address;
-        this.customerPostalCode = postalCode;
-        this.customerPhone = phone;
+        this.customerAddress = customerAddress;
+        this.customerPostalCode = customerPostalCode;
+        this.customerPhone = customerPhone;
         this.country = country;
-        this.customerDivisionId = divisionId;
+        this.customerDivisionId = customerDivisionId;
     }
+
 
 
     public int getCustomerId() {
@@ -93,8 +88,11 @@ public class Customer {
         this.customerDivisionId = customerDivisionId;
     }
 
-
     public String getCountry() { return country; }
 
     public void setCountry(String country) { this.country = country; }
+
+    public String getDivision() { return division; }
+
+    public void setDivision(String division) { this.division = division; }
 }
