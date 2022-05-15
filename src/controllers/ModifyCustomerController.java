@@ -49,6 +49,7 @@ public class ModifyCustomerController implements Initializable {
     private TableColumn<Customer, String> custPostalCodeColumn;
     @FXML
     private TableColumn<Customer, String> custStateColumn;
+
     //Form text fields
     @FXML
     private TextField custPhoneTxtField;
@@ -56,12 +57,11 @@ public class ModifyCustomerController implements Initializable {
     private TextField custNameTxtField;
     @FXML
     private TextField searchTxtField;
-
-
     @FXML
     private TextField postalCodeTxtField;
     @FXML
     private TextField addressTxtField;
+
     //Form ComboBoxes
     @FXML
     private ComboBox<String> stateComboBox;
@@ -70,14 +70,16 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private ComboBox<String> searchSelectorMenu;
 
-
+    //Form labels
     @FXML
     private Label customerRemovedLabel;
-    //Form labels
+    @FXML
+    private Label updateSuccessfulLabel;
     @FXML
     private Label custIdLabel;
     @FXML
     private GridPane applicationFormLeft; //Grid pane containing the application form
+
     //Form buttons
     @FXML
     private Button saveButton;
