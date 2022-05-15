@@ -1,35 +1,39 @@
 package controllers;
 
-import Objects.Country;
 import Objects.Customer;
-import Objects.FirstLevelDivision;
 import implementationsDao.CustomersImplement;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static implementationsDao.CustomersImplement.getAllCustomers;
+import static java.lang.String.valueOf;
 
 public class ModifyCustomerController implements Initializable {
 
+    ObservableList<String>searchOptions = FXCollections.observableArrayList(
+            "ID Number", "Name", "Address", "Country", "State", "Postal Code", "Phone", "Show All Customers"
+    );
 
-
+    public static ObservableList<Customer>customersToPopulate = FXCollections.observableArrayList();
 
     @FXML
     private TableView<Customer> allCustomersTable;
 
     //Table Columns
-    //Search Type menu comboBox
 
     @FXML
     private TableColumn<Customer, String> custAddressColumn;
@@ -52,6 +56,7 @@ public class ModifyCustomerController implements Initializable {
     private TextField custNameTxtField;
     @FXML
     private TextField searchTxtField;
+
 
     @FXML
     private TextField postalCodeTxtField;
@@ -82,12 +87,6 @@ public class ModifyCustomerController implements Initializable {
     //Variables
     @FXML
     private Button deleteCustButton;
-
-    public void setMenuButtonItems() {
-        String searchOptions[] =
-                { "ID Number", "Name", "Street Address",
-                        "Postal Code", "State / Province", "Country", "Phone" };
-        ObservableList<String> comboBoxSearchOptions = FXCollections.observableArrayList(searchOptions);
 
 
 
@@ -127,16 +126,16 @@ public class ModifyCustomerController implements Initializable {
 //            });
 
 
-    }
 
 
 
 
-    public void populateCustomerTable() throws SQLException {
+
+    public void populateCustomerTable(ObservableList<Customer>customersToPopulate) {
 
         try {
             CustomersImplement.getAllCustomers();
-            allCustomersTable.setItems(CustomersImplement.allCustomers);
+            allCustomersTable.setItems(customersToPopulate);
 
             custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -153,104 +152,121 @@ public class ModifyCustomerController implements Initializable {
 
     }
 
-    //Searches for search options menu
-    //Name search
-    private Customer getCustomerWithName(String customerName) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            if (customer.getCustomerName() == customerName) {
-                return customer;
-            }
-        }
-        return null;
+
+public void searchCustomers(){
+
+    String userSearchValue = searchTxtField.getText();
+    int userSearchType = searchSelectorMenu.getSelectionModel().getSelectedIndex();
+    System.out.println("userSearchValue before switch statement: " + userSearchValue);
+    System.out.println("Customers to populate before the switch statement: " + customersToPopulate);
+
+    switch (userSearchType){
+        case 0: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> (valueOf(customer.getCustomerId()).equalsIgnoreCase(userSearchValue)))
+                    .forEach(c -> customersToPopulate.addAll(c));
+            System.out.println ("Case 0 Search Index: " + userSearchType + "userSearchValue: " + userSearchValue);
+            System.out.println("Case 0 customersToPopulate List: " + customersToPopulate);
+            populateCustomerTable(customersToPopulate);
+            break;
+
+        case 1: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> customer.getCustomerName().equalsIgnoreCase(userSearchValue))
+                    .forEach(customer -> customersToPopulate.addAll(customer));
+            System.out.println ("Case 1 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue );
+            System.out.println("Case 1 customersToPopulate List: " + customersToPopulate.toString());
+            populateCustomerTable(customersToPopulate);
+            break;
+
+        case 2: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> customer.getCustomerAddress().equalsIgnoreCase(userSearchValue))
+                    .forEach(c -> customersToPopulate.addAll(c));
+            System.out.println ("Case 2 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+
+            populateCustomerTable(customersToPopulate);
+            System.out.println("Case 2 customersToPopulate List: " + customersToPopulate.toString());
+            break;
+
+        case 3: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> customer.getCountry().equalsIgnoreCase(userSearchValue))
+                    .forEach(c -> customersToPopulate.addAll(c));
+            System.out.println ("Case 3 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+
+            populateCustomerTable(customersToPopulate);
+            System.out.println("Case 3 customersToPopulate List: " + customersToPopulate.toString());
+            break;
+
+        case 4: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> customer.getDivision().equalsIgnoreCase(userSearchValue))
+                    .forEach(c -> customersToPopulate.addAll(c));
+            System.out.println (" Case 4 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+
+            populateCustomerTable(customersToPopulate);
+            System.out.println("Case 4 customersToPopulate List: " + customersToPopulate.toString());
+            break;
+
+        case 5: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> customer.getCustomerPostalCode().equalsIgnoreCase(userSearchValue))
+                    .forEach(c -> customersToPopulate.addAll(c));
+            System.out.println ("Case 5 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+
+            populateCustomerTable(customersToPopulate);
+            System.out.println("Case 5 customersToPopulate List: " + customersToPopulate.toString());
+            break;
+
+        case 6: customersToPopulate.clear();
+            getAllCustomers.stream().filter(customer -> customer.getCustomerPhone().equalsIgnoreCase(userSearchValue))
+                    .forEach(c -> customersToPopulate.addAll(c));
+            System.out.println ("Case 6 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+
+            populateCustomerTable(customersToPopulate);
+            System.out.println("Case 6 customersToPopulate List: " + customersToPopulate.toString());
+            break;
+
+        case 7: customersToPopulate.clear();
+            customersToPopulate = getAllCustomers;
+            System.out.println ("Case 7 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+            populateCustomerTable(customersToPopulate);
+            System.out.println("Case 6 customersToPopulate List: " + customersToPopulate.toString());
+            break;
+
+        default: customersToPopulate = getAllCustomers;
+            System.out.println ("Default Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
+            break;
     }
 
-    //Search by address
-    private Customer getCustomerWithAddress(String customerAddress) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            if (customer.getCustomerAddress() == customerAddress) {
-                return customer;
-            }
-        }
-        return null;
-    }
+}
 
-    //Search by phone
-    private Customer getCustomerWithPhone(String customerPhone) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            if (customer.getCustomerPhone() == customerPhone) {
-                return customer;
-            }
-        }
-        return null;
-    }
+    @FXML
+    void searchCustomersKeyPressed(KeyEvent event) { searchCustomers();}
 
-    //Search by postalCode
-    private Customer getCustomerWithPostalCode(String customerPostalCode) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            if (customer.getCustomerPostalCode() == customerPostalCode) {
-                return customer;
-            }
-        }
-        return null;
-    }
+    @FXML
+    void searchCustomersOnAction(ActionEvent event) { searchCustomers();}
 
-    //Search by customerId
-    private Customer getCustomerWithCustomerId(String customerId) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            String idInList = String.valueOf(customer.getCustomerId());
-            if (idInList == customerId) {
-                return customer;
-            }
-        }
-        return null;
-    }
-
-    //Search by division
-    private Customer getCustomerWithDivision(String customerDivision) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            if (customer.getDivision() == customerDivision) {
-                return customer;
-            }
-        }
-        return null;
-    }
-
-    //Search by country
-    private Customer getCustomerWithCountry(String customerCountry) {
-        ObservableList<Customer> allCustomers = getAllCustomers;
-        for (Customer customer : allCustomers) {
-            if (customer.getCountry() == customerCountry) {
-                return customer;
-            }
-        }
-        return null;
-    }
+    @FXML
+    void searchCustomerstxtChanged(InputMethodEvent event) { searchCustomers();}
 
 
-    public ModifyCustomerController() throws SQLException {
-    }
+
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ModifyCustomerController initialized");
         customerRemovedLabel.setVisible(false);
-        try {
-            populateCustomerTable();
-        } catch (SQLException e) {
-            e.getMessage();
-            e.getCause();
-            e.printStackTrace();
-        }
-
-        setMenuButtonItems();
+        //customersToPopulate = getAllCustomers;
+        populateCustomerTable(customersToPopulate);
 
 
+        System.out.println("Search Box observable list:" + searchOptions);
+        searchSelectorMenu.setItems(searchOptions);
+
+
+        searchTxtField.focusedProperty().addListener((ov, oldV, newV) -> {
+            if(newV){
+                searchCustomers();
+            }
+        });
     }
+
+
 }

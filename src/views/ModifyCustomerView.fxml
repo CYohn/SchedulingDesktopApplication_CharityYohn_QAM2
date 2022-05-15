@@ -28,8 +28,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-            <ComboBox fx:id="seachSelectorMenu" prefWidth="150.0" promptText="Select Search Type" />
-                <TextField fx:id="searchTxtField" prefHeight="25.0" prefWidth="272.0" promptText="Search" GridPane.columnIndex="1" />
+            <ComboBox fx:id="searchSelectorMenu" prefWidth="150.0" promptText="Select Search Type" />
+                <TextField fx:id="searchTxtField" onAction="#searchCustomersOnAction" onInputMethodTextChanged="#searchCustomerstxtChanged" onKeyPressed="#searchCustomersKeyPressed" prefHeight="25.0" prefWidth="272.0" promptText="Search" GridPane.columnIndex="1" />
             </children>
         </GridPane>
         <TableView fx:id="allCustomersTable" layoutX="3.0" layoutY="140.0" prefHeight="264.0" prefWidth="1169.0">

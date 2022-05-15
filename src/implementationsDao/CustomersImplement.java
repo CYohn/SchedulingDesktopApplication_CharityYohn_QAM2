@@ -156,7 +156,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
                     Customer customer = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId, division, country);
                     getAllCustomers.add(customer);
-                    System.out.println("Customer object populated in getAllCustomers list: " + customer);
+                    //System.out.println("Customer object populated in getAllCustomers list: " + customer);
 
                 }
             }
