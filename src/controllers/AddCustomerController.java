@@ -11,7 +11,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import utilities.DatabaseConnection;
 
 
@@ -203,38 +207,43 @@ public class AddCustomerController implements Initializable {
         String phone = custPhoneTxtField.getText();
         String country = countryComboBox.getValue();
         String division = divisionComboBox.getValue();
-        if (name.trim().isEmpty()) {
+
+        if(name.trim().isEmpty()||address.trim().isEmpty()||postalCode.trim().isEmpty()
+                ||phone.trim().isEmpty()||country == null||division == null){
             alert();
+        if (name.trim().isEmpty()) {
             allFieldsRequiredLabel.setVisible(true);
-            custNameTxtField.setStyle("-fx-border-color: rgb(192, 224, 240);");
+            custNameTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
         }
 
         if (address.trim().isEmpty()) {
-            alert();
             allFieldsRequiredLabel.setVisible(true);
+            addressTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
         }
         if (postalCode.trim().isEmpty()) {
-            alert();
             allFieldsRequiredLabel.setVisible(true);
+            postalCodeTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
         }
         if (phone.trim().isEmpty()) {
-            alert();
             allFieldsRequiredLabel.setVisible(true);
+            custPhoneTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
         }
-        if (country.isEmpty()) {
-            alert();
+        if (country == null) {
             allFieldsRequiredLabel.setVisible(true);
+            countryComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+
         }
-        if (division.isEmpty()) {
-            alert();
+        if (division == null) {
             allFieldsRequiredLabel.setVisible(true);
+            divisionComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+        }
         }
     }
 
     public void fieldLengthAlert(){
         if(custNameTxtField.getLength() > 50){nameLengthAlert.setVisible(true);}
         if(addressTxtField.getLength() > 100){addressLengthAlert.setVisible(true);}
-        if(postalCodeTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
+        if(postalCodeTxtField.getLength() > 50){postalLengthAlert.setVisible(true);}
         if(custPhoneTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
     }
 
@@ -255,8 +264,8 @@ public class AddCustomerController implements Initializable {
         (!addressTxtField.getText().isEmpty()) && (addressTxtField.getLength() < 100) &&
         (!postalCodeTxtField.getText().isEmpty()) && (postalCodeTxtField.getLength() < 50) &&
         (!custPhoneTxtField.getText().isEmpty()) && (custPhoneTxtField.getLength() < 50) &&
-        (!countryComboBox.getValue().isEmpty()) &&
-        (!divisionComboBox.getValue().isEmpty())) {
+        (countryComboBox.getValue() != null) &&
+        (divisionComboBox.getValue() != null)) {
 
             String customerName = custNameTxtField.getText();
             String customerAddress = addressTxtField.getText();
@@ -312,6 +321,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
+                custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(custNameTxtField.getLength() > 50) {
                     nameLengthAlert.setVisible(true);}
                 else if(custNameTxtField.getLength() < 50){nameLengthAlert.setVisible(false);}
@@ -324,6 +334,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
+                addressTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(addressTxtField.getLength() > 100) {
                     addressLengthAlert.setVisible(true);}
                 else if(addressTxtField.getLength() < 100){addressLengthAlert.setVisible(false);}
@@ -336,6 +347,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
+                custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(postalCodeTxtField.getLength() > 50) {
                     postalLengthAlert.setVisible(true);}
                 else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
@@ -348,9 +360,30 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
+                custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(custPhoneTxtField.getLength() > 50) {
                     phoneLengthAlert.setVisible(true);}
                 else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}
+            }
+        });
+
+        countryComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
+                countryComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+            }
+        });
+
+        divisionComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
+                divisionComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
             }
         });
 

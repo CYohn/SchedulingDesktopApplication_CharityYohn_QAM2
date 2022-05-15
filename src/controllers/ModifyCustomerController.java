@@ -173,7 +173,7 @@ public void searchCustomers(){
 
         case 1: customersToPopulate.clear();
             getAllCustomers.stream().filter(customer -> customer.getCustomerName().equalsIgnoreCase(userSearchValue))
-                    .forEach(customer -> customersToPopulate.addAll(customer));
+                    .forEach(c -> customersToPopulate.addAll(c));
             System.out.println ("Case 1 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue );
             System.out.println("Case 1 customersToPopulate List: " + customersToPopulate.toString());
             populateCustomerTable(customersToPopulate);
