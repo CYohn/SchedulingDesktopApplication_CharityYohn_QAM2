@@ -206,8 +206,9 @@ public class AddCustomerController implements Initializable {
         if (name.trim().isEmpty()) {
             alert();
             allFieldsRequiredLabel.setVisible(true);
+            custNameTxtField.setStyle("-fx-border-color: rgb(192, 224, 240);");
         }
-        custNameTxtField.setStyle("-fx-border-color: rgb(192, 224, 240);");
+
         if (address.trim().isEmpty()) {
             alert();
             allFieldsRequiredLabel.setVisible(true);
