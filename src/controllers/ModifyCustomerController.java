@@ -238,11 +238,11 @@ public void searchCustomers(){
 
 }
 
-    @FXML
-    void searchCustomersKeyPressed(KeyEvent event) { searchCustomers();}
+//    @FXML
+//    void searchCustomersKeyPressed(KeyEvent event) { searchCustomers();}
 
-    @FXML
-    void searchCustomersOnAction(ActionEvent event) { searchCustomers();}
+//    @FXML
+//    void searchCustomersOnAction(ActionEvent event) { searchCustomers();}
 
     @FXML
     void searchCustomerstxtChanged(InputMethodEvent event) { searchCustomers();}
@@ -263,11 +263,11 @@ public void searchCustomers(){
         searchSelectorMenu.setItems(searchOptions);
 
 
-        searchTxtField.focusedProperty().addListener((ov, oldV, newV) -> {
-            if(newV){
-                searchCustomers();
-            }
-        });
+//        searchTxtField.focusedProperty().addListener((ov, oldV, newV) -> {
+//            if(newV){
+//                searchCustomers();
+//            }
+//        });
     }
 
 
