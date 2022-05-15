@@ -347,7 +347,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                postalCodeTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(postalCodeTxtField.getLength() > 50) {
                     postalLengthAlert.setVisible(true);}
                 else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
@@ -360,7 +360,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                custPhoneTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(custPhoneTxtField.getLength() > 50) {
                     phoneLengthAlert.setVisible(true);}
                 else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}

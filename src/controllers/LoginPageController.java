@@ -111,10 +111,18 @@ public class LoginPageController implements Initializable {
         System.out.println("User entered password in validateUser():" + password);
         String dbPassword = getUserPassword(userNameField.getText());
         System.out.println("dbPassword from validateUser()" + dbPassword);
+
+        if (dbPassword == null) {
+            System.out.println("validateUser() results returns null DB result");
+            incorrectInfoLabel.setVisible(true);
+            return false;}
+
         if (dbPassword.equals(password)) {
             System.out.println("validateUser() results returns true");
             return true;
-        } else {
+        }
+
+        else {
             incorrectInfoLabel.setVisible(true);
             System.out.println("validateUser() results returns false");
             return false;
