@@ -83,6 +83,9 @@ public class AddCustomerController implements Initializable {
     @FXML
     private Label postalLengthAlert;
 
+    @FXML
+    private Label allFieldsRequiredLabel;
+
 
     /**
      * Method enables and populates the Divisions ComboBox. First the method uses the user's input from the country combobox
@@ -193,19 +196,38 @@ public class AddCustomerController implements Initializable {
         lengthAlert.showAndWait();
     }
 
-    public void emptyFieldAlert(){
+    public void emptyFieldAlert() {
         String name = custNameTxtField.getText();
         String address = addressTxtField.getText();
         String postalCode = postalCodeTxtField.getText();
         String phone = custPhoneTxtField.getText();
         String country = countryComboBox.getValue();
         String division = divisionComboBox.getValue();
-        if(name.trim().isEmpty()){alert();}
-        if(address.trim().isEmpty()){alert();}
-        if(postalCode.trim().isEmpty()){alert();}
-        if(phone.trim().isEmpty()){alert();}
-        if(country.isEmpty()){alert();}
-        if(division.isEmpty()){alert();}
+        if (name.trim().isEmpty()) {
+            alert();
+            allFieldsRequiredLabel.setVisible(true);
+        }
+        custNameTxtField.setStyle("-fx-border-color: rgb(192, 224, 240);");
+        if (address.trim().isEmpty()) {
+            alert();
+            allFieldsRequiredLabel.setVisible(true);
+        }
+        if (postalCode.trim().isEmpty()) {
+            alert();
+            allFieldsRequiredLabel.setVisible(true);
+        }
+        if (phone.trim().isEmpty()) {
+            alert();
+            allFieldsRequiredLabel.setVisible(true);
+        }
+        if (country.isEmpty()) {
+            alert();
+            allFieldsRequiredLabel.setVisible(true);
+        }
+        if (division.isEmpty()) {
+            alert();
+            allFieldsRequiredLabel.setVisible(true);
+        }
     }
 
     public void fieldLengthAlert(){
@@ -220,6 +242,7 @@ public class AddCustomerController implements Initializable {
         nameLengthAlert.setVisible(false);
         phoneLengthAlert.setVisible(false);
         postalLengthAlert.setVisible(false);
+        allFieldsRequiredLabel.setVisible(false);
     }
 
     @FXML
@@ -287,6 +310,7 @@ public class AddCustomerController implements Initializable {
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
                 if(custNameTxtField.getLength() > 50) {
                     nameLengthAlert.setVisible(true);}
                 else if(custNameTxtField.getLength() < 50){nameLengthAlert.setVisible(false);}
@@ -298,6 +322,7 @@ public class AddCustomerController implements Initializable {
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
                 if(addressTxtField.getLength() > 100) {
                     addressLengthAlert.setVisible(true);}
                 else if(addressTxtField.getLength() < 100){addressLengthAlert.setVisible(false);}
@@ -309,6 +334,7 @@ public class AddCustomerController implements Initializable {
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
                 if(postalCodeTxtField.getLength() > 50) {
                     postalLengthAlert.setVisible(true);}
                 else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
@@ -320,6 +346,7 @@ public class AddCustomerController implements Initializable {
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
                 if(custPhoneTxtField.getLength() > 50) {
                     phoneLengthAlert.setVisible(true);}
                 else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}
