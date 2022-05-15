@@ -10,6 +10,7 @@ import utilities.DatabaseConnection;
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
@@ -67,24 +68,11 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
                 System.out.println("Customer to send to the DB: " + customer);
 
-//                String insertCountryIntoDB = "SELECT FROM countries VALUES (Country_ID) WHERE Country = " + country;
-//                String insertDivisionIntoDB ="SELECT FROM first_level_divisions WHERE Division_ID = " + division;
 
                 String insertCustomerIntoDB = "INSERT INTO client_schedule.customers (" +
                         "Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
                         "VALUES(?,?,?,?,?);";
 
-//                PreparedStatement countryPreparesStatement = DatabaseConnection.getConnection().prepareStatement(insertCountryIntoDB, Statement.RETURN_GENERATED_KEYS);
-//                countryPreparesStatement.executeQuery();
-//                ResultSet countryResult = countryPreparesStatement.getGeneratedKeys();
-//                countryResult.next();
-//                int countryID = countryResult.getInt(1);
-//
-//                PreparedStatement divisionPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertDivisionIntoDB, Statement.RETURN_GENERATED_KEYS);
-//                divisionPreparedStatement.executeQuery();
-//                ResultSet divisionResult = divisionPreparedStatement.getGeneratedKeys();
-//                divisionResult.next();
-//                int divisionId = divisionResult.getInt(1);
 
                 PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
 
@@ -134,30 +122,29 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                     int customerId = allCustomersResults.getInt("Customer_ID");
                     //System.out.println("allCustomersResults customerId: " + customerId);
 
-                    String customerName = allCustomersResults.getString("Customer_Name");
+                    String customerName = allCustomersResults.getString("Customer_Name").toLowerCase(Locale.ROOT);
                     //System.out.println("allCustomersResults customerName: " + customerName);
 
-                    String customerAddress = allCustomersResults.getString("Address");
+                    String customerAddress = allCustomersResults.getString("Address").toLowerCase(Locale.ROOT);
                     //System.out.println("allCustomersResults customerAddress: " + customerAddress);
 
-                    String customerPostalCode = allCustomersResults.getString("Postal_Code");
+                    String customerPostalCode = allCustomersResults.getString("Postal_Code").toLowerCase(Locale.ROOT);
                     //System.out.println("allCustomersResults customerPostalCode: " + customerPostalCode);
 
-                    String customerPhone = allCustomersResults.getString("Phone");
+                    String customerPhone = allCustomersResults.getString("Phone").toLowerCase(Locale.ROOT);
                     //System.out.println("allCustomersResults customerPhone: " + customerPhone);
 
                     int customerDivisionId = allCustomersResults.getInt("Division_ID");
                     //System.out.println("allCustomersResults customerDivisionId: " + customerDivisionId);
 
-                    String division = allCustomersResults.getString("Division");
+                    String division = allCustomersResults.getString("Division").toLowerCase(Locale.ROOT);
 
-                    String country = allCustomersResults.getString("Country");
+                    String country = allCustomersResults.getString("Country").toLowerCase(Locale.ROOT);
                     //System.out.println("allCustomersResults country: " + country);
 
                     Customer customer = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId, division, country);
                     getAllCustomers.add(customer);
                     //System.out.println("Customer object populated in getAllCustomers list: " + customer);
-
                 }
             }
             else{System.out.println("ResultSet was null");}
