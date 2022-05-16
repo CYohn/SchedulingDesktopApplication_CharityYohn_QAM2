@@ -5,6 +5,7 @@ package Objects;
 public class Customer {
 
 
+    private String customerCountry;
     private int customerId;
     private String customerName;
     private String customerAddress;
@@ -27,7 +28,7 @@ public class Customer {
         this.country = country;
     }
 
-
+//Constructor to AddCustomer (no customer ID)
     public Customer(String customerName, String customerAddress, String customerPostalCode, String customerPhone, String country, int customerDivisionId) {
 
         this.customerName = customerName;
@@ -38,7 +39,16 @@ public class Customer {
         this.customerDivisionId = customerDivisionId;
     }
 
+    //constructor to update Customer (with customer ID)
+    public Customer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId){
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerAddress = customerAddress;
+        this.customerPostalCode = customerPostalCode;
+        this.customerPhone = customerPhone;
+        this.customerDivisionId = customerDivisionId;
 
+    }
 
     public int getCustomerId() {
         return customerId;

@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import utilities.DatabaseConnection;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static implementationsDao.CustomersImplement.addCustomer;
 import static implementationsDao.CustomersImplement.getAllCustomers;
 import static java.lang.String.valueOf;
 
@@ -91,6 +93,24 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Button deleteCustButton;
 
+    //Form Alert Labels
+    @FXML
+    private Label addressLengthAlert;
+
+    @FXML
+    private Label nameLengthAlert;
+
+    @FXML
+    private Label phoneLengthAlert;
+
+    @FXML
+    private Label postalLengthAlert;
+
+    @FXML
+    private Label allFieldsRequiredLabel;
+
+
+
     public ModifyCustomerController() throws SQLException {
     }
 
@@ -117,23 +137,23 @@ public class ModifyCustomerController implements Initializable {
     }
 
     public void populateSelectedCustomer(Customer selectedCustomer){
-
-
+        //Get table values
          String selectedAddress = selectedCustomer.getCustomerAddress();
          Integer selectedCustId = selectedCustomer.getCustomerId();
          String selectedName = selectedCustomer.getCustomerName();
          String selectedPhone = selectedCustomer.getCustomerPhone();
          String selectedPostal = selectedCustomer.getCustomerPostalCode();
          String selectedState = selectedCustomer.getDivision();
-        String selectedCountry = selectedCustomer.getCountry();
+         String selectedCountry = selectedCustomer.getCountry();
 
+         //Set the form values to the selectedCustomer values
         custNameTxtField.setText(selectedName);
         custIdLabel.setText(valueOf(selectedCustId));
         addressTxtField.setText(selectedAddress);
         custPhoneTxtField.setText(selectedPhone);
         postalCodeTxtField.setText(selectedPostal);
-
-        //TO DO: Set the state and country to match the customer's state and country
+        countryComboBox.setValue(selectedCountry);
+        stateComboBox.setValue(selectedState);
     }
     /**
      * Method enables and populates the Divisions ComboBox. First the method uses the user's input from the country combobox
@@ -184,17 +204,155 @@ public class ModifyCustomerController implements Initializable {
             e.printStackTrace();
         }
     }
+    @FXML
+    void onSave(MouseEvent event) throws IOException, SQLException {
+        fieldLengthAlert();
+        emptyFieldAlert();
 
+        if((!custNameTxtField.getText().isEmpty()) && (custNameTxtField.getLength() < 50) &&
+                (!addressTxtField.getText().isEmpty()) && (addressTxtField.getLength() < 100) &&
+                (!postalCodeTxtField.getText().isEmpty()) && (postalCodeTxtField.getLength() < 50) &&
+                (!custPhoneTxtField.getText().isEmpty()) && (custPhoneTxtField.getLength() < 50) &&
+                (countryComboBox.getValue() != null) &&
+                (stateComboBox.getValue() != null)) {
+
+            String customerName = custNameTxtField.getText();
+            String customerAddress = addressTxtField.getText();
+            String customerPostalCode = postalCodeTxtField.getText();
+            String customerPhone = custPhoneTxtField.getText();
+            String customerCountry = countryComboBox.getValue();
+            int customerDivisionId = getDivisionID();
+            int customerId = (Integer)(allCustomersTable.getSelectionModel().getSelectedItem().getCustomerId());
+
+
+            //Customer customerToUpdate = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            //updateCustomer(int customerId, String name, String address, String postalCode, String phone, int division)
+            CustomersImplement.updateCustomer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+
+            System.out.println("Printing out customers to save list (from the customers controller onSave method):");
+            addCustomer(CustomersImplement.customersToSave);
+            getAddCustomerResponse();
+
+            saveButton.setDisable(true);
+            getAllCustomers();
+            populateCustomerTable(getAllCustomers);
+        }
+    }
+
+    public void getAddCustomerResponse() throws SQLException {
+        int databaseResponseToAddCustomer = addCustomer(CustomersImplement.customersToSave);
+        System.out.println("databaseResponseToAddCustomer: " + databaseResponseToAddCustomer);
+        if (databaseResponseToAddCustomer == 1){
+            saveSuccessfulLabel.setVisible(true);
+            System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
+
+        }
+        else {
+            saveErrorLabel.setVisible(true);
+            System.out.println("Customer not added");}
+
+    }
+
+    public int getDivisionID() {
+        PreparedStatement findDivisionIDPreparedStatement;
+        String selectedDivision = stateComboBox.getValue(); //Get the User's division selection
+        int customerDivisionID = 0;
+
+        try {
+            //Find the associated division ID based on the selected division name
+            String FindDivisionIDSearchStatement = ("SELECT Division_ID from first_level_divisions WHERE Division = '" + selectedDivision + "'");
+            findDivisionIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindDivisionIDSearchStatement);
+            ResultSet divisionIDResult = findDivisionIDPreparedStatement.executeQuery(FindDivisionIDSearchStatement);
+
+
+            while (divisionIDResult.next()) {
+                customerDivisionID = divisionIDResult.getInt("Division_ID");
+                System.out.println("Division ID was found in the getDivisionID method: " + customerDivisionID);
+                return customerDivisionID;
+            }
+        } catch (SQLException throwables) {
+            System.out.println("getDivisionID method in the AddCustomerController encountered an error: ");
+            throwables.getCause();
+            throwables.getMessage();
+            throwables.printStackTrace();
+        }
+        return customerDivisionID;
+    }
+
+    public void fieldLengthAlert(){
+        if(custNameTxtField.getLength() > 50){nameLengthAlert.setVisible(true);}
+        if(addressTxtField.getLength() > 100){addressLengthAlert.setVisible(true);}
+        if(postalCodeTxtField.getLength() > 50){postalLengthAlert.setVisible(true);}
+        if(custPhoneTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
+    }
+
+    public void hideLengthAlerts(){
+        addressLengthAlert.setVisible(false);
+        nameLengthAlert.setVisible(false);
+        phoneLengthAlert.setVisible(false);
+        postalLengthAlert.setVisible(false);
+        allFieldsRequiredLabel.setVisible(false);
+    }
+
+    public void emptyFieldAlert() {
+        String name = custNameTxtField.getText();
+        String address = addressTxtField.getText();
+        String postalCode = postalCodeTxtField.getText();
+        String phone = custPhoneTxtField.getText();
+        String country = countryComboBox.getValue();
+        String division = stateComboBox.getValue();
+
+        if(name.trim().isEmpty()||address.trim().isEmpty()||postalCode.trim().isEmpty()
+                ||phone.trim().isEmpty()||country == null||division == null){
+            alert();
+            if (name.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                custNameTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+
+            if (address.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                addressTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+            if (postalCode.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                postalCodeTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+            if (phone.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                custPhoneTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+            if (country == null) {
+                allFieldsRequiredLabel.setVisible(true);
+                countryComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+
+            }
+            if (division == null) {
+                allFieldsRequiredLabel.setVisible(true);
+                stateComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+            }
+        }
+    }
+    public void alert(){
+        Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
+        infoRequiredAlert.setTitle("Information Required");
+        infoRequiredAlert.setHeaderText("Please enter all information.  Thank you! ");
+        infoRequiredAlert.setContentText("Please enter missing information");
+        infoRequiredAlert.showAndWait();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ModifyCustomerController initialized");
         customerRemovedLabel.setVisible(false);
+        hideLengthAlerts();
+
         try {
             getAllCustomers();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         populateCustomerTable(getAllCustomers);
         System.out.println("All customers:  " + getAllCustomers);
         System.out.println("getAllCustomers list on initialize in ModifyCustomersController:  " + getAllCustomers);

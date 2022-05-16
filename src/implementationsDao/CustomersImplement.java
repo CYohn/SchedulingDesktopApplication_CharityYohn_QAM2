@@ -159,7 +159,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     }
 
 
-    public static int updateCustomer(int customerId, String name, String address, String postalCode, String phone, int division) throws SQLException {
+    public static int updateCustomer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) throws SQLException {
         String updateSql = "UPDATE customer SET Customer_Name = ?," +
                 "Address = ?, " +
                 "Postal_Code = ?, " +
@@ -167,11 +167,11 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                 "Division = ?, " +
                 "WHERE Customer_ID = " + customerId;
         customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(updateSql, connection);
-        customersImplementPreparedStatement.setString(1, name);
-        customersImplementPreparedStatement.setString(2, address);
-        customersImplementPreparedStatement.setString(3, postalCode);
-        customersImplementPreparedStatement.setString(4, phone);
-        customersImplementPreparedStatement.setInt(5, division);
+        customersImplementPreparedStatement.setString(1, customerName);
+        customersImplementPreparedStatement.setString(2, customerAddress);
+        customersImplementPreparedStatement.setString(3, customerPostalCode);
+        customersImplementPreparedStatement.setString(4, customerPhone);
+        customersImplementPreparedStatement.setInt(5, customerDivisionId);
         int dbResponse = customersImplementPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
     }
@@ -184,6 +184,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         int dbResponse = customersImplementPreparedStatement.executeUpdate(); // returns the number of rows affected
         return dbResponse;
     }
+
 
 
 //    public static String getDivisionName(ObservableList<Customer> getAllCustomers) throws SQLException {

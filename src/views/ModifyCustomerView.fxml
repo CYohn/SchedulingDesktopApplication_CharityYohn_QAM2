@@ -100,7 +100,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Save" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onMouseClicked="#onSave" prefHeight="25.0" prefWidth="90.0" text="Save" />
                         <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
@@ -135,5 +135,14 @@
         </GridPane>
         <Label layoutX="910.0" layoutY="423.0" text="Customer ID: " />
         <Label fx:id="custIdLabel" layoutX="993.0" layoutY="423.0" text="Label" />
+      <Label fx:id="nameLengthAlert" layoutX="192.0" layoutY="423.0" text="Name must be less than 50 characters" textFill="#970101" />
+      <Label fx:id="addressLengthAlert" layoutX="174.0" layoutY="533.0" text="Address must be less than 100 characters" textFill="#970101" />
+      <Label fx:id="postalLengthAlert" layoutX="162.0" layoutY="567.0" text="Postal code must be less than 50 characters" textFill="#970101" />
+      <Label fx:id="phoneLengthAlert" layoutX="192.0" layoutY="597.0" text="Phone must be less than 50 characters" textFill="#970101" />
+      <Label fx:id="allFieldsRequiredLabel" layoutX="499.0" layoutY="753.0" text="Please Complete All Fields" textFill="#b90e05">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
