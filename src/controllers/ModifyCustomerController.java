@@ -1,6 +1,7 @@
 package controllers;
 
 import Objects.Customer;
+import implementationsDao.CountriesImplement;
 import implementationsDao.CustomersImplement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,9 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import utilities.DatabaseConnection;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Locale;
@@ -25,12 +30,7 @@ import static java.lang.String.valueOf;
 
 public class ModifyCustomerController implements Initializable {
 
-    ObservableList<String>searchOptions = FXCollections.observableArrayList(
-            "ID Number", "Name", "Address", "Country", "State", "Postal Code", "Phone", "Show All Customers"
-    );
-
-    public static ObservableList<Customer>customersToPopulate = FXCollections.observableArrayList();
-
+    ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
 
     @FXML
     private TableView<Customer> allCustomersTable;
@@ -69,8 +69,7 @@ public class ModifyCustomerController implements Initializable {
     private ComboBox<String> stateComboBox;
     @FXML
     private ComboBox<String> countryComboBox;
-    @FXML
-    private ComboBox<String> searchSelectorMenu;
+
 
     //Form labels
     @FXML
@@ -80,26 +79,25 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Label custIdLabel;
     @FXML
-    private GridPane applicationFormLeft; //Grid pane containing the application form
+    private Label saveErrorLabel;
+    @FXML
+    private Label saveSuccessfulLabel;
 
     //Form buttons
     @FXML
     private Button saveButton;
     @FXML
     private Button clearButton;
-
-    //Variables
     @FXML
     private Button deleteCustButton;
 
+    public ModifyCustomerController() throws SQLException {
+    }
 
 
+    public void populateCustomerTable(ObservableList<Customer>getAllCustomers) {
 
-    public void populateCustomerTable(ObservableList<Customer>customersToPopulate) {
-
-            //CustomersImplement.getAllCustomers();
-
-            allCustomersTable.setItems(customersToPopulate);
+            allCustomersTable.setItems(getAllCustomers);
 
             custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -108,141 +106,108 @@ public class ModifyCustomerController implements Initializable {
             custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
             custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
             custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
-
-
     }
-
-    public void initialTablePopulation() throws SQLException {
-        CustomersImplement.getAllCustomers();
-        customersToPopulate = getAllCustomers;
-        populateCustomerTable(customersToPopulate);
-    }
-
-
-public void searchCustomers() throws SQLException {
-
-    String userSearchValue = searchTxtField.getText().toLowerCase(Locale.ROOT);
-    int userSearchType = searchSelectorMenu.getSelectionModel().getSelectedIndex();
-    getAllCustomers();
-    System.out.println("userSearchValue before switch statement: " + userSearchValue);
-    System.out.println("Customers to populate before the switch statement: " + customersToPopulate);
-    System.out.println("getAllCustomersList before the switch statement:  " + getAllCustomers);
-
-
-    switch (userSearchType){
-        case 0: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> (valueOf(customer.getCustomerId()).contains(userSearchValue)))
-                    .forEach(c -> customersToPopulate.addAll(c));
-            System.out.println ("Case 0 Search Index: " + userSearchType + "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 0 customersToPopulate List: " + customersToPopulate);
-            break;
-
-        case 1: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> customer.getCustomerName().contains(userSearchValue))
-                    .forEach(c -> customersToPopulate.addAll(c));
-            System.out.println ("Case 1 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue );
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 1 customersToPopulate List: " + customersToPopulate);
-            break;
-
-        case 2: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> customer.getCustomerAddress().equalsIgnoreCase(userSearchValue))
-                    .forEach(c -> customersToPopulate.add(c));
-            System.out.println ("Case 2 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 2 customersToPopulate List: " + customersToPopulate);
-            break;
-
-        case 3: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> customer.getCountry().equalsIgnoreCase(userSearchValue))
-                    .forEach(c -> customersToPopulate.add(c));
-            System.out.println ("Case 3 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 3 customersToPopulate List: " + customersToPopulate);
-            break;
-
-        case 4: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> customer.getDivision().equalsIgnoreCase(userSearchValue))
-                    .forEach(c -> customersToPopulate.add(c));
-            System.out.println (" Case 4 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 4 customersToPopulate List: " + customersToPopulate.toString());
-            break;
-
-        case 5: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> customer.getCustomerPostalCode().equalsIgnoreCase(userSearchValue))
-                    .forEach(c -> customersToPopulate.add(c));
-            System.out.println ("Case 5 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 5 customersToPopulate List: " + customersToPopulate.toString());
-            break;
-
-        case 6: customersToPopulate.clear();
-            getAllCustomers.stream().filter(customer -> customer.getCustomerPhone().equalsIgnoreCase(userSearchValue))
-                    .forEach(c -> customersToPopulate.add(c));
-            System.out.println ("Case 6 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 6 customersToPopulate List: " + customersToPopulate);
-            break;
-
-        case 7: customersToPopulate.clear();
-            customersToPopulate = getAllCustomers;
-            System.out.println ("Case 7 Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            populateCustomerTable(customersToPopulate);
-            System.out.println("Case 6 customersToPopulate List: " + customersToPopulate);
-            break;
-
-        default: customersToPopulate = getAllCustomers;
-            System.out.println ("Default Search Index: " + userSearchType+ "userSearchValue: " + userSearchValue);
-            break;
-    }
-
-}
-
-//    @FXML
-//    void searchCustomersKeyPressed(KeyEvent event) { searchCustomers();}
-
-//    @FXML
-//    void searchCustomersOnAction(ActionEvent event) { searchCustomers();}
 
     @FXML
-    void onActionSearchCustomers(ActionEvent event) throws SQLException {
-        searchCustomers();
+    void onTableClickGetSelectedCustomer(MouseEvent event) {
+        if(!allCustomersTable.getSelectionModel().isEmpty()){
+            Customer selectedCustomer = allCustomersTable.getSelectionModel().getSelectedItem();
+            populateSelectedCustomer(selectedCustomer);
+        }
     }
 
+    public void populateSelectedCustomer(Customer selectedCustomer){
 
 
+         String selectedAddress = selectedCustomer.getCustomerAddress();
+         Integer selectedCustId = selectedCustomer.getCustomerId();
+         String selectedName = selectedCustomer.getCustomerName();
+         String selectedPhone = selectedCustomer.getCustomerPhone();
+         String selectedPostal = selectedCustomer.getCustomerPostalCode();
+         String selectedState = selectedCustomer.getDivision();
+        String selectedCountry = selectedCustomer.getCountry();
+
+        custNameTxtField.setText(selectedName);
+        custIdLabel.setText(valueOf(selectedCustId));
+        addressTxtField.setText(selectedAddress);
+        custPhoneTxtField.setText(selectedPhone);
+        postalCodeTxtField.setText(selectedPostal);
+
+        //TO DO: Set the state and country to match the customer's state and country
+    }
+    /**
+     * Method enables and populates the Divisions ComboBox. First the method uses the user's input from the country combobox
+     * to find the associated country ID. The method then uses the countryID to cross reference the associated divisions stored
+     * in the database. Finally, the method stores the divisions in an Observable list and populates the combo box with the
+     * appropriate divisions.
+     * @param event User selects a country
+     * @throws SQLException Provides information about database access errors and possibly other errors
+     * for more information about SQLException see https://docs.oracle.com/javase/7/docs/api/java/sql/SQLException.html
+     */
+    @FXML
+    void populateDivisionComboBox(ActionEvent event) throws SQLException {
+        System.out.println("Beginning Division ComboBox population");
+        stateComboBox.setDisable(false); //Enable the divisions ComboBox
+        PreparedStatement sqlFindCountryIDPreparedStatement;
+        PreparedStatement getDivisionsPreparedStatement;
+        String selectedCountry = countryComboBox.getValue(); //Get the User's country selection
+
+        ObservableList<String> divisionNames = FXCollections.observableArrayList(); //To store the divisions
+
+        try {
+            //Find the associated country ID based on the selected country
+            String FindCountryIDSearchStatement = ("SELECT Country_ID from countries WHERE Country = '" + selectedCountry + "'");
+            sqlFindCountryIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindCountryIDSearchStatement);
+            ResultSet countryIDResult = sqlFindCountryIDPreparedStatement.executeQuery(FindCountryIDSearchStatement);
+
+            while (countryIDResult.next()) {
+                int countryID = countryIDResult.getInt("Country_ID");
+                System.out.println("Country ID was found: " + countryID);
+
+                //Find the appropriate divisions based on the country ID found above
+                String sqlDivisionsQuery = ("SELECT Division FROM first_level_divisions WHERE Country_ID = " + countryID + " ORDER BY Division ASC");
+                getDivisionsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(sqlDivisionsQuery);
+                ResultSet divisionsResults = getDivisionsPreparedStatement.executeQuery(sqlDivisionsQuery);
+
+                while (divisionsResults.next()) {
+                    String division = divisionsResults.getString("Division");
+                    divisionNames.add(division); //Add divisions to the ObservableList
+                    stateComboBox.setItems(divisionNames); //Populate the ComboBox
+                }
+                System.out.println("Divisions successfully populated");
+            }
+
+        } catch (Exception e) {
+            System.out.println("SQLException thrown in populateDivisionNamesList() method in the AddCustomerController file");
+            e.getCause();
+            e.getMessage();
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ModifyCustomerController initialized");
         customerRemovedLabel.setVisible(false);
-        //customersToPopulate = getAllCustomers;
         try {
-            initialTablePopulation();
+            getAllCustomers();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        populateCustomerTable(customersToPopulate);
-
-
-        System.out.println("Search Box observable list:" + searchOptions);
-        searchSelectorMenu.setItems(searchOptions);
-
+        populateCustomerTable(getAllCustomers);
+        System.out.println("All customers:  " + getAllCustomers);
         System.out.println("getAllCustomers list on initialize in ModifyCustomersController:  " + getAllCustomers);
 
+        System.out.println("Printing the observable list of names from the AddCustomer controller: " + divisionIDResult);
+        countryComboBox.setItems(divisionIDResult);
+        stateComboBox.setDisable(true);
+        saveErrorLabel.setVisible(false);
+        saveSuccessfulLabel.setVisible(false);
+        saveButton.setDisable(false);
 
-        searchTxtField.focusedProperty().addListener((ov, oldV, newV) -> {
-            if(newV){
-                try {
-                    searchCustomers();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
+
     }
 
 

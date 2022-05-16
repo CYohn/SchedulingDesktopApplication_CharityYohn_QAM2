@@ -122,24 +122,24 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                     int customerId = allCustomersResults.getInt("Customer_ID");
                     //System.out.println("allCustomersResults customerId: " + customerId);
 
-                    String customerName = allCustomersResults.getString("Customer_Name").toLowerCase(Locale.ROOT);
+                    String customerName = allCustomersResults.getString("Customer_Name");
                     //System.out.println("allCustomersResults customerName: " + customerName);
 
-                    String customerAddress = allCustomersResults.getString("Address").toLowerCase(Locale.ROOT);
+                    String customerAddress = allCustomersResults.getString("Address");
                     //System.out.println("allCustomersResults customerAddress: " + customerAddress);
 
-                    String customerPostalCode = allCustomersResults.getString("Postal_Code").toLowerCase(Locale.ROOT);
+                    String customerPostalCode = allCustomersResults.getString("Postal_Code");
                     //System.out.println("allCustomersResults customerPostalCode: " + customerPostalCode);
 
-                    String customerPhone = allCustomersResults.getString("Phone").toLowerCase(Locale.ROOT);
+                    String customerPhone = allCustomersResults.getString("Phone");
                     //System.out.println("allCustomersResults customerPhone: " + customerPhone);
 
                     int customerDivisionId = allCustomersResults.getInt("Division_ID");
                     //System.out.println("allCustomersResults customerDivisionId: " + customerDivisionId);
 
-                    String division = allCustomersResults.getString("Division").toLowerCase(Locale.ROOT);
+                    String division = allCustomersResults.getString("Division");
 
-                    String country = allCustomersResults.getString("Country").toLowerCase(Locale.ROOT);
+                    String country = allCustomersResults.getString("Country");
                     //System.out.println("allCustomersResults country: " + country);
 
                     Customer customer = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId, division, country);
