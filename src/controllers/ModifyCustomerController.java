@@ -32,12 +32,14 @@ import static java.lang.String.valueOf;
 
 public class ModifyCustomerController implements Initializable {
 
+    //TODO deleteCustomer() - Going to work on appointments first
+
     ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
 
     @FXML
     private TableView<Customer> allCustomersTable;
 
-    Customer customerToUpdateHolder = null;
+    Customer customerToUpdateHolder = null; // To pass customer object from onSave() to getDBResponseResponse()
 
     //Table Columns
 
@@ -248,7 +250,6 @@ public class ModifyCustomerController implements Initializable {
     }
 
     public void getDBResponseResponse() throws SQLException {
-        Customer customerToUpdate = null;
         int databaseResponseToUpdateCustomer = CustomersImplement.updateCustomer(customerToUpdateHolder);
         System.out.println("databaseResponseToUpdateCustomer: " + databaseResponseToUpdateCustomer);
         if (databaseResponseToUpdateCustomer == 1){
