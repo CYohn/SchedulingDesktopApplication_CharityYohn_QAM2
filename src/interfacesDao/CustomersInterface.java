@@ -16,7 +16,7 @@ public interface CustomersInterface {
     }
 
 
-    public static int updateCustomer(String name, String address, String postalCode, String phone, int division) {
+    public static int updateCustomer(Customer customerToUpdate) {
         return 0;
     }
 

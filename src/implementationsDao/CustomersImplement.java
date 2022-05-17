@@ -2,16 +2,12 @@ package implementationsDao;
 
 
 import Objects.Customer;
-import Objects.FirstLevelDivision;
 import interfacesDao.CustomersInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.util.Locale;
-import java.util.Objects;
 
 public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
 
@@ -32,7 +28,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
 
     static Connection connection = DatabaseConnection.getConnection();
-    static PreparedStatement customersImplementPreparedStatement;
+    static PreparedStatement updateCustomersPreparedStatement;
 
 
     static {
@@ -41,7 +37,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                     "FROM client_schedule.customers, first_level_divisions, countries " +
                     "WHERE customers.Division_ID = first_level_divisions.Division_ID " +
                     "AND first_level_divisions.Country_ID = countries.Country_ID";
-            customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(allCustomersQuery, connection);
+            updateCustomersPreparedStatement = DatabaseConnection.makePreparedStatement(allCustomersQuery, connection);
             System.out.println("customersImplementPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("customerImplementPreparedStatement in the file CustomersImplement encountered an error");
@@ -159,32 +155,45 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     }
 
 
-    public static int updateCustomer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) throws SQLException {
-        String updateSql = "UPDATE customer SET Customer_Name = ?," +
+    public static int updateCustomer(Customer customerToUpdate) throws SQLException{
+            //(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) throws SQLException {
+
+        int customerId = customerToUpdate.getCustomerId();
+        String customerName = customerToUpdate.getCustomerName();
+        String customerAddress = customerToUpdate.getCustomerAddress();
+        String customerPostalCode = customerToUpdate.getCustomerPostalCode();
+        String customerPhone = customerToUpdate.getCustomerPhone();
+        int customerDivisionId= customerToUpdate.getCustomerDivisionId();
+
+        String updateSql = "UPDATE  client_schedule.customers SET " +
+                "Customer_Name = ?," +
                 "Address = ?, " +
                 "Postal_Code = ?, " +
                 "Phone = ?, " +
-                "Division = ?, " +
+                "Division_ID = ? " +
                 "WHERE Customer_ID = " + customerId;
-        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(updateSql, connection);
-        customersImplementPreparedStatement.setString(1, customerName);
-        customersImplementPreparedStatement.setString(2, customerAddress);
-        customersImplementPreparedStatement.setString(3, customerPostalCode);
-        customersImplementPreparedStatement.setString(4, customerPhone);
-        customersImplementPreparedStatement.setInt(5, customerDivisionId);
-        int dbResponse = customersImplementPreparedStatement.executeUpdate(); //returns number of rows affected
+        PreparedStatement updateCustomersPreparedStatement = DatabaseConnection.getConnection().prepareStatement(updateSql);
+        
+        updateCustomersPreparedStatement.setString(1, customerName);
+        updateCustomersPreparedStatement.setString(2, customerAddress);
+        updateCustomersPreparedStatement.setString(3, customerPostalCode);
+        updateCustomersPreparedStatement.setString(4, customerPhone);
+        updateCustomersPreparedStatement.setInt(5, customerDivisionId);
+        int dbResponse = updateCustomersPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
     }
 
 
     public static int deleteCustomer(int customerId) throws SQLException {
         String deleteSql = "DELETE FROM customers WHERE Customer_ID = ?";
-        customersImplementPreparedStatement = DatabaseConnection.makePreparedStatement(deleteSql, connection);
-        customersImplementPreparedStatement.setInt(1, customerId);
-        int dbResponse = customersImplementPreparedStatement.executeUpdate(); // returns the number of rows affected
+        PreparedStatement deleteCustomersPreparedStatement = DatabaseConnection.makePreparedStatement(deleteSql, connection);
+        deleteCustomersPreparedStatement.setInt(1, customerId);
+        int dbResponse = deleteCustomersPreparedStatement.executeUpdate(); // returns the number of rows affected
         return dbResponse;
     }
 
+    public static void updateCustomer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
+    }
 
 
 //    public static String getDivisionName(ObservableList<Customer> getAllCustomers) throws SQLException {

@@ -37,6 +37,8 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private TableView<Customer> allCustomersTable;
 
+    Customer customerToUpdateHolder = null;
+
     //Table Columns
 
     @FXML
@@ -217,21 +219,27 @@ public class ModifyCustomerController implements Initializable {
                 (stateComboBox.getValue() != null)) {
 
             String customerName = custNameTxtField.getText();
+            System.out.println(customerName);
             String customerAddress = addressTxtField.getText();
+            System.out.println(customerAddress);
             String customerPostalCode = postalCodeTxtField.getText();
+            System.out.println(customerPostalCode);
             String customerPhone = custPhoneTxtField.getText();
+            System.out.println(customerPhone);
             String customerCountry = countryComboBox.getValue();
+            System.out.println(customerCountry);
             int customerDivisionId = getDivisionID();
+            System.out.println(customerDivisionId);
             int customerId = (Integer)(allCustomersTable.getSelectionModel().getSelectedItem().getCustomerId());
+            System.out.println(customerId);
 
 
-            //Customer customerToUpdate = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            Customer customerToUpdate = new Customer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            customerToUpdateHolder = customerToUpdate;
             //updateCustomer(int customerId, String name, String address, String postalCode, String phone, int division)
-            CustomersImplement.updateCustomer(customerId, customerName, customerAddress, customerPostalCode, customerPhone, customerDivisionId);
+            CustomersImplement.updateCustomer(customerToUpdate);
 
-            System.out.println("Printing out customers to save list (from the customers controller onSave method):");
-            addCustomer(CustomersImplement.customersToSave);
-            getAddCustomerResponse();
+            getDBResponseResponse();
 
             saveButton.setDisable(true);
             getAllCustomers();
@@ -239,12 +247,13 @@ public class ModifyCustomerController implements Initializable {
         }
     }
 
-    public void getAddCustomerResponse() throws SQLException {
-        int databaseResponseToAddCustomer = addCustomer(CustomersImplement.customersToSave);
-        System.out.println("databaseResponseToAddCustomer: " + databaseResponseToAddCustomer);
-        if (databaseResponseToAddCustomer == 1){
+    public void getDBResponseResponse() throws SQLException {
+        Customer customerToUpdate = null;
+        int databaseResponseToUpdateCustomer = CustomersImplement.updateCustomer(customerToUpdateHolder);
+        System.out.println("databaseResponseToUpdateCustomer: " + databaseResponseToUpdateCustomer);
+        if (databaseResponseToUpdateCustomer == 1){
             saveSuccessfulLabel.setVisible(true);
-            System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
+            System.out.println("Database response to adding the customer: " + databaseResponseToUpdateCustomer);
 
         }
         else {
