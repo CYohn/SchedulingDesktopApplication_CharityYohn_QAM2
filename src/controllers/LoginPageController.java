@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class LoginPageController implements Initializable {
 
@@ -161,11 +162,12 @@ public class LoginPageController implements Initializable {
 //        String displayLanguage = location.getLanguage(); //For testing French
 
         Locale location = Locale.getDefault(); //For using current location
-        String displayLanguage = location.getDisplayLanguage(); //For using current location
+        String displayLanguage = System.getProperty("user.language"); //For using the language setting from the user's machine
 
         System.out.println(location);
-        System.out.println(displayLanguage);
-        userLocationLabel.setText(String.valueOf(location));
+        System.out.println("Language from System.getProperty():  " + displayLanguage);
+        String timeZone = TimeZone.getDefault().getID();
+        userLocationLabel.setText(String.valueOf(timeZone));
 
         this.languageResource = ResourceBundle.getBundle("utilities/Language", location);
 
