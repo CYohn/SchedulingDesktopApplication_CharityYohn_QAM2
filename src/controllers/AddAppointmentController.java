@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-// Idea for future revisions: If the User ID is the same as the person who loggs in, assign the user ID based on the login
+// Idea for future revisions: If the User ID is the same as the person who logs in, assign the user ID based on the login
 
 public class AddAppointmentController implements Initializable {
 

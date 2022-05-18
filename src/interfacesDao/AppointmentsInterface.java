@@ -18,11 +18,12 @@ public interface AppointmentsInterface {
         return allAppointments;
     }
 
+    public static int addAppointment(Appointment appointmentToAdd){return 0;};
 
     public void updateAppointment();
 
     public void deleteAppointment();
 
-    public void addAppointment();
+
 
 }
