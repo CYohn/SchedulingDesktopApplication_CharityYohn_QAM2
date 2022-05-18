@@ -1,5 +1,6 @@
 package controllers;
 
+import Objects.Customer;
 import implementationsDao.ContactsImplement;
 import implementationsDao.UsersImplement;
 import javafx.collections.FXCollections;
@@ -7,6 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -14,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import static implementationsDao.ContactsImplement.getAllContactNames;
+import static implementationsDao.CustomersImplement.getAllCustomers;
 import static implementationsDao.UsersImplement.getAllUserNames;
 import static implementationsDao.UsersImplement.userNames;
 
@@ -22,9 +26,11 @@ import static implementationsDao.UsersImplement.userNames;
 public class AddAppointmentController implements Initializable {
 
     private ObservableList<String> contactNames = ContactsImplement.contactNames;
-    private ObservableList<String> UserNames = UsersImplement.userNames;
+    private ObservableList<String> userNames = UsersImplement.userNames;
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
+
+    Customer selectedCustomer;
 
     @FXML
     private GridPane applicationFormLeft;
@@ -38,17 +44,20 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> contactComboBox;
 
-    @FXML
-    private TableColumn<?, ?> customerId;
+
 
     @FXML
-    private TableColumn<?, ?> customerId1;
+    private TableView<Customer> customerTable;
 
     @FXML
-    private TableColumn<?, ?> customerName;
+    private TableColumn<Customer, Integer> customerIdColumn;
 
     @FXML
-    private TableView<?> customerTable;
+    private TableColumn<Customer, String> customerNameColumn;
+
+    @FXML
+    private TableColumn<Customer, String> customerPhoneColumn;
+
 
     @FXML
     private DatePicker endDatePicker;
@@ -84,6 +93,23 @@ public class AddAppointmentController implements Initializable {
     private ComboBox<String> userComboBox;
 
 
+    public void populateCustomerTable(ObservableList<Customer>getAllCustomers) {
+
+        customerTable.setItems(getAllCustomers);
+
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+    }
+
+    @FXML
+    Customer onTableClickGetSelectedCustomer(MouseEvent event) {
+        if(!customerTable.getSelectionModel().isEmpty()){
+            selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+        }
+        return selectedCustomer;
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -101,9 +127,19 @@ public class AddAppointmentController implements Initializable {
             e.getCause();
             e.printStackTrace();
         }
+
+        try {
+            getAllCustomers();
+        } catch (SQLException e) {
+            e.getMessage();
+            e.getCause();
+            e.printStackTrace();
+        }
+
         contactComboBox.setItems(contactNames.sorted());
         typeComboBox.setItems(appointmentTypes);
         userComboBox.setItems(userNames);
+        populateCustomerTable(getAllCustomers);
 
     }
 }

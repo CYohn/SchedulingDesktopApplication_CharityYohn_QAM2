@@ -138,9 +138,9 @@
                     <children>
                         <TableView fx:id="customerTable" layoutX="6.0" layoutY="6.0" prefHeight="239.0" prefWidth="281.0">
                             <columns>
-                                <TableColumn fx:id="customerName" prefWidth="104.0" text="Name" />
-                                <TableColumn fx:id="customerId" prefWidth="91.0" text="Phone" />
-                                <TableColumn fx:id="customerId1" prefWidth="85.0" text="ID" />
+                                <TableColumn fx:id="customerNameColumn" prefWidth="104.0" text="Name" />
+                                <TableColumn fx:id="customerPhoneColumn" prefWidth="91.0" text="Phone" />
+                                <TableColumn fx:id="customerIdColumn" prefWidth="85.0" text="ID" />
                             </columns>
                         </TableView>
                     </children>
