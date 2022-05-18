@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
@@ -138,13 +139,21 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-    public boolean validateStartBeforeEndTime(){
-        LocalDateTime startSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
-        LocalDateTime endSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
-        if(endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())){
-            return true;
+    public boolean validateStartBeforeEndTime() throws DateTimeException {
+        try {
+            LocalDateTime startSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
+            LocalDateTime endSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
+            if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (DateTimeException e){
+            e.getMessage();
+            e.getCause();
+            e.printStackTrace();
         }
-        else{return false;}
+        return false;
     }
 
 
@@ -181,5 +190,32 @@ public class AddAppointmentController implements Initializable {
         populateStartTimeComboBox();
         populateEndTimeComboBox();
         populateCustomerTable(getAllCustomers);
+
+        endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus is lost
+                Boolean validationResult = validateStartBeforeEndTime();
+                if(validationResult) {dateAndTimeErrorLabel.setVisible(false);}
+                else{dateAndTimeErrorLabel.setVisible(true);}
+            }
+        });
+
+        endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus is lost
+                endTimeHrComboBox.getValue();
+                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
+                    Boolean validationResult = validateStartBeforeEndTime();
+                    if (validationResult) {
+                        dateAndTimeErrorLabel.setVisible(false);
+                    } else {
+                        dateAndTimeErrorLabel.setVisible(true);
+                    }
+                }
+
+            }
+        });
+
+
+
+
     }
 }
