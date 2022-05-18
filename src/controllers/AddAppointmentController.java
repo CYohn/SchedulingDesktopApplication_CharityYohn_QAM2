@@ -8,8 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 // Idea for future revisions: If the User ID is the same as the person who logs in, assign the user ID based on the login
@@ -22,25 +20,34 @@ public class AddAppointmentController implements Initializable {
     private GridPane applicationFormLeft;
 
     @FXML
-    private TextArea appointmentDescription;
+    private TextArea appointmentDescriptionTxtField;
 
     @FXML
     private Button clearButton;
 
     @FXML
-    private ComboBox<String> contactComboBox = new ComboBox<>();
+    private ComboBox<String> contactComboBox;
 
     @FXML
     private TableColumn<?, ?> customerId;
 
     @FXML
+    private TableColumn<?, ?> customerId1;
+
+    @FXML
     private TableColumn<?, ?> customerName;
 
     @FXML
-    private TextField customerSearch;
+    private TableView<?> customerTable;
 
     @FXML
-    private TableView<?> customerTable;
+    private DatePicker endDatePicker;
+
+    @FXML
+    private ComboBox<?> endTimeHrComboBox;
+
+    @FXML
+    private ComboBox<?> endTimeMinComboBox;
 
     @FXML
     private TextField locationTxtField;
@@ -52,10 +59,10 @@ public class AddAppointmentController implements Initializable {
     private DatePicker startDatePicker;
 
     @FXML
-    private ComboBox<?> startTimeHr;
+    private ComboBox<?> startTimeHrComboBox;
 
     @FXML
-    private ComboBox<?> startTimeMin;
+    private ComboBox<?> startTimeMinComboBox;
 
     @FXML
     private TextField titleTxtField;
@@ -64,16 +71,8 @@ public class AddAppointmentController implements Initializable {
     private ComboBox<?> typeComboBox;
 
     @FXML
-    private TableColumn<?, ?> userId;
+    private ComboBox<?> userComboBox;
 
-    @FXML
-    private TableColumn<?, ?> userName;
-
-    @FXML
-    private TextField userSearch;
-
-    @FXML
-    private TableView<?> userTable;
 
 
     @Override

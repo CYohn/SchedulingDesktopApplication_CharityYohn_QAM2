@@ -1,8 +1,9 @@
 package implementationsDao;
 
+import Objects.Customer;
 import Objects.User;
-import controllers.LoginPageController;
 import interfacesDao.UsersInterface;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
@@ -14,16 +15,18 @@ import java.sql.SQLException;
 public class UsersImplement extends DatabaseConnection implements UsersInterface  {
 
 
+
     ObservableList<User> getAllUsers = UsersInterface.getAllUsers();
+    static ObservableList<String> userNames = FXCollections.observableArrayList();
 
     static Connection connection = DatabaseConnection.getConnection();
-    static PreparedStatement allUsersPreparedStatement;
+    static PreparedStatement getUserNamesPreparedStatement;
     static String sqlQuery = "SELECT * FROM users";
 
 
     static {
         try {
-            allUsersPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
+            getUserNamesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
             System.out.println("allUsersPreparedStatement was successful");
         } catch (SQLException e) {
             System.out.println("allUsersPreparedStatement in the file UsersImplement encountered an error");
@@ -33,6 +36,39 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
         }
     }
 
+    public static void getAllUserNames() throws SQLException {
+        String allCustomersQuery = "SELECT User_Name" +
+                " FROM client_schedule.users";
+
+        PreparedStatement getUserNamesPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allCustomersQuery);
+        System.out.println("usersImplementPreparedStatement was successful in UsersImplement.getAllUserNames()");
+        ResultSet allUserNamesResults;
+
+        try {
+
+            if (getUserNamesPreparedStatement != null) {
+                allUserNamesResults = getUserNamesPreparedStatement.executeQuery();
+
+
+                while (allUserNamesResults.next()) {
+
+                    String userName = allUserNamesResults.getString("User_Name");
+                    //System.out.println("allUserNamesResults userName: " + userName);
+
+                    userNames.add(userName);
+                    //System.out.println("Customer object populated in getAllCustomers list: " + customer);
+                }
+            }
+            else{System.out.println("ResultSet was null");}
+
+        }
+        catch(SQLException throwables){
+            System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
+            throwables.getMessage();
+            throwables.getCause();
+            throwables.printStackTrace();
+        }
+    }
 
     @Override
     public void updateUser() {
