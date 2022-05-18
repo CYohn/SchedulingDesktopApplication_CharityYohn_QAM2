@@ -178,8 +178,8 @@ public class AddCustomerController implements Initializable {
         addressTxtField.clear();
         postalCodeTxtField.clear();
         custPhoneTxtField.clear();
-        countryComboBox.setValue(null);
-        divisionComboBox.setValue(null);
+        divisionComboBox.getSelectionModel().clearSelection();
+        countryComboBox.getSelectionModel().clearSelection();
         saveSuccessfulLabel.setVisible(false);
         saveErrorLabel.setVisible(false);
     }

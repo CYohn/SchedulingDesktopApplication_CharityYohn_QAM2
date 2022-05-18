@@ -32,6 +32,8 @@ import static java.lang.String.valueOf;
 
 public class ModifyCustomerController implements Initializable {
 
+    //TODO SET THE CLEAR BUTTON
+
     //TODO deleteCustomer() - Going to work on appointments first
 
     ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
