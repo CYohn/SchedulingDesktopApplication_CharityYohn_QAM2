@@ -1,5 +1,7 @@
 package controllers;
 
+import implementationsDao.ContactsImplement;
+import implementationsDao.UsersImplement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,13 +10,21 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import static implementationsDao.ContactsImplement.getAllContactNames;
+import static implementationsDao.UsersImplement.getAllUserNames;
+import static implementationsDao.UsersImplement.userNames;
 
 // Idea for future revisions: If the User ID is the same as the person who logs in, assign the user ID based on the login
 
 public class AddAppointmentController implements Initializable {
 
-    private ObservableList<String> contactsList = FXCollections.observableArrayList();
+    private ObservableList<String> contactNames = ContactsImplement.contactNames;
+    private ObservableList<String> UserNames = UsersImplement.userNames;
+    private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
+            ("Planning Session", "Progress Update", "De-Briefing");
 
     @FXML
     private GridPane applicationFormLeft;
@@ -68,16 +78,32 @@ public class AddAppointmentController implements Initializable {
     private TextField titleTxtField;
 
     @FXML
-    private ComboBox<?> typeComboBox;
+    private ComboBox<String> typeComboBox;
 
     @FXML
-    private ComboBox<?> userComboBox;
+    private ComboBox<String> userComboBox;
 
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        contactComboBox.setItems(contactsList);
+        try {
+            getAllContactNames();
+        } catch (SQLException e) {
+            e.getMessage();
+            e.getCause();
+            e.printStackTrace();
+        }
+        try {
+            getAllUserNames();
+        } catch (SQLException e) {
+            e.getMessage();
+            e.getCause();
+            e.printStackTrace();
+        }
+        contactComboBox.setItems(contactNames.sorted());
+        typeComboBox.setItems(appointmentTypes);
+        userComboBox.setItems(userNames);
 
     }
 }

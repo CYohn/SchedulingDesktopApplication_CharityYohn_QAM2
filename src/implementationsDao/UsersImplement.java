@@ -17,7 +17,7 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
 
 
     ObservableList<User> getAllUsers = UsersInterface.getAllUsers();
-    static ObservableList<String> userNames = FXCollections.observableArrayList();
+    public static ObservableList<String> userNames = FXCollections.observableArrayList();
 
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement getUserNamesPreparedStatement;
