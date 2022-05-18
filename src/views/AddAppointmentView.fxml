@@ -22,10 +22,10 @@
                 <Font size="30.0" />
             </font>
         </Label>
-        <GridPane fx:id="applicationFormLeft" layoutX="181.0" layoutY="156.0" prefHeight="511.0" prefWidth="359.0">
+        <GridPane fx:id="applicationFormLeft" layoutX="164.0" layoutY="156.0" prefHeight="511.0" prefWidth="498.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="94.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="233.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="109.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="389.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -36,8 +36,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="25.0" minHeight="2.0" prefHeight="2.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="88.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="25.0" minHeight="2.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="28.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -87,8 +87,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <ComboBox fx:id="startTimeHrComboBox" prefWidth="150.0" promptText="Select Hour" />
-                        <ComboBox fx:id="startTimeMinComboBox" prefWidth="150.0" promptText="Select Minutes" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="startTimeHrComboBox" prefWidth="150.0" promptText="Select Time" />
                     </children>
                 </GridPane>
                 <Label text="End Date" GridPane.rowIndex="6">
@@ -111,8 +110,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <ComboBox fx:id="endTimeHrComboBox" prefWidth="150.0" promptText="Select Hour" />
-                        <ComboBox fx:id="endTimeMinComboBox" prefWidth="150.0" promptText="Select Minutes" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="endTimeHrComboBox" prefWidth="150.0" promptText="Select Time" />
                     </children>
                 </GridPane>
                 <Label text="Description" GridPane.rowIndex="9">
@@ -121,6 +119,11 @@
                     </font>
                 </Label>
                 <TextArea fx:id="appointmentDescriptionTxtField" prefHeight="200.0" prefWidth="200.0" promptText="Write a description for the appointment" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label fx:id="dateAndTimeErrorLabel" prefHeight="20.0" prefWidth="396.0" text="End Date and Time Must Be After Start Date and Time" textAlignment="CENTER" textFill="#a10303" GridPane.columnIndex="1" GridPane.rowIndex="8">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
             </children>
         </GridPane>
         <SplitPane dividerPositions="0.1554054054054054" layoutX="699.0" layoutY="180.0" orientation="VERTICAL" prefHeight="298.0" prefWidth="291.0">

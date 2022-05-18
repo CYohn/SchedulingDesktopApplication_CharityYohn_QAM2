@@ -14,12 +14,15 @@ import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import static implementationsDao.ContactsImplement.getAllContactNames;
 import static implementationsDao.CustomersImplement.getAllCustomers;
 import static implementationsDao.UsersImplement.getAllUserNames;
-import static implementationsDao.UsersImplement.userNames;
 
 // Idea for future revisions: If the User ID is the same as the person who logs in, assign the user ID based on the login
 
@@ -35,17 +38,8 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private GridPane applicationFormLeft;
 
-    @FXML
-    private TextArea appointmentDescriptionTxtField;
 
-    @FXML
-    private Button clearButton;
-
-    @FXML
-    private ComboBox<String> contactComboBox;
-
-
-
+    //Table and columns
     @FXML
     private TableView<Customer> customerTable;
 
@@ -58,39 +52,54 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private TableColumn<Customer, String> customerPhoneColumn;
 
-
+    //Text Fields
     @FXML
-    private DatePicker endDatePicker;
-
+    private TextField titleTxtField;
     @FXML
-    private ComboBox<?> endTimeHrComboBox;
-
-    @FXML
-    private ComboBox<?> endTimeMinComboBox;
+    private TextArea appointmentDescriptionTxtField;
 
     @FXML
     private TextField locationTxtField;
 
-    @FXML
-    private Button saveButton;
-
+   //Date pickers
     @FXML
     private DatePicker startDatePicker;
 
     @FXML
-    private ComboBox<?> startTimeHrComboBox;
+    private DatePicker endDatePicker;
+
+    //Form ComboBoxes
+    @FXML
+    private ComboBox<String> contactComboBox;
 
     @FXML
-    private ComboBox<?> startTimeMinComboBox;
+    private ComboBox<LocalTime> endTimeHrComboBox;
 
     @FXML
-    private TextField titleTxtField;
+    private ComboBox<LocalTime> endTimeMinComboBox;
+
+    @FXML
+    private ComboBox<LocalTime> startTimeHrComboBox;
+
+    @FXML
+    private ComboBox<LocalTime> startTimeMinComboBox;
 
     @FXML
     private ComboBox<String> typeComboBox;
 
     @FXML
     private ComboBox<String> userComboBox;
+
+   //Form Buttons
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button clearButton;
+
+    //Active Form Labels
+    @FXML
+    private Label dateAndTimeErrorLabel;
 
 
     public void populateCustomerTable(ObservableList<Customer>getAllCustomers) {
@@ -109,6 +118,35 @@ public class AddAppointmentController implements Initializable {
         }
         return selectedCustomer;
     }
+
+    public void populateStartTimeComboBox(){
+        LocalTime startHour = LocalTime.of(8,0);
+        LocalTime endHour = LocalTime.of(22,0);
+        while (startHour.isBefore(endHour)){
+            startTimeHrComboBox.getItems().add(startHour);
+
+            startHour = startHour.plusMinutes(15);
+        }
+    }
+
+    public void populateEndTimeComboBox(){
+        LocalTime startHour = LocalTime.of(8,0);
+        LocalTime endHour = LocalTime.of(22,0);
+        while (startHour.isBefore(endHour)){
+            endTimeHrComboBox.getItems().add(startHour);
+            startHour = startHour.plusMinutes(15);
+        }
+    }
+
+    public boolean validateStartBeforeEndTime(){
+        LocalDateTime startSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
+        LocalDateTime endSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
+        if(endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())){
+            return true;
+        }
+        else{return false;}
+    }
+
 
 
     @Override
@@ -136,10 +174,12 @@ public class AddAppointmentController implements Initializable {
             e.printStackTrace();
         }
 
+        dateAndTimeErrorLabel.setVisible(false);
         contactComboBox.setItems(contactNames.sorted());
         typeComboBox.setItems(appointmentTypes);
         userComboBox.setItems(userNames);
+        populateStartTimeComboBox();
+        populateEndTimeComboBox();
         populateCustomerTable(getAllCustomers);
-
     }
 }
