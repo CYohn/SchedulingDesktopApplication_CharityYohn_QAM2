@@ -177,7 +177,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         LocalTime endHour = LocalTime.of(businessEndHour, businessEndMinute);
 
         while (startHour.isBefore(endHour)) {
-            startTimeHrComboBox.getItems().add(startHour);
+            endTimeHrComboBox.getItems().add(startHour);
             startHour = startHour.plusMinutes(15);
         }
     }
@@ -194,16 +194,16 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         return endDateTimeSelection;
     }
 
-    public boolean validateStartBeforeEndTime() throws DateTimeException {
+    public boolean validateStartBeforeEndTime() throws Exception {
         try {
-            LocalDateTime startSelection = getStartDateTimeSelection();
-            LocalDateTime endSelection = getEndDateTimeSelection();
+            LocalDateTime startSelection = getStartDate();
+            LocalDateTime endSelection = getEndDate();
             if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
                 return true;
             } else {
                 return false;
             }
-        }catch (DateTimeException e){
+        }catch (Exception e){
             e.getMessage();
             e.getCause();
             e.printStackTrace();
@@ -242,32 +242,44 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         contactComboBox.setItems(contactNames.sorted());
         typeComboBox.setItems(appointmentTypes);
         userComboBox.setItems(userNames);
+        TimezoneConversion.convertBusinessStartFromEstToLocalTime();
+        TimezoneConversion.convertBusinessEndFromEstToLocalTime();
         populateStartTimeComboBox();
         populateEndTimeComboBox();
         populateCustomerTable(getAllCustomers);
 
-        endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            if (!newValue) { //when focus is lost
-                Boolean validationResult = validateStartBeforeEndTime();
-                if(validationResult) {dateAndTimeErrorLabel.setVisible(false);}
-                else{dateAndTimeErrorLabel.setVisible(true);}
-            }
-        });
-
-        endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            if (!newValue) { //when focus is lost
-                endTimeHrComboBox.getValue();
-                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
-                    Boolean validationResult = validateStartBeforeEndTime();
-                    if (validationResult) {
-                        dateAndTimeErrorLabel.setVisible(false);
-                    } else {
-                        dateAndTimeErrorLabel.setVisible(true);
-                    }
-                }
-
-            }
-        });
+//        endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+//            if (!newValue) { //when focus is lost
+//                Boolean validationResult = null;
+//                try {
+//                    validationResult = validateStartBeforeEndTime();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                if(validationResult) {dateAndTimeErrorLabel.setVisible(false);}
+//                else{dateAndTimeErrorLabel.setVisible(true);}
+//            }
+//        });
+//
+//        endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+//            if (!newValue) { //when focus is lost
+//                endTimeHrComboBox.getValue();
+//                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
+//                    Boolean validationResult = null;
+//                    try {
+//                        validationResult = validateStartBeforeEndTime();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    if (validationResult) {
+//                        dateAndTimeErrorLabel.setVisible(false);
+//                    } else {
+//                        dateAndTimeErrorLabel.setVisible(true);
+//                    }
+//                }
+//
+//            }
+//        });
 
 
 

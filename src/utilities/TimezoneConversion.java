@@ -51,33 +51,33 @@ public class TimezoneConversion {
         return appointmentEndUTC;
     }
 
-    public LocalDateTime convertBusinessStartFromEstToLocalTime() {
+    public static LocalDateTime convertBusinessStartFromEstToLocalTime() {
         //create a ZonedDatetime for today at 8:00am EST converted to UTC
         ZoneId estZoneId = ZoneId.of("America/New_York");
         LocalTime estBusinessStart = LocalTime.of(8, 00, 00, 00);
         LocalDate today = LocalDate.now();
         ZonedDateTime estZonesBusinessStart = ZonedDateTime.of(today, estBusinessStart, estZoneId);
-        ZonedDateTime businessStartUTC = estZonesBusinessStart.withZoneSameInstant(ZoneId.of("UTC"));
+        //ZonedDateTime businessStartUTC = estZonesBusinessStart.withZoneSameInstant(ZoneId.of("UTC"));
 
         //Convert the UTC time to the user's time
         String userTimeZone = TimeZone.getDefault().getID();
-        ZonedDateTime businessStartToUser = businessStartUTC.withZoneSameInstant(ZoneId.of(userTimeZone));
+        ZonedDateTime businessStartToUser = estZonesBusinessStart.withZoneSameInstant(ZoneId.of(userTimeZone));
         LocalDateTime userBusinessStartLocal = businessStartToUser.toLocalDateTime();
         setBusinessStartConverted(userBusinessStartLocal);
         return userBusinessStartLocal;
     }
 
-    public LocalDateTime convertBusinessEndFromEstToLocalTime() {
+    public static LocalDateTime convertBusinessEndFromEstToLocalTime() {
         //create a ZonedDatetime for today at 10:00pm EST converted to UTC
         ZoneId estZoneId = ZoneId.of("America/New_York");
         LocalTime estBusinessEnd = LocalTime.of(22, 00, 00, 00);
         LocalDate today = LocalDate.now();
         ZonedDateTime estZonesBusinessEnd = ZonedDateTime.of(today, estBusinessEnd, estZoneId);
-        ZonedDateTime businessEndUTC = estZonesBusinessEnd.withZoneSameInstant(ZoneId.of("UTC"));
+        //ZonedDateTime businessEndUTC = estZonesBusinessEnd.withZoneSameInstant(ZoneId.of("UTC"));
 
         //Convert the UTC time to the user's time
         String userTimeZone = TimeZone.getDefault().getID();
-        ZonedDateTime businessEndToUser = businessEndUTC.withZoneSameInstant(ZoneId.of(userTimeZone));
+        ZonedDateTime businessEndToUser = estZonesBusinessEnd.withZoneSameInstant(ZoneId.of(userTimeZone));
         LocalDateTime userBusinessEndLocal = businessEndToUser.toLocalDateTime();
         setBusinessEndConverted(userBusinessEndLocal);
         return userBusinessEndLocal;
