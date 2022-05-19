@@ -1,6 +1,7 @@
 package controllers;
 
 import Objects.Customer;
+import com.sun.javafx.binding.DoubleConstant;
 import implementationsDao.ContactsImplement;
 import implementationsDao.UsersImplement;
 import javafx.collections.FXCollections;
@@ -11,10 +12,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import utilities.TimezoneConversion;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
@@ -27,7 +30,11 @@ import static implementationsDao.UsersImplement.getAllUserNames;
 
 // Idea for future revisions: If the User ID is the same as the person who logs in, assign the user ID based on the login
 
-public class AddAppointmentController implements Initializable {
+public class AddAppointmentController extends TimezoneConversion implements Initializable {
+
+
+    private static LocalDateTime startDate;
+    private static LocalDateTime endDate;
 
     private ObservableList<String> contactNames = ContactsImplement.contactNames;
     private ObservableList<String> userNames = UsersImplement.userNames;
@@ -92,8 +99,8 @@ public class AddAppointmentController implements Initializable {
     private ComboBox<String> userComboBox;
 
    //Form Buttons
-    @FXML
-    private Button saveButton;
+   @FXML
+   private Button saveButton;
 
     @FXML
     private Button clearButton;
@@ -102,8 +109,25 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private Label dateAndTimeErrorLabel;
 
+    //Setters and getters for the start and end DateTime selected in the comboBox
 
-    public void populateCustomerTable(ObservableList<Customer>getAllCustomers) {
+    public static LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public static void setStartDate(LocalDateTime startDate) {
+        AddAppointmentController.startDate = startDate;
+    }
+
+    public static LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public static void setEndDate(LocalDateTime endDate) {
+        AddAppointmentController.endDate = endDate;
+    }
+
+    public void populateCustomerTable(ObservableList<Customer> getAllCustomers) {
 
         customerTable.setItems(getAllCustomers);
 
@@ -120,29 +144,60 @@ public class AddAppointmentController implements Initializable {
         return selectedCustomer;
     }
 
-    public void populateStartTimeComboBox(){
-        LocalTime startHour = LocalTime.of(8,0);
-        LocalTime endHour = LocalTime.of(22,0);
-        while (startHour.isBefore(endHour)){
-            startTimeHrComboBox.getItems().add(startHour);
+    public void populateStartTimeComboBox() {
+        LocalDateTime businessStartConverted = TimezoneConversion.getBusinessStartConverted();
+        LocalTime businessStartConvertedTime = businessStartConverted.toLocalTime();
+        int businessStartHour = businessStartConvertedTime.getHour();
+        int businessStartMinute = businessStartConvertedTime.getMinute();
+        LocalTime startHour = LocalTime.of(businessStartHour, businessStartMinute);
 
+        LocalDateTime businessEndConverted = TimezoneConversion.getBusinessEndConverted();
+        LocalTime businessEndConvertedTime = businessEndConverted.toLocalTime();
+        int businessEndHour = businessEndConvertedTime.getHour();
+        int businessEndMinute = businessEndConvertedTime.getMinute();
+        LocalTime endHour = LocalTime.of(businessEndHour, businessEndMinute);
+
+        while (startHour.isBefore(endHour)) {
+            startTimeHrComboBox.getItems().add(startHour);
             startHour = startHour.plusMinutes(15);
         }
     }
 
-    public void populateEndTimeComboBox(){
-        LocalTime startHour = LocalTime.of(8,0);
-        LocalTime endHour = LocalTime.of(22,0);
-        while (startHour.isBefore(endHour)){
-            endTimeHrComboBox.getItems().add(startHour);
+    public void populateEndTimeComboBox() {
+        LocalDateTime businessStartConverted = TimezoneConversion.getBusinessStartConverted();
+        LocalTime businessStartConvertedTime = businessStartConverted.toLocalTime();
+        int businessStartHour = businessStartConvertedTime.getHour();
+        int businessStartMinute = businessStartConvertedTime.getMinute();
+        LocalTime startHour = LocalTime.of(businessStartHour, businessStartMinute);
+
+        LocalDateTime businessEndConverted = TimezoneConversion.getBusinessEndConverted();
+        LocalTime businessEndConvertedTime = businessEndConverted.toLocalTime();
+        int businessEndHour = businessEndConvertedTime.getHour();
+        int businessEndMinute = businessEndConvertedTime.getMinute();
+        LocalTime endHour = LocalTime.of(businessEndHour, businessEndMinute);
+
+        while (startHour.isBefore(endHour)) {
+            startTimeHrComboBox.getItems().add(startHour);
             startHour = startHour.plusMinutes(15);
         }
+    }
+
+    public LocalDateTime getStartDateTimeSelection() {
+        LocalDateTime startDateTimeSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
+        setStartDate(startDateTimeSelection);
+        return startDateTimeSelection;
+    }
+
+    public LocalDateTime getEndDateTimeSelection() {
+        LocalDateTime endDateTimeSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
+        setEndDate(endDateTimeSelection);
+        return endDateTimeSelection;
     }
 
     public boolean validateStartBeforeEndTime() throws DateTimeException {
         try {
-            LocalDateTime startSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
-            LocalDateTime endSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
+            LocalDateTime startSelection = getStartDateTimeSelection();
+            LocalDateTime endSelection = getEndDateTimeSelection();
             if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
                 return true;
             } else {
