@@ -2,7 +2,9 @@ package implementationsDao;
 
 import Objects.Appointment;
 import Objects.Customer;
+import controllers.AddAppointmentController;
 import interfacesDao.AppointmentsInterface;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 public class AppointmentsImplement implements AppointmentsInterface {
 
     public static ObservableList<Appointment> getAllAppointments = AppointmentsInterface.getAllAppointments();
+    public static ObservableList<Appointment> AppointmentsByCustomerID = FXCollections.observableArrayList();
 
 
     public static void getAllAppointments() throws SQLException {
@@ -135,7 +138,47 @@ public class AppointmentsImplement implements AppointmentsInterface {
         return databaseResponseToUpdate;
     }
 
+    public static void getAppointmentsByCustomerID() throws SQLException {
+        String selectedCustomerId = String.valueOf(AddAppointmentController.getSelectedCustomerID());
+        String allAppointmentsQuery = "SELECT Appointment_ID, Start, End" +
+                " FROM client_schedule.appointments " +
+                " WHERE appointments.Customer_ID = " + selectedCustomerId;
+        PreparedStatement getAppointmentsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allAppointmentsQuery);
+        System.out.println("getAppointmentsPreparedStatement was successful in AppointmentsImplement.getAppointmentsByCustomerID()");
+        ResultSet allAppointmentsResults;
 
+        try {
+
+            if (getAppointmentsPreparedStatement != null) {
+                allAppointmentsResults = getAppointmentsPreparedStatement.executeQuery();
+
+
+                while (allAppointmentsResults.next()) {
+                    int appointmentId = allAppointmentsResults.getInt("Appointment_ID");
+                    //System.out.println("allAppointmentResults appointmentId: " + appointmentId);
+
+                    LocalDateTime startDateTime = allAppointmentsResults.getTimestamp("Start").toLocalDateTime();
+                    //System.out.println("allAppointmentsResults startDateTime: " + startDateTime);
+
+                    LocalDateTime endDateTime = allAppointmentsResults.getTimestamp("End").toLocalDateTime();
+                    //System.out.println("allAppointmentsResults endDateTime: " + endDateTime);
+
+                    Appointment appointmentByCustomerId = new Appointment(appointmentId, startDateTime, endDateTime);
+
+                    AppointmentsByCustomerID.add(appointmentByCustomerId);
+                    //System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
+                }
+            }
+            else{System.out.println("ResultSet was null");}
+
+        }
+        catch(SQLException throwables){
+            System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
+            throwables.getMessage();
+            throwables.getCause();
+            throwables.printStackTrace();
+        }
+    }
 
 
     @Override

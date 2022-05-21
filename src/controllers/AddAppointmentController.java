@@ -1,7 +1,9 @@
 package controllers;
 
+import Objects.Appointment;
 import Objects.Customer;
 import com.sun.javafx.binding.DoubleConstant;
+import implementationsDao.AppointmentsImplement;
 import implementationsDao.ContactsImplement;
 import implementationsDao.UsersImplement;
 import javafx.collections.FXCollections;
@@ -21,8 +23,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import static implementationsDao.ContactsImplement.getAllContactNames;
 import static implementationsDao.CustomersImplement.getAllCustomers;
@@ -35,13 +40,15 @@ public class AddAppointmentController extends TimezoneConversion implements Init
 
     private static LocalDateTime startDate;
     private static LocalDateTime endDate;
+    Customer selectedCustomer;
+    private static int selectedCustomerID;
 
     private ObservableList<String> contactNames = ContactsImplement.contactNames;
     private ObservableList<String> userNames = UsersImplement.userNames;
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
+    private ObservableList<Appointment> appointmentTimeValidation = AppointmentsImplement.AppointmentsByCustomerID;
 
-    Customer selectedCustomer;
 
     @FXML
     private GridPane applicationFormLeft;
@@ -127,6 +134,14 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         AddAppointmentController.endDate = endDate;
     }
 
+    public static int getSelectedCustomerID() {
+        return selectedCustomerID;
+    }
+
+    public static void setSelectedCustomerID(int selectedCustomerID) {
+        AddAppointmentController.selectedCustomerID = selectedCustomerID;
+    }
+
     public void populateCustomerTable(ObservableList<Customer> getAllCustomers) {
 
         customerTable.setItems(getAllCustomers);
@@ -140,6 +155,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     Customer onTableClickGetSelectedCustomer(MouseEvent event) {
         if(!customerTable.getSelectionModel().isEmpty()){
             selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+            setSelectedCustomerID(selectedCustomer.getCustomerId());
         }
         return selectedCustomer;
     }
@@ -210,6 +226,14 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         }
         return false;
     }
+
+//    public void OverlapValidationA(){
+//
+//        Predicate<Appointment> st = appointment -> Comparator.comparing()
+//        int count = appointmentTimeValidation.stream()
+//                .anyMatch(a::getStartDate)
+//    }
+
 
 
 

@@ -51,6 +51,11 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    public Appointment(int appointmentId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this.appointmentId = appointmentId;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
 
 
     public String getType() {
