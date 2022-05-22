@@ -8,6 +8,7 @@ import implementationsDao.ContactsImplement;
 import implementationsDao.UsersImplement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -29,6 +30,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+import static implementationsDao.AppointmentsImplement.getAppointmentsByCustomerID;
 import static implementationsDao.ContactsImplement.getAllContactNames;
 import static implementationsDao.CustomersImplement.getAllCustomers;
 import static implementationsDao.UsersImplement.getAllUserNames;
@@ -47,7 +49,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     private ObservableList<String> userNames = UsersImplement.userNames;
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
-    private ObservableList<Appointment> appointmentTimeValidation = AppointmentsImplement.AppointmentsByCustomerID;
+    private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.AppointmentsByCustomerID;
 
 
     @FXML
@@ -138,6 +140,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         return selectedCustomerID;
     }
 
+
     public static void setSelectedCustomerID(int selectedCustomerID) {
         AddAppointmentController.selectedCustomerID = selectedCustomerID;
     }
@@ -198,13 +201,13 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         }
     }
 
-    public LocalDateTime getStartDateTimeSelection() {
+    public LocalDateTime setStartDateTimeSelection() {
         LocalDateTime startDateTimeSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
         setStartDate(startDateTimeSelection);
         return startDateTimeSelection;
     }
 
-    public LocalDateTime getEndDateTimeSelection() {
+    public LocalDateTime setEndDateTimeSelection() {
         LocalDateTime endDateTimeSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
         setEndDate(endDateTimeSelection);
         return endDateTimeSelection;
@@ -219,7 +222,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
             } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.getMessage();
             e.getCause();
             e.printStackTrace();
@@ -227,35 +230,98 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         return false;
     }
 
-//    public void OverlapValidationA(){
-//
-//        Predicate<Appointment> st = appointment -> Comparator.comparing()
-//        int count = appointmentTimeValidation.stream()
-//                .anyMatch(a::getStartDate)
-//    }
 
+    public boolean overlapValidationA() throws SQLException {
 
+        LocalDateTime startTimeOfNewAppointment = getStartDate();
+        getAppointmentsByCustomerID();
+
+        for (Appointment appointment : getAppointmentsByCustomerID) {
+            LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
+            LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
+            if (((startTimeOfNewAppointment.isAfter(startTimeExistingAppointment)) || (startTimeExistingAppointment.isEqual(startTimeExistingAppointment)))
+                    && (startTimeOfNewAppointment).isBefore(endTimeExistingAppointment)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean overlapValidationB() throws SQLException {
+
+        LocalDateTime startTimeOfNewAppointment = getStartDate();
+        LocalDateTime endTimeOfNewAppointment = getEndDate();
+        getAppointmentsByCustomerID();
+
+        for (Appointment appointment : getAppointmentsByCustomerID) {
+            LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
+            LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
+            if (((endTimeOfNewAppointment.isBefore(endTimeExistingAppointment)) || (endTimeOfNewAppointment.isEqual(endTimeExistingAppointment)))
+                    && (startTimeOfNewAppointment).isAfter(startTimeExistingAppointment)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean overlapValidationC() throws SQLException {
+
+        LocalDateTime startTimeOfNewAppointment = getStartDate();
+        LocalDateTime endTimeOfNewAppointment = getEndDate();
+        getAppointmentsByCustomerID();
+
+        for (Appointment appointment : getAppointmentsByCustomerID) {
+            LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
+            LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
+            if (((startTimeOfNewAppointment.isBefore(startTimeExistingAppointment)) || (startTimeOfNewAppointment.isEqual(startTimeExistingAppointment)))
+                    && ((endTimeOfNewAppointment.isAfter(endTimeExistingAppointment)) || (endTimeOfNewAppointment.isEqual(endTimeExistingAppointment)))) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    @FXML
+    void onSaveButtonAction(ActionEvent event) throws Exception {
+        String title = titleTxtField.getText();
+        String location = locationTxtField.getText();
+        String contact = contactComboBox.getValue();
+        String type = typeComboBox.getValue();
+
+        LocalDate startDate = startDatePicker.getValue();
+        LocalTime startTime = startTimeHrComboBox.getValue();
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDate endDate = endDatePicker.getValue();
+        LocalTime endTime = endTimeHrComboBox.getValue();
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        String description = appointmentDescriptionTxtField.getText();
+        int customerId = getSelectedCustomerID();
+        String user = userComboBox.getValue();
+
+        setStartDate(startDateTime);
+        setEndDate(endDateTime);
+
+        validateStartBeforeEndTime();
+        overlapValidationA();
+        overlapValidationB();
+        overlapValidationC();
+    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             getAllContactNames();
-        } catch (SQLException e) {
-            e.getMessage();
-            e.getCause();
-            e.printStackTrace();
-        }
-        try {
             getAllUserNames();
-        } catch (SQLException e) {
-            e.getMessage();
-            e.getCause();
-            e.printStackTrace();
-        }
-
-        try {
             getAllCustomers();
+            getAppointmentsByCustomerID();
         } catch (SQLException e) {
             e.getMessage();
             e.getCause();
