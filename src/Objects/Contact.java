@@ -18,6 +18,11 @@ public class Contact {
         this.contactName = contactName;
     }
 
+    @Override
+    public String toString(){
+        return (contactName);
+    }
+
     public int getContactId() {
         return contactId;
     }

@@ -27,7 +27,7 @@ public class User {
 
     @Override
     public String toString(){
-        return (userName + "   ID: " + userId);
+        return (userName);
     }
 
     public int getUserId() {
