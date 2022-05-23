@@ -340,7 +340,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         }
 
         dateAndTimeErrorLabel.setVisible(false);
-        contactComboBox.setItems(contactNames.sorted());
+        contactComboBox.setItems(contactNames);
         typeComboBox.setItems(appointmentTypes);
         userComboBox.setItems(userNames);
         TimezoneConversion.convertBusinessStartFromEstToLocalTime();
