@@ -17,7 +17,7 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
 
 
     ObservableList<User> getAllUsers = UsersInterface.getAllUsers();
-    public static ObservableList<String> userNames = FXCollections.observableArrayList();
+    public static ObservableList<User> userNames = FXCollections.observableArrayList();
 
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement getUserNamesPreparedStatement;
@@ -37,7 +37,7 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
     }
 
     public static void getAllUserNames() throws SQLException {
-        String allCustomersQuery = "SELECT User_Name" +
+        String allCustomersQuery = "SELECT User_Name, User_ID" +
                 " FROM client_schedule.users";
 
         PreparedStatement getUserNamesPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allCustomersQuery);
@@ -55,7 +55,12 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
                     String userName = allUserNamesResults.getString("User_Name");
                     //System.out.println("allUserNamesResults userName: " + userName);
 
-                    userNames.add(userName);
+                    int userId = allUserNamesResults.getInt("User_ID");
+                    //System.out.println("allUserNamesResults userName: " + userName);
+
+                    User user = new User(userId, userName);
+
+                    userNames.add(user);
                     //System.out.println("Customer object populated in getAllCustomers list: " + customer);
                 }
             }

@@ -13,13 +13,9 @@ public class TimezoneConversion {
 
     private static LocalDateTime businessStartConverted;
     private static LocalDateTime businessEndConverted;
-    LocalDateTime appointmentStartOrigin = AddAppointmentController.getStartDate();
-    LocalDateTime appointmentEndOrigin = AddAppointmentController.getEndDate();
-    ZonedDateTime originZonedDateTime;
-    ZonedDateTime targetZonedDateTimeUTC; //With (ZoneSameInstant())
-    LocalDateTime targetDateTimeUTC;
-    LocalDateTime targetZonedDateTimeEst;
-    LocalDateTime targetDateTimeEst;
+    private LocalDateTime appointmentStartOrigin = AddAppointmentController.getStartDate();
+    private LocalDateTime appointmentEndOrigin = AddAppointmentController.getEndDate();
+
 
     public static LocalDateTime getBusinessStartConverted() {
         return businessStartConverted;
@@ -82,5 +78,22 @@ public class TimezoneConversion {
         setBusinessEndConverted(userBusinessEndLocal);
         return userBusinessEndLocal;
     }
+
+    public static LocalDateTime convertUserStartTimeToUTC(LocalDateTime userStartDateTime){
+        String userTimeZone = TimeZone.getDefault().getID();
+        ZoneId userZoneID = ZoneId.of(userTimeZone);
+        ZonedDateTime timeInUserTimezone = ZonedDateTime.of(userStartDateTime, userZoneID);
+        ZonedDateTime timeInUTC = timeInUserTimezone.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime startTimeConvertedToUTC = timeInUTC.toLocalDateTime();
+        return startTimeConvertedToUTC;
+    }
+
+    public static LocalDateTime convertUserEndTimeToUTC(LocalDateTime userEndDateTime){
+        String userTimeZone = TimeZone.getDefault().getID();
+        ZoneId userZoneID = ZoneId.of(userTimeZone);
+        ZonedDateTime timeInUserTimezone = ZonedDateTime.of(userEndDateTime, userZoneID);
+        ZonedDateTime timeInUTC = timeInUserTimezone.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime endTimeConvertedToUTC = timeInUTC.toLocalDateTime();
+        return endTimeConvertedToUTC;}
 
 }

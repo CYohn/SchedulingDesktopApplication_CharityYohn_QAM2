@@ -15,10 +15,10 @@ import java.sql.SQLException;
 public class ContactsImplement extends DatabaseConnection implements ContactsInterface {
 
     public static ObservableList<Contact> getAllContacts = ContactsInterface.getAllContacts();
-    public static ObservableList<String> contactNames = FXCollections.observableArrayList();
+    public static ObservableList<Contact> contactNames = FXCollections.observableArrayList();
 
     public static void getAllContactNames() throws SQLException {
-        String allContactNames = "SELECT Contact_Name" +
+        String allContactNames = "SELECT Contact_Name, Contact_ID" +
                 " FROM client_schedule.contacts";
 
         PreparedStatement getContactNamesPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allContactNames);
@@ -36,7 +36,10 @@ public class ContactsImplement extends DatabaseConnection implements ContactsInt
                     String contactName = allContactNamesResults.getString("Contact_Name");
                     //System.out.println("allUserNamesResults userName: " + userName);
 
-                    contactNames.add(contactName);
+                    int contactId = allContactNamesResults.getInt("Contact_ID");
+                    //System.out.println("allUserNamesResults userName: " + userName);
+                    Contact contact = new Contact(contactId, contactName);
+                    contactNames.add(contact);
                     //System.out.println("Customer object populated in getAllCustomers list: " + customer);
                 }
             }

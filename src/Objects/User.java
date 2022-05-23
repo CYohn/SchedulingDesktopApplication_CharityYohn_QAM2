@@ -20,6 +20,11 @@ public class User {
         this.createdBy = createdBy;
     }
 
+    public User(int userId, String userName) {
+        this.userId = userId;
+        this.userName = userName;
+    }
+
     public int getUserId() {
         return userId;
     }

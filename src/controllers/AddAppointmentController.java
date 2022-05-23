@@ -1,8 +1,9 @@
 package controllers;
 
 import Objects.Appointment;
+import Objects.Contact;
 import Objects.Customer;
-import com.sun.javafx.binding.DoubleConstant;
+import Objects.User;
 import implementationsDao.AppointmentsImplement;
 import implementationsDao.ContactsImplement;
 import implementationsDao.UsersImplement;
@@ -19,16 +20,10 @@ import utilities.TimezoneConversion;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 import static implementationsDao.AppointmentsImplement.getAppointmentsByCustomerID;
 import static implementationsDao.ContactsImplement.getAllContactNames;
@@ -45,8 +40,8 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     Customer selectedCustomer;
     private static int selectedCustomerID;
 
-    private ObservableList<String> contactNames = ContactsImplement.contactNames;
-    private ObservableList<String> userNames = UsersImplement.userNames;
+    private ObservableList<Contact> contactNames = ContactsImplement.contactNames;
+    private ObservableList<User> userNames = UsersImplement.userNames;
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
     private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.AppointmentsByCustomerID;
@@ -87,7 +82,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
 
     //Form ComboBoxes
     @FXML
-    private ComboBox<String> contactComboBox;
+    private ComboBox<Contact> contactComboBox;
 
     @FXML
     private ComboBox<LocalTime> endTimeHrComboBox;
@@ -105,7 +100,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     private ComboBox<String> typeComboBox;
 
     @FXML
-    private ComboBox<String> userComboBox;
+    private ComboBox<User> userComboBox;
 
    //Form Buttons
    @FXML
@@ -215,6 +210,8 @@ public class AddAppointmentController extends TimezoneConversion implements Init
 
     public boolean validateStartBeforeEndTime() throws Exception {
         try {
+            setStartDateTimeSelection();
+            setEndDateTimeSelection();
             LocalDateTime startSelection = getStartDate();
             LocalDateTime endSelection = getEndDate();
             if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
@@ -291,27 +288,41 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     void onSaveButtonAction(ActionEvent event) throws Exception {
         String title = titleTxtField.getText();
         String location = locationTxtField.getText();
-        String contact = contactComboBox.getValue();
+        int contactId = contactComboBox.getValue().getContactId();
+
         String type = typeComboBox.getValue();
 
         LocalDate startDate = startDatePicker.getValue();
         LocalTime startTime = startTimeHrComboBox.getValue();
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime userStartDateTime = LocalDateTime.of(startDate, startTime);
         LocalDate endDate = endDatePicker.getValue();
         LocalTime endTime = endTimeHrComboBox.getValue();
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        LocalDateTime userEndDateTime = LocalDateTime.of(endDate, endTime);
+
+        // Get times converted to UTC
+        LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
+        LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
+
 
         String description = appointmentDescriptionTxtField.getText();
         int customerId = getSelectedCustomerID();
-        String user = userComboBox.getValue();
+        int userId = userComboBox.getValue().getUserId();
 
-        setStartDate(startDateTime);
-        setEndDate(endDateTime);
+        setStartDateTimeSelection();
+        setEndDateTimeSelection();
 
-        validateStartBeforeEndTime();
-        overlapValidationA();
-        overlapValidationB();
-        overlapValidationC();
+        boolean validationResultStartBeforeEnd= validateStartBeforeEndTime(); //returns true if validation passes
+        boolean validationResultA = overlapValidationA(); // returns false if validation passes
+        boolean validationResultB = overlapValidationB(); // returns false if validation passes
+        boolean validationResultC = overlapValidationC(); // returns false if validation passes
+        System.out.println("validationResultA: " + validationResultA);
+        System.out.println("validationResultB: " + validationResultB);
+        System.out.println("ValidationResultC: " + validationResultC);
+
+        if (validateStartBeforeEndTime() == true && validationResultA == false && validationResultB == false && validationResultC == false) {
+            Appointment appointmentToSave = new Appointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
+            AppointmentsImplement.addAppointment(appointmentToSave);
+        }
     }
 
 
@@ -338,38 +349,34 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         populateEndTimeComboBox();
         populateCustomerTable(getAllCustomers);
 
-//        endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-//            if (!newValue) { //when focus is lost
-//                Boolean validationResult = null;
-//                try {
-//                    validationResult = validateStartBeforeEndTime();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                if(validationResult) {dateAndTimeErrorLabel.setVisible(false);}
-//                else{dateAndTimeErrorLabel.setVisible(true);}
-//            }
-//        });
-//
-//        endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-//            if (!newValue) { //when focus is lost
-//                endTimeHrComboBox.getValue();
-//                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
-//                    Boolean validationResult = null;
-//                    try {
-//                        validationResult = validateStartBeforeEndTime();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    if (validationResult) {
-//                        dateAndTimeErrorLabel.setVisible(false);
-//                    } else {
-//                        dateAndTimeErrorLabel.setVisible(true);
-//                    }
-//                }
-//
-//            }
-//        });
+        endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus is lost
+                Boolean validationResult = null;
+                try {
+                    validationResult = validateStartBeforeEndTime();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(validationResult) {dateAndTimeErrorLabel.setVisible(false);}
+                else{dateAndTimeErrorLabel.setVisible(true);}
+            }
+        });
+
+        endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus is lost
+                endTimeHrComboBox.getValue();
+                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
+                    Boolean validationResult = null;
+                    try {
+                        validationResult = validateStartBeforeEndTime();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (validationResult) { dateAndTimeErrorLabel.setVisible(false);
+                    } else { dateAndTimeErrorLabel.setVisible(true); }
+                }
+            }
+        });
 
 
 
