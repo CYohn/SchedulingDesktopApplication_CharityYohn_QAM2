@@ -79,7 +79,7 @@ public class TimezoneConversion {
         return userBusinessEndLocal;
     }
 
-    public static LocalDateTime convertUserStartTimeToUTC(LocalDateTime userStartDateTime){
+    public static LocalDateTime convertUserStartTimeToUTC(LocalDateTime userStartDateTime) {
         String userTimeZone = TimeZone.getDefault().getID();
         ZoneId userZoneID = ZoneId.of(userTimeZone);
         ZonedDateTime timeInUserTimezone = ZonedDateTime.of(userStartDateTime, userZoneID);
@@ -88,12 +88,24 @@ public class TimezoneConversion {
         return startTimeConvertedToUTC;
     }
 
-    public static LocalDateTime convertUserEndTimeToUTC(LocalDateTime userEndDateTime){
+    public static LocalDateTime convertUserEndTimeToUTC(LocalDateTime userEndDateTime) {
         String userTimeZone = TimeZone.getDefault().getID();
         ZoneId userZoneID = ZoneId.of(userTimeZone);
         ZonedDateTime timeInUserTimezone = ZonedDateTime.of(userEndDateTime, userZoneID);
         ZonedDateTime timeInUTC = timeInUserTimezone.withZoneSameInstant(ZoneId.of("UTC"));
         LocalDateTime endTimeConvertedToUTC = timeInUTC.toLocalDateTime();
-        return endTimeConvertedToUTC;}
+        return endTimeConvertedToUTC;
+    }
 
+
+    public static LocalDateTime convertUTCToUserTime(LocalDateTime UTCTimeFromDB) {
+        String userTimeZone = TimeZone.getDefault().getID();
+        ZoneId UTC = ZoneId.of("UTC");
+        ZonedDateTime timeInUTC = ZonedDateTime.of(UTCTimeFromDB, UTC);
+        ZonedDateTime userTimeConverted = timeInUTC.withZoneSameInstant(ZoneId.of(userTimeZone));
+        LocalDateTime userLocalDateTime = userTimeConverted.toLocalDateTime();
+        return userLocalDateTime;
+
+
+    }
 }

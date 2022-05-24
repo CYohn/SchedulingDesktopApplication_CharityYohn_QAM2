@@ -22,7 +22,7 @@
                 <Font size="30.0" />
             </font>
         </Label>
-        <GridPane fx:id="applicationFormLeft" layoutX="164.0" layoutY="156.0" prefHeight="511.0" prefWidth="498.0">
+        <GridPane fx:id="applicationFormLeft" layoutX="164.0" layoutY="156.0" prefHeight="409.0" prefWidth="482.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="109.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="389.0" />
@@ -38,9 +38,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="25.0" minHeight="2.0" prefHeight="24.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="28.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label text="Title">
@@ -48,13 +45,13 @@
                         <Font size="19.0" />
                     </font>
                 </Label>
-                <TextField fx:id="titleTxtField" promptText="Title" GridPane.columnIndex="1" />
+                <TextField fx:id="titleTxtField" prefHeight="25.0" prefWidth="255.0" promptText="Title" GridPane.columnIndex="1" />
                 <Label text="Location" GridPane.rowIndex="1">
                     <font>
                         <Font size="19.0" />
                     </font>
                 </Label>
-                <TextField fx:id="locationTxtField" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="locationTxtField" prefHeight="25.0" prefWidth="235.0" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label text="Contact" GridPane.rowIndex="2">
                     <font>
                         <Font size="19.0" />
@@ -155,7 +152,7 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <GridPane alignment="CENTER" layoutX="480.0" layoutY="685.0" prefHeight="30.0" prefWidth="289.0">
+        <GridPane alignment="CENTER" layoutX="324.0" layoutY="678.0" prefHeight="30.0" prefWidth="289.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -165,9 +162,39 @@
             </rowConstraints>
             <children>
                 <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="25.0" prefWidth="90.0" text="Save" />
-                <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1" />
+                <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onActionClearForm" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1" />
             </children>
         </GridPane>
       <ComboBox fx:id="userComboBox" layoutX="753.0" layoutY="520.0" prefWidth="150.0" promptText="Select User" />
+      <GridPane layoutX="337.0" layoutY="579.0" prefHeight="74.0" prefWidth="258.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="saveSuccessfulLabel" prefHeight="20.0" prefWidth="230.0" text="Appointment Saved Successfully!" textAlignment="CENTER" textFill="#028654" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="allFieldsRequiredLabel" prefHeight="30.0" prefWidth="266.0" text="Please Complete All Fields" textFill="#b90e05" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="saveErrorLabel" prefHeight="20.0" prefWidth="230.0" text="There Was an Error Saving" textAlignment="CENTER" textFill="#8a0c03">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <Label fx:id="titleLengthAlert" layoutX="68.0" layoutY="186.0" text="Title must be less than 50 characters" textFill="#970101" />
+      <Label fx:id="descriptionLengthAlert" layoutX="28.0" layoutY="538.0" text="Description must be less than 50 characters" textFill="#970101" />
+      <Label fx:id="locationLengthAlert" layoutX="45.0" layoutY="220.0" text="Location must be less than 50 characters" textFill="#970101" />
     </children>
 </AnchorPane>
