@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
+import static implementationsDao.AppointmentsImplement.AppointmentsByCustomerID;
 import static implementationsDao.AppointmentsImplement.getAppointmentsByCustomerID;
 import static implementationsDao.ContactsImplement.getAllContactNames;
 import static implementationsDao.CustomersImplement.getAllCustomers;
@@ -150,12 +151,14 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     }
 
     @FXML
-    Customer onTableClickGetSelectedCustomer(MouseEvent event) {
+    int onTableClickGetSelectedCustomer(MouseEvent event) {
         if(!customerTable.getSelectionModel().isEmpty()){
             selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
-            setSelectedCustomerID(selectedCustomer.getCustomerId());
+            selectedCustomerID = selectedCustomer.getCustomerId();
+            System.out.println("SelectedCustomerID from AddAppointmentController: " + selectedCustomerID);
+            setSelectedCustomerID(selectedCustomerID);
         }
-        return selectedCustomer;
+        return selectedCustomerID;
     }
 
     public void populateStartTimeComboBox() {
@@ -228,57 +231,44 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     }
 
 
-    public boolean overlapValidationA() throws SQLException {
-
-        LocalDateTime startTimeOfNewAppointment = getStartDate();
-        getAppointmentsByCustomerID();
+    public boolean overlapValidationA(LocalDateTime startDate) throws SQLException {
 
         for (Appointment appointment : getAppointmentsByCustomerID) {
             LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
             LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
-            if (((startTimeOfNewAppointment.isAfter(startTimeExistingAppointment)) || (startTimeExistingAppointment.isEqual(startTimeExistingAppointment)))
-                    && (startTimeOfNewAppointment).isBefore(endTimeExistingAppointment)) {
+
+            if (((startDate.isAfter(startTimeExistingAppointment)) || (startDate.isEqual(startTimeExistingAppointment)))
+                    && (startDate).isBefore(endTimeExistingAppointment)) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;
     }
 
-    public boolean overlapValidationB() throws SQLException {
+    public boolean overlapValidationB(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
 
-        LocalDateTime startTimeOfNewAppointment = getStartDate();
-        LocalDateTime endTimeOfNewAppointment = getEndDate();
-        getAppointmentsByCustomerID();
 
         for (Appointment appointment : getAppointmentsByCustomerID) {
             LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
             LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
-            if (((endTimeOfNewAppointment.isBefore(endTimeExistingAppointment)) || (endTimeOfNewAppointment.isEqual(endTimeExistingAppointment)))
-                    && (startTimeOfNewAppointment).isAfter(startTimeExistingAppointment)) {
+
+            if (((endDate.isBefore(endTimeExistingAppointment)) || (endDate.isEqual(endTimeExistingAppointment)))
+                    && (endDate).isAfter(startTimeExistingAppointment)) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;
     }
 
-    public boolean overlapValidationC() throws SQLException {
-
-        LocalDateTime startTimeOfNewAppointment = getStartDate();
-        LocalDateTime endTimeOfNewAppointment = getEndDate();
-        getAppointmentsByCustomerID();
+    public boolean overlapValidationC(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
 
         for (Appointment appointment : getAppointmentsByCustomerID) {
             LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
             LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
-            if (((startTimeOfNewAppointment.isBefore(startTimeExistingAppointment)) || (startTimeOfNewAppointment.isEqual(startTimeExistingAppointment)))
-                    && ((endTimeOfNewAppointment.isAfter(endTimeExistingAppointment)) || (endTimeOfNewAppointment.isEqual(endTimeExistingAppointment)))) {
+
+            if (((startDate.isBefore(startTimeExistingAppointment)) || (startDate.isEqual(startTimeExistingAppointment)))
+                    && ((endDate.isAfter(endTimeExistingAppointment)) || (endDate.isEqual(endTimeExistingAppointment)))) {
                 return true;
-            } else {
-                return false;
             }
         }
         return false;
@@ -286,6 +276,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
 
     @FXML
     void onSaveButtonAction(ActionEvent event) throws Exception {
+        getAppointmentsByCustomerID();
         String title = titleTxtField.getText();
         String location = locationTxtField.getText();
         int contactId = contactComboBox.getValue().getContactId();
@@ -302,19 +293,19 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         // Get times converted to UTC
         LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
         LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
+        System.out.println("Start and end times converted: " + startDateTime +" " + endDateTime);
 
 
         String description = appointmentDescriptionTxtField.getText();
-        int customerId = getSelectedCustomerID();
+        int customerId = customerTable.getSelectionModel().getSelectedItem().getCustomerId();
         int userId = userComboBox.getValue().getUserId();
 
-        setStartDateTimeSelection();
-        setEndDateTimeSelection();
 
-        boolean validationResultStartBeforeEnd= validateStartBeforeEndTime(); //returns true if validation passes
-        boolean validationResultA = overlapValidationA(); // returns false if validation passes
-        boolean validationResultB = overlapValidationB(); // returns false if validation passes
-        boolean validationResultC = overlapValidationC(); // returns false if validation passes
+        boolean validationResultStartBeforeEnd = validateStartBeforeEndTime(); //returns true if validation passes
+        boolean validationResultA = overlapValidationA(startDateTime); // returns false if validation passes
+        boolean validationResultB = overlapValidationB(startDateTime, endDateTime); // returns false if validation passes
+        boolean validationResultC = overlapValidationC(startDateTime, endDateTime); // returns false if validation passes
+        System.out.println("Validation Result Start before end: " + validationResultStartBeforeEnd);
         System.out.println("validationResultA: " + validationResultA);
         System.out.println("validationResultB: " + validationResultB);
         System.out.println("ValidationResultC: " + validationResultC);
@@ -323,6 +314,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
             Appointment appointmentToSave = new Appointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
             AppointmentsImplement.addAppointment(appointmentToSave);
         }
+        else{System.out.println("Conflicting appointment found");}
     }
 
 
@@ -333,6 +325,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
             getAllUserNames();
             getAllCustomers();
             getAppointmentsByCustomerID();
+
         } catch (SQLException e) {
             e.getMessage();
             e.getCause();
@@ -348,6 +341,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         populateStartTimeComboBox();
         populateEndTimeComboBox();
         populateCustomerTable(getAllCustomers);
+
 
         endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus is lost

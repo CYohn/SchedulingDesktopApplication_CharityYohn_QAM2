@@ -106,7 +106,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                 PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
 
-                //countryPreparesStatement.setString(1, country);
+
                 insertPreparedStatement.setString(1, title);
                 insertPreparedStatement.setString(2, description);
                 insertPreparedStatement.setString(3, location);
@@ -155,18 +155,18 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                 while (allAppointmentsResults.next()) {
                     int appointmentId = allAppointmentsResults.getInt("Appointment_ID");
-                    //System.out.println("allAppointmentResults appointmentId: " + appointmentId);
+                    System.out.println("getAppointmentsByCustomerID() appointmentId: " + appointmentId);
 
                     LocalDateTime startDateTime = allAppointmentsResults.getTimestamp("Start").toLocalDateTime();
-                    //System.out.println("allAppointmentsResults startDateTime: " + startDateTime);
+                    System.out.println("getAppointmentsByCustomerID() startDateTime: " + startDateTime);
 
                     LocalDateTime endDateTime = allAppointmentsResults.getTimestamp("End").toLocalDateTime();
-                    //System.out.println("allAppointmentsResults endDateTime: " + endDateTime);
+                    System.out.println("getAppointmentsByCustomerID() endDateTime: " + endDateTime);
 
                     Appointment appointmentByCustomerId = new Appointment(appointmentId, startDateTime, endDateTime);
 
                     AppointmentsByCustomerID.add(appointmentByCustomerId);
-                    //System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
+                    System.out.println("Appointment object populated in getAllAppointments list: " + appointmentByCustomerId);
                 }
             }
             else{System.out.println("ResultSet was null");}

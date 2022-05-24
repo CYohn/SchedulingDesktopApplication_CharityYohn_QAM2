@@ -15,18 +15,17 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1175.0"
-            xmlns="http://javafx.com/javafx/18" fx:controller="controllers.AddAppointmentController">
+<AnchorPane prefHeight="800.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddAppointmentController">
     <children>
         <Label layoutX="468.0" layoutY="30.0" text="Add Appointment">
             <font>
-                <Font size="30.0"/>
+                <Font size="30.0" />
             </font>
         </Label>
         <GridPane fx:id="applicationFormLeft" layoutX="164.0" layoutY="156.0" prefHeight="511.0" prefWidth="498.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="109.0"/>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="389.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="109.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="389.0" minWidth="10.0" prefWidth="389.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -140,7 +139,7 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="196.0" prefWidth="289.0">
                     <children>
-                        <TableView fx:id="customerTable" layoutX="6.0" layoutY="6.0" prefHeight="239.0" prefWidth="281.0">
+                        <TableView fx:id="customerTable" layoutX="6.0" layoutY="6.0" onMouseClicked="#onTableClickGetSelectedCustomer" prefHeight="239.0" prefWidth="281.0">
                             <columns>
                                 <TableColumn fx:id="customerNameColumn" prefWidth="104.0" text="Name" />
                                 <TableColumn fx:id="customerPhoneColumn" prefWidth="91.0" text="Phone" />
@@ -165,8 +164,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="25.0"
-                        prefWidth="90.0" text="Save"/>
+                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="25.0" prefWidth="90.0" text="Save" />
                 <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1" />
             </children>
         </GridPane>
