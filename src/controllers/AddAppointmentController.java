@@ -376,7 +376,7 @@ public  void overlapAlert(){
     infoRequiredAlert.setTitle("An Overlapping Appointment Was Found");
     infoRequiredAlert.setHeaderText("This appointment overlaps with appointment ID: " + overlapId);
     infoRequiredAlert.setContentText("Beginning on: " + overlapStartDate + " at " + overlapStartTime +
-            "and ending on: " + overlapEndDate + " at " + overlapEndTime);
+            " and ending on: " + overlapEndDate + " at " + overlapEndTime);
     infoRequiredAlert.showAndWait();
 }
 
@@ -511,6 +511,7 @@ public  void overlapAlert(){
             if (!newValue) { //when focus is lost
                 Boolean validationResult = null;
                 saveButton.setDisable(false);
+                saveErrorLabel.setVisible(false);
                 endTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 try {
                     validationResult = validateStartBeforeEndTime();
@@ -526,6 +527,7 @@ public  void overlapAlert(){
             if (!newValue) { //when focus is lost
                 endTimeHrComboBox.getValue();
                 saveButton.setDisable(false);
+                saveErrorLabel.setVisible(false);
                 endDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
                     Boolean validationResult = null;
