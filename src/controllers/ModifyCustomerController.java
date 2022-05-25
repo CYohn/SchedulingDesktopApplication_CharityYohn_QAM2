@@ -244,7 +244,7 @@ public class ModifyCustomerController implements Initializable {
             getDBResponseResponse();
 
             saveButton.setDisable(true);
-            getAllCustomers();
+            CustomersImplement.getAllCustomers();
             populateCustomerTable(getAllCustomers);
         }
     }
