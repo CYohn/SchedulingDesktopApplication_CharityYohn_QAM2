@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 
 import static implementationsDao.CustomersImplement.addCustomer;
 
+
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
 
 public class AddCustomerController implements Initializable {
@@ -276,30 +277,27 @@ public class AddCustomerController implements Initializable {
 
             Customer customerToSave = new Customer(customerName,
                     customerAddress, customerPostalCode, customerPhone,customerCountry, customerDivisionId);
-            CustomersImplement.customersToSave.add(customerToSave);
 
             System.out.println("Printing out customers to save list (from the customers controller onSave method):");
-            addCustomer(CustomersImplement.customersToSave);
-            getAddCustomerResponse();
 
             saveButton.setDisable(true);
 
+            int databaseResponseToAddCustomer = addCustomer(customerToSave);
+            System.out.println("databaseResponseToAddCustomer: " + databaseResponseToAddCustomer);
+            if (databaseResponseToAddCustomer == 1){
+                saveSuccessfulLabel.setVisible(true);
+                System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
+
+            }
+            else {
+                saveErrorLabel.setVisible(true);
+                System.out.println("Customer not added");}
         }
     }
 
-    public void getAddCustomerResponse() throws SQLException {
-        int databaseResponseToAddCustomer = addCustomer(CustomersImplement.customersToSave);
-        System.out.println("databaseResponseToAddCustomer: " + databaseResponseToAddCustomer);
-        if (databaseResponseToAddCustomer == 1){
-            saveSuccessfulLabel.setVisible(true);
-            System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
 
-        }
-        else {
-            saveErrorLabel.setVisible(true);
-            System.out.println("Customer not added");}
 
-    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

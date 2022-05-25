@@ -25,7 +25,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
     public static ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
 
-    public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
+    //public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
 
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement updateCustomersPreparedStatement;
@@ -51,18 +51,18 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
     }
 
 
-    public static int addCustomer(ObservableList<Customer> customersToSave) throws SQLException {
+    public static int addCustomer(Customer customerToSave) throws SQLException {
         int databaseResponseToUpdate = 0;
         try {
-            for (Customer customer : customersToSave) {
-                String name = customer.getCustomerName();
-                String address = customer.getCustomerAddress();
-                String postalCode = customer.getCustomerPostalCode();
-                String phone = customer.getCustomerPhone();
-                String country = customer.getCountry();
-                int division = customer.getCustomerDivisionId();
 
-                System.out.println("Customer to send to the DB: " + customer);
+                String name = customerToSave.getCustomerName();
+                String address = customerToSave.getCustomerAddress();
+                String postalCode = customerToSave.getCustomerPostalCode();
+                String phone = customerToSave.getCustomerPhone();
+                String country = customerToSave.getCountry();
+                int division = customerToSave.getCustomerDivisionId();
+
+                System.out.println("Customer to send to the DB: " + customerToSave);
 
 
                 String insertCustomerIntoDB = "INSERT INTO client_schedule.customers (" +
@@ -88,7 +88,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                     return databaseResponseToUpdate;
                 }
 
-            }
+
         } catch (SQLException e) {
             System.out.println("addCustomer encountered an error in the CustomersImplement file:");
             e.getCause();
