@@ -66,8 +66,6 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private TextField custNameTxtField;
     @FXML
-    private TextField searchTxtField;
-    @FXML
     private TextField postalCodeTxtField;
     @FXML
     private TextField addressTxtField;

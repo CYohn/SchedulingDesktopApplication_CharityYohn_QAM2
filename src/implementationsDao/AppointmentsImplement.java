@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 public class AppointmentsImplement implements AppointmentsInterface {
 
-    public static ObservableList<Appointment> getAllAppointments = AppointmentsInterface.getAllAppointments();
+    public static ObservableList<Appointment> getAllAppointments = FXCollections.observableArrayList();
     public static ObservableList<Appointment> AppointmentsByCustomerID = FXCollections.observableArrayList();
 
 
@@ -21,7 +21,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
         String allAppointmentsQuery = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, customers.Customer_ID, users.User_ID, contacts.Contact_ID" +
                 " FROM client_schedule.appointments, customers, users, contacts " +
                 " WHERE appointments.Customer_ID = customers.Customer_ID " +
-                " AND appointment.User_ID = users.User_ID;" +
+                " AND appointments.User_ID = users.User_ID" +
                 " AND appointments.Contact_ID = contacts.Contact_ID";
         PreparedStatement getAppointmentsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allAppointmentsQuery);
         System.out.println("getAppointmentsPreparedStatement was successful in AppointmentsImplement.getAllAppointments()");
@@ -66,7 +66,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                     Appointment appointment = new Appointment (appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
                     getAllAppointments.add(appointment);
-                    //System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
+                    System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
                 }
             }
             else{System.out.println("ResultSet was null");}

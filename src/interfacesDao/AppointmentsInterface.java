@@ -14,9 +14,7 @@ import java.util.ListIterator;
 public interface AppointmentsInterface {
     ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
-    static ObservableList<Appointment> getAllAppointments() {
-        return allAppointments;
-    }
+
 
     public static int addAppointment(Appointment appointmentToAdd){return 0;};
 
