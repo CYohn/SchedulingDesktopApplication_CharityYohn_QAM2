@@ -195,6 +195,7 @@ public class ModifyCustomerController implements Initializable {
 
                 while (divisionsResults.next()) {
                     String division = divisionsResults.getString("Division");
+                    divisionNames.clear();
                     divisionNames.add(division); //Add divisions to the ObservableList
                     stateComboBox.setItems(divisionNames); //Populate the ComboBox
                 }
@@ -358,6 +359,7 @@ public class ModifyCustomerController implements Initializable {
         hideLengthAlerts();
 
         try {
+            getAllCustomers.clear();
             getAllCustomers();
         } catch (SQLException e) {
             e.printStackTrace();

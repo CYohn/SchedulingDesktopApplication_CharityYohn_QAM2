@@ -102,7 +102,8 @@ public class ModifyAppointmentController implements Initializable {
                         Appointment convertedTimesAppointment = new Appointment
                                 (appointmentId, title, description, location, type, startDate, startTime,
                                         endDate, endTime, customerId, userId, contactId);
-                        appointmentsWithConvertedTimes.addAll(convertedTimesAppointment);
+
+                        appointmentsWithConvertedTimes.add(convertedTimesAppointment);
                 }
 
                 appointmentTable.setItems(appointmentsWithConvertedTimes);
@@ -143,6 +144,7 @@ public class ModifyAppointmentController implements Initializable {
 
 
                 try {
+                        allAppointments.clear();
                         getAllAppointments();
                 } catch (SQLException e) {
                         e.printStackTrace();

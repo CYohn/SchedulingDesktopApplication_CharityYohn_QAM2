@@ -194,8 +194,10 @@ public class TabbedPaneController implements Initializable {
                 //FXMLLoader loader = new FXMLLoader();
                 loader.set(new FXMLLoader());
                 try {
+                    System.out.println("********Beginning Reloading of Scheduling Tab********");
                     AnchorPane schedulingAnchor = loader.get().load(getClass().getResource("/views/ScheduleView.fxml"));
                     schedulingTab.setContent(schedulingAnchor);
+                    System.out.println("********Finished Reloading Scheduling Tab********");
 
                 } catch (IOException e) {
                     System.out.println("I/O exception SchedulingView not found (Tabbed pane controller fxml loader)");
@@ -210,8 +212,10 @@ public class TabbedPaneController implements Initializable {
                 //FXMLLoader loader = new FXMLLoader();
                 loader.set(new FXMLLoader());
                 try {
+                    System.out.println("********Beginning Reloading of Add Customer Tab********");
                     AnchorPane addCustomerAnchor = loader.get().load(getClass().getResource("/views/AddCustomerView.fxml"));
                     addCustomerTab.setContent(addCustomerAnchor);
+                    System.out.println("********Finished Reloading Add Customer Tab********");
 
                 } catch (IOException e) {
                     System.out.println("I/O exception AddCustomerView not found (Tabbed pane controller fxml loader)");
@@ -226,8 +230,10 @@ public class TabbedPaneController implements Initializable {
                 //FXMLLoader loader = new FXMLLoader();
                 loader.set(new FXMLLoader());
                 try {
+                    System.out.println("********Beginning Reloading of Modify Customer Tab********");
                     AnchorPane modifyCustomerAnchor = loader.get().load(getClass().getResource("/views/ModifyCustomerView.fxml"));
                     modifyCustomerTab.setContent(modifyCustomerAnchor);
+                    System.out.println("********Finished Reloading Modify Customer Tab********");
 
                 } catch (IOException e) {
                     System.out.println("I/O exception ModifyCustomerView not found (Tabbed pane controller fxml loader)");
@@ -242,8 +248,10 @@ public class TabbedPaneController implements Initializable {
                 //FXMLLoader loader = new FXMLLoader();
                 loader.set(new FXMLLoader());
                 try {
+                    System.out.println("********Beginning Reloading of Add Appointment Tab********");
                     AnchorPane addAppointmentAnchor = loader.get().load(getClass().getResource("/views/AddAppointmentView.fxml"));
                     addAppointmentTab.setContent(addAppointmentAnchor);
+                    System.out.println("********Finished Reloading Add Appointment Tab********");
 
                 } catch (IOException e) {
                     System.out.println("I/O exception AddAppointmentView not found (Tabbed pane controller fxml loader)");
@@ -258,8 +266,10 @@ public class TabbedPaneController implements Initializable {
                 //FXMLLoader loader = new FXMLLoader();
                 loader.set(new FXMLLoader());
                 try {
+                    System.out.println("********Beginning Reloading of Modify Appointment Tab********");
                     AnchorPane modifyAppointmentAnchor = loader.get().load(getClass().getResource("/views/ModifyAppointmentView.fxml"));
                     modifyAppointmentTab.setContent(modifyAppointmentAnchor);
+                    System.out.println("********Finished Reloading Modify Appointment Tab********");
 
                 } catch (IOException e) {
                     System.out.println("I/O exception AddAppointmentView not found (Tabbed pane controller fxml loader)");
@@ -274,8 +284,10 @@ public class TabbedPaneController implements Initializable {
                 //FXMLLoader loader = new FXMLLoader();
                 loader.set(new FXMLLoader());
                 try {
+                    System.out.println("********Beginning Reloading of Reports Tab********");
                     AnchorPane reportsAnchor = loader.get().load(getClass().getResource("/views/ReportsView.fxml"));
                     reportsTab.setContent(reportsAnchor);
+                    System.out.println("********Finished Reloading Reports Tab********");
 
                 } catch (IOException e) {
                     System.out.println("I/O exception AddAppointmentView not found (Tabbed pane controller fxml loader)");

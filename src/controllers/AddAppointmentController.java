@@ -479,8 +479,10 @@ public  void overlapAlert(){
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            getAllCustomers.clear();
             getAllContactNames();
             getAllUserNames();
+            getAllCustomers();
             getAppointmentsByCustomerID();
 
         } catch (SQLException e) {
