@@ -376,8 +376,6 @@ public class ModifyCustomerController implements Initializable {
         saveSuccessfulLabel.setVisible(false);
         saveButton.setDisable(false);
 
-
-
     }
 
 

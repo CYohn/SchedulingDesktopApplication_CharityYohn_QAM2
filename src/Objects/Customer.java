@@ -50,6 +50,11 @@ public class Customer {
 
     }
 
+    @Override
+    public String toString(){
+        return ("ID: " + customerId + ",   Name: " + customerName);
+    }
+
     public int getCustomerId() {
         return customerId;
     }

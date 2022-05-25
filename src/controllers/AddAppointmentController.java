@@ -90,13 +90,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     private ComboBox<LocalTime> endTimeHrComboBox;
 
     @FXML
-    private ComboBox<LocalTime> endTimeMinComboBox;
-
-    @FXML
     private ComboBox<LocalTime> startTimeHrComboBox;
-
-    @FXML
-    private ComboBox<LocalTime> startTimeMinComboBox;
 
     @FXML
     private ComboBox<String> typeComboBox;
