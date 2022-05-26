@@ -123,7 +123,7 @@
             </Label>
             <TextArea fx:id="appointmentDescriptionTxtField" prefHeight="76.0" prefWidth="243.0" promptText="Write a description for the appointment" GridPane.columnIndex="4" GridPane.rowIndex="9" />
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonAction" prefHeight="25.0" prefWidth="90.0" text="Update" GridPane.columnIndex="2" GridPane.rowIndex="12" />
-            <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="delete" textAlignment="RIGHT" GridPane.columnIndex="4" GridPane.rowIndex="12" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onActionDeleteAppointment" prefHeight="25.0" prefWidth="90.0" text="delete" textAlignment="RIGHT" GridPane.columnIndex="4" GridPane.rowIndex="12" />
             <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onActionClearForm" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="3" GridPane.rowIndex="12" />
             <Label fx:id="titleLengthAlert" prefHeight="17.0" prefWidth="272.0" text="Title must be less than 50 characters" textFill="#970101" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="locationLengthAlert" text="Location must be less than 50 characters" textFill="#970101" GridPane.columnIndex="1" GridPane.rowIndex="4" />
