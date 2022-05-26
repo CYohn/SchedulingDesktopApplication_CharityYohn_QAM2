@@ -390,7 +390,7 @@ public class ModifyCustomerController implements Initializable {
     void onActionDeleteCustomer(ActionEvent event) throws SQLException {
         deleteAlert();
     }
-
+    @FXML
     void clearForm(MouseEvent event) {
         custNameTxtField.clear();
         addressTxtField.clear();
