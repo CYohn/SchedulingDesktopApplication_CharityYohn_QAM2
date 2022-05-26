@@ -154,22 +154,28 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
+          <RowConstraints />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="saveErrorLabel" prefHeight="20.0" prefWidth="324.0" text="There Was an Error Saving" textAlignment="CENTER" textFill="#8a0c03" GridPane.rowIndex="1">
+            <Label fx:id="saveErrorLabel" prefHeight="20.0" prefWidth="324.0" text="There Was an Error Saving" textAlignment="CENTER" textFill="#8a0c03" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="allFieldsRequiredLabel" prefHeight="30.0" prefWidth="324.0" text="Please Complete All Fields" textFill="#b90e05" GridPane.rowIndex="2">
+            <Label fx:id="allFieldsRequiredLabel" prefHeight="30.0" prefWidth="324.0" text="Please Complete All Fields" textFill="#b90e05" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="saveSuccessfulLabel" prefHeight="20.0" prefWidth="330.0" text="Appointment Updated Successfully!" textAlignment="CENTER" textFill="#028654">
+            <Label fx:id="saveSuccessfulLabel" prefHeight="20.0" prefWidth="330.0" text="Appointment Updated Successfully!" textAlignment="CENTER" textFill="#028654" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="deleteSuccessfulLabel" prefHeight="20.0" prefWidth="330.0" text="Appointment Was Successfully Deleted!" textAlignment="CENTER" textFill="#028654">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

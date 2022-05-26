@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -22,8 +23,9 @@ public interface AppointmentsInterface {
         return 0;
     }
 
-    public void deleteAppointment (int appointmentId);
-
+    public static int deleteAppointment(int appointmentId) throws SQLException {
+        return 0;
+    }
 
 
 }

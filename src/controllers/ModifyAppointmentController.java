@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -109,6 +110,7 @@ public class ModifyAppointmentController implements Initializable {
         @FXML private Label allFieldsRequiredLabel;
         @FXML private Label descriptionLengthAlert;
         @FXML private Label aptNumberLabel;
+        @FXML private Label deleteSuccessfulLabel;
 
         public String getSelectedContactName() {
                 return selectedContactName;
@@ -561,10 +563,42 @@ public class ModifyAppointmentController implements Initializable {
                 }
         }
 
+        public void deleteAlert() throws SQLException {
+                int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
+                LocalDate startDate = startDatePicker.getValue();
+                LocalTime startTime = startTimeHrComboBox.getValue();
+                String customerName = customerComboBox.getSelectionModel().getSelectedItem().getCustomerName();
+                Alert deleteAlert = new Alert(Alert.AlertType.WARNING);
+                deleteAlert.setTitle("This will permanently delete appointment " + appointmentId);
+                deleteAlert.setHeaderText("Are you sur you want to delete appointment " + appointmentId + " ?");
+                deleteAlert.setContentText("Appointment for Customer: " + customerName +
+                        " Starting on " + startDate + " at " + startTime );
+                //deleteAlert.showAndWait();
 
+                ButtonType yesButton = new ButtonType("Delete Appointment");
+                ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                deleteAlert.getButtonTypes().setAll(yesButton, cancelButton);
+
+                Optional<ButtonType> result = deleteAlert.showAndWait();
+                if(result.get() == yesButton)
+                {
+                        AppointmentsImplement.deleteAppointment(appointmentId);
+                        deleteSuccessfulLabel.setVisible(true);
+                        deleteButton.setDisable(true);
+                        deleteAlert.close();
+
+                }
+                else if(result.get() == cancelButton)
+                {
+                        deleteAlert.close();
+                }
+        }
 
         @FXML
-        void onActionDeleteAppointment(ActionEvent event) {
+        void onActionDeleteAppointment(ActionEvent event) throws SQLException {
+                deleteAlert();
+
 
         }
 
@@ -579,6 +613,7 @@ public class ModifyAppointmentController implements Initializable {
                 locationLengthAlert.setVisible(false);
                 allFieldsRequiredLabel.setVisible(false);
                 descriptionLengthAlert.setVisible(false);
+                deleteSuccessfulLabel.setVisible(false);
 
                 //Populate the comboBoxes
                 contactComboBox.setItems(contactNames);

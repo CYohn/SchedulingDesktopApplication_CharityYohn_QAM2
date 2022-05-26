@@ -226,9 +226,12 @@ public class AppointmentsImplement implements AppointmentsInterface {
         return dbResponse;
     }
 
-    @Override
-    public void deleteAppointment(int appointmentId) {
-
+    //@Override
+    public static int deleteAppointment(int appointmentId) throws SQLException {
+        String deleteSql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentId +";";
+        PreparedStatement updateAppointmentPreparedStatement = DatabaseConnection.getConnection().prepareStatement(deleteSql);
+        int dbResponse = updateAppointmentPreparedStatement.executeUpdate(); //returns number of rows affected
+        return dbResponse;
     }
 
 
