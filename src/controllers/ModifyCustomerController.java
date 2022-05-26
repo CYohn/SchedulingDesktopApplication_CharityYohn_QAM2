@@ -1,6 +1,7 @@
 package controllers;
 
 import Objects.Customer;
+import implementationsDao.AppointmentsImplement;
 import implementationsDao.CountriesImplement;
 import implementationsDao.CustomersImplement;
 import javafx.collections.FXCollections;
@@ -21,8 +22,11 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -79,7 +83,7 @@ public class ModifyCustomerController implements Initializable {
 
     //Form labels
     @FXML
-    private Label customerRemovedLabel;
+    private Label deleteSuccessfulLabel;
     @FXML
     private Label updateSuccessfulLabel;
     @FXML
@@ -352,10 +356,45 @@ public class ModifyCustomerController implements Initializable {
         infoRequiredAlert.showAndWait();
     }
 
+    public void deleteAlert() throws SQLException {
+        int customerId = allCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
+        String customerName = allCustomersTable.getSelectionModel().getSelectedItem().getCustomerName();
+        Alert deleteAlert = new Alert(Alert.AlertType.WARNING);
+        deleteAlert.setTitle("This will permanently delete the customer and ALL customer appointments ");
+        deleteAlert.setHeaderText("Are you sure you want to delete customer: " + customerName + "  ID: " + customerId +" ?");
+        deleteAlert.setContentText("All customer appointments will also be permanently deleted." );
+        //deleteAlert.showAndWait();
+
+        ButtonType yesButton = new ButtonType("Delete Customer");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        deleteAlert.getButtonTypes().setAll(yesButton, cancelButton);
+
+        Optional<ButtonType> result = deleteAlert.showAndWait();
+        if(result.get() == yesButton)
+        {
+            AppointmentsImplement.deleteAppointmentByCustomerId(customerId);
+            CustomersImplement.deleteCustomer(customerId);
+            deleteSuccessfulLabel.setVisible(true);
+            deleteCustButton.setDisable(true);
+            deleteAlert.close();
+
+        }
+        else if(result.get() == cancelButton)
+        {
+            deleteAlert.close();
+        }
+    }
+
+    @FXML
+    void onActionDeleteCustomer(ActionEvent event) throws SQLException {
+        deleteAlert();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ModifyCustomerController initialized");
-        customerRemovedLabel.setVisible(false);
+        deleteSuccessfulLabel.setVisible(false);
         hideLengthAlerts();
 
         try {
@@ -375,6 +414,20 @@ public class ModifyCustomerController implements Initializable {
         saveErrorLabel.setVisible(false);
         saveSuccessfulLabel.setVisible(false);
         saveButton.setDisable(false);
+
+
+        allCustomersTable.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (newValue) { //when focused
+                saveSuccessfulLabel.setVisible(false);
+                saveErrorLabel.setVisible(false);
+                saveButton.setDisable(false);
+                allFieldsRequiredLabel.setVisible(false);
+                deleteSuccessfulLabel.setVisible(false);
+                deleteCustButton.setDisable(false);
+                saveButton.setDisable(false);
+                allCustomersTable.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+            }
+        });
 
     }
 

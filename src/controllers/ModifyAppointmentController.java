@@ -334,6 +334,7 @@ public class ModifyAppointmentController implements Initializable {
                 appointmentTable.getSelectionModel().clearSelection();
                 userComboBox.getSelectionModel().clearSelection();
                 customerComboBox.getSelectionModel().clearSelection();
+                deleteSuccessfulLabel.setVisible(false);
         }
 
         public boolean validateStartBeforeEndTime() throws Exception {
@@ -598,8 +599,6 @@ public class ModifyAppointmentController implements Initializable {
         @FXML
         void onActionDeleteAppointment(ActionEvent event) throws SQLException {
                 deleteAlert();
-
-
         }
 
 

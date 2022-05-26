@@ -113,10 +113,10 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="deleteCustButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Delete Customer" GridPane.columnIndex="1" />
+                        <Button fx:id="deleteCustButton" mnemonicParsing="false" onAction="#onActionDeleteCustomer" prefHeight="25.0" prefWidth="120.0" text="Delete Customer" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
-                <Label fx:id="customerRemovedLabel" text="Customer Removed From Database" textFill="#9e0000" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                <Label fx:id="deleteSuccessfulLabel" text="Customer Removed From Database" textFill="#9e0000" GridPane.columnIndex="1" GridPane.rowIndex="14">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>

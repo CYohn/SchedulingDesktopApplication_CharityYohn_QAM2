@@ -185,42 +185,15 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
 
     public static int deleteCustomer(int customerId) throws SQLException {
-        String deleteSql = "DELETE FROM customers WHERE Customer_ID = ?";
-        PreparedStatement deleteCustomersPreparedStatement = DatabaseConnection.makePreparedStatement(deleteSql, connection);
-        deleteCustomersPreparedStatement.setInt(1, customerId);
-        int dbResponse = deleteCustomersPreparedStatement.executeUpdate(); // returns the number of rows affected
+        String deleteSql = "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerId +";";
+        PreparedStatement deleteCustomerPreparedStatement = DatabaseConnection.getConnection().prepareStatement(deleteSql);
+        int dbResponse = deleteCustomerPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
     }
 
-    public static void updateCustomer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) {
-    }
 
 
-//    public static String getDivisionName(ObservableList<Customer> getAllCustomers) throws SQLException {
-//        String divisionName = null;
-//        for (Customer customer : getAllCustomers) {
-//
-//            String searchForDivisionQuery = "SELECT from Division first_level_divisions.Division " +
-//                    "WHERE customers.Division_ID = first_level_divisions.Division_ID";
-//            PreparedStatement searchForDivision = DatabaseConnection.makePreparedStatement(searchForDivisionQuery, connection);
-//            System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
-//            ResultSet divisionNameResults;
-//
-//            try {
-//
-//                divisionNameResults = searchForDivision.executeQuery();
-//
-//                while (divisionNameResults.next()) {
-//                    divisionName = divisionNameResults.getString("Division");
-//                    System.out.println("divisionResults in CustomerImplement.getDivisionName(): " + divisionName);
-//                    return divisionName;
-//                }
-//            } catch (SQLException throwables) {
-//                throwables.printStackTrace();
-//            }
-//
-//        }
-//        return divisionName;
-//    }
+
+
 
 }
