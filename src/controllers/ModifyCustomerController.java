@@ -391,6 +391,22 @@ public class ModifyCustomerController implements Initializable {
         deleteAlert();
     }
 
+    void clearForm(MouseEvent event) {
+        custNameTxtField.clear();
+        addressTxtField.clear();
+        postalCodeTxtField.clear();
+        custPhoneTxtField.clear();
+        stateComboBox.getSelectionModel().clearSelection();
+        countryComboBox.getSelectionModel().clearSelection();
+        allCustomersTable.getSelectionModel().clearSelection();
+        saveSuccessfulLabel.setVisible(false);
+        saveErrorLabel.setVisible(false);
+        deleteSuccessfulLabel.setVisible(false);
+        allFieldsRequiredLabel.setVisible(false);
+        hideLengthAlerts();
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ModifyCustomerController initialized");
