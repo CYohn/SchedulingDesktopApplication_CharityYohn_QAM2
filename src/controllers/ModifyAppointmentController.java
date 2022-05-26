@@ -563,6 +563,12 @@ public class ModifyAppointmentController implements Initializable {
 
 
 
+        @FXML
+        void onActionDeleteAppointment(ActionEvent event) {
+
+        }
+
+
 
         @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {

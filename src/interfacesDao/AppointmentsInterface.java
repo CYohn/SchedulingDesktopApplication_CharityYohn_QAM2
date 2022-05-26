@@ -22,7 +22,7 @@ public interface AppointmentsInterface {
         return 0;
     }
 
-    public void deleteAppointment();
+    public void deleteAppointment (int appointmentId);
 
 
 

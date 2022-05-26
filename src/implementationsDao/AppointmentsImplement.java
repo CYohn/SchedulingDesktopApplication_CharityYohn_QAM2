@@ -227,7 +227,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
     }
 
     @Override
-    public void deleteAppointment() {
+    public void deleteAppointment(int appointmentId) {
 
     }
 
