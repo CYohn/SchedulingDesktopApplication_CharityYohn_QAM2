@@ -138,6 +138,8 @@ public class AppointmentsImplement implements AppointmentsInterface {
         return databaseResponseToUpdate;
     }
 
+
+
     public static void getAppointmentsByCustomerID() throws SQLException {
         String selectedCustomerId = String.valueOf(AddAppointmentController.getSelectedCustomerID());
         String allAppointmentsQuery = "SELECT Appointment_ID, Start, End" +
@@ -181,9 +183,47 @@ public class AppointmentsImplement implements AppointmentsInterface {
     }
 
 
-    @Override
-    public void updateAppointment() {
+    //@Override
+    public static int updateAppointment(Appointment appointment) throws SQLException {
 
+        int appointmentId = appointment.getAppointmentId();
+        String title = appointment.getTitle();
+        String description = appointment.getDescription();
+        String location = appointment.getLocation();
+        String type = appointment.getType();
+        Timestamp startDateTime = Timestamp.valueOf(appointment.getStartDateTime());
+        Timestamp endDateTime = Timestamp.valueOf(appointment.getEndDateTime());
+        int userId = appointment.getUserId();
+        int contactId = appointment.getContactId();
+        int customerId = appointment.getCustomerId();
+
+        String updateSql = "UPDATE  client_schedule.appointments SET " +
+                "Appointment_ID = ?, " +
+                "Title = ?, " +
+                "Description = ?, " +
+                "Location = ?, " +
+                "Type = ?, " +
+                "Start = ?, " +
+                "End = ?, " +
+                "Customer_ID = ?, " +
+                "User_ID = ?, " +
+                "Contact_ID = ? " +
+        "WHERE Appointment_ID = " + appointmentId;
+        PreparedStatement updateAppointmentPreparedStatement = DatabaseConnection.getConnection().prepareStatement(updateSql);
+
+        updateAppointmentPreparedStatement.setInt(1, appointmentId);
+        updateAppointmentPreparedStatement.setString(2, title);
+        updateAppointmentPreparedStatement.setString(3, description);
+        updateAppointmentPreparedStatement.setString(4, location);
+        updateAppointmentPreparedStatement.setString(5, type);
+        updateAppointmentPreparedStatement.setTimestamp(6, startDateTime);
+        updateAppointmentPreparedStatement.setTimestamp(7, endDateTime);
+        updateAppointmentPreparedStatement.setInt(8, customerId);
+        updateAppointmentPreparedStatement.setInt(9, userId);
+        updateAppointmentPreparedStatement.setInt(10, contactId);
+
+        int dbResponse = updateAppointmentPreparedStatement.executeUpdate(); //returns number of rows affected
+        return dbResponse;
     }
 
     @Override

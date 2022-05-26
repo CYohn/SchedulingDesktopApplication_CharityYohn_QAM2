@@ -18,7 +18,9 @@ public interface AppointmentsInterface {
 
     public static int addAppointment(Appointment appointmentToAdd){return 0;};
 
-    public void updateAppointment();
+    public static int updateAppointment(Appointment appointment) {
+        return 0;
+    }
 
     public void deleteAppointment();
 

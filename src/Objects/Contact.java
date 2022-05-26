@@ -20,7 +20,7 @@ public class Contact {
 
     @Override
     public String toString(){
-        return (contactName);
+        return ("ID: " + contactId + ",   Name: " + contactName);
     }
 
     public int getContactId() {

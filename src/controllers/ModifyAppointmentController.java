@@ -4,6 +4,7 @@ import Objects.Appointment;
 import Objects.Contact;
 import Objects.Customer;
 import Objects.User;
+import implementationsDao.AppointmentsImplement;
 import implementationsDao.ContactsImplement;
 import implementationsDao.CustomersImplement;
 import implementationsDao.UsersImplement;
@@ -12,14 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import utilities.TimezoneConversion;
@@ -33,6 +27,7 @@ import java.util.ResourceBundle;
 
 
 import static implementationsDao.AppointmentsImplement.getAllAppointments;
+import static implementationsDao.AppointmentsImplement.getAppointmentsByCustomerID;
 import static java.lang.String.valueOf;
 import static utilities.TimezoneConversion.convertUTCToUserTime;
 
@@ -46,6 +41,32 @@ public class ModifyAppointmentController implements Initializable {
         ObservableList<Appointment>allAppointments = getAllAppointments;
         ObservableList<Appointment>appointmentsWithConvertedTimes = FXCollections.observableArrayList();
         ObservableList<Customer> allCustomers = CustomersImplement.getAllCustomers;
+        private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.AppointmentsByCustomerID;
+
+        private String selectedContactName;
+        private String selectedCustomerName;
+        private String selectedUserName;
+        private static LocalDateTime startDate;
+        private static LocalDateTime endDate;
+        Appointment overlappingAppointment;
+        private static int selectedCustomerID;
+
+
+        public static LocalDateTime getStartDate() {
+                return startDate;
+        }
+
+        public static void setStartDate(LocalDateTime startDate) {
+                ModifyAppointmentController.startDate = startDate;
+        }
+
+        public static LocalDateTime getEndDate() {
+                return endDate;
+        }
+
+        public static void setEndDate(LocalDateTime endDate) {
+                ModifyAppointmentController.endDate = endDate;
+        }
 
         @FXML private TableView<Appointment> appointmentTable;
         @FXML private TableColumn<Appointment, Integer> aptContactColumn;
@@ -89,9 +110,80 @@ public class ModifyAppointmentController implements Initializable {
         @FXML private Label descriptionLengthAlert;
         @FXML private Label aptNumberLabel;
 
+        public String getSelectedContactName() {
+                return selectedContactName;
+        }
+
+        public void setSelectedContactName(String selectedContactName) {
+                this.selectedContactName = selectedContactName;
+        }
+
+        public String getSelectedCustomerName() {
+                return selectedCustomerName;
+        }
+
+        public void setSelectedCustomerName(String selectedCustomerName) {
+                this.selectedCustomerName = selectedCustomerName;
+        }
+
+        public String getSelectedUserName() {
+                return selectedUserName;
+        }
+
+        public void setSelectedUserName(String selectedUserName) {
+                this.selectedUserName = selectedUserName;
+        }
+
+
+        public void setOverlappingAppointment(Appointment overlappingAppointment) {
+                this.overlappingAppointment = overlappingAppointment;
+        }
+
+        public static void setSelectedCustomerID(int selectedCustomerID) {
+                ModifyAppointmentController.selectedCustomerID = selectedCustomerID;
+        }
+
         public ModifyAppointmentController() throws SQLException {
         }
 
+        public Contact returnSelectedContactFromID(int contactId){
+                Contact selectedContact = null;
+                for (Contact contact: contactNames){
+                        if (contact.getContactId() == contactId){
+                                String contactName = contact.getContactName();
+                                setSelectedContactName(contactName);
+                                selectedContact = contact;
+                                return selectedContact;
+                        }
+                }
+                return null;
+        }
+
+        public Customer returnSelectedCustomerFromID(int customerId){
+                Customer selectedCustomer = null;
+                for (Customer customer: allCustomers){
+                        if (customer.getCustomerId() == customerId){
+                                String customerName = customer.getCustomerName();
+                                setSelectedCustomerName(customerName);
+                                selectedCustomer = customer;
+                                return selectedCustomer;
+                        }
+                }
+                return null;
+        }
+
+        public User returnSelectedUserFromID(int userId){
+                User selectedUser = null;
+                for (User user: userNames){
+                        if (user.getUserId() == userId){
+                                String userName = user.getUserName();
+                                setSelectedCustomerName(userName);
+                                selectedUser = user;
+                                return selectedUser;
+                        }
+                }
+                return null;
+        }
 
         public void populateAptTable(ObservableList<Appointment>allAppointments){
 
@@ -136,13 +228,7 @@ public class ModifyAppointmentController implements Initializable {
                 userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         }
 
-        // Populate the Combo Boxes
 
-        public void populateContactcomboBox(){}
-
-        public void populateTypecomboBox(){}
-
-        public void populateUserComboBox(){}
 
         public void populateStartTimeComboBox(){
                 LocalDateTime businessStartConverted = TimezoneConversion.getBusinessStartConverted();
@@ -180,7 +266,6 @@ public class ModifyAppointmentController implements Initializable {
                         startHour = startHour.plusMinutes(15);
                 }}
 
-        public void populateCustomerComboBox(){}
 
 
 
@@ -200,23 +285,28 @@ public class ModifyAppointmentController implements Initializable {
                         LocalTime startTime = selectedAppointment.getStartTime();
                         LocalDate endDate = selectedAppointment.getEndDate();
                         LocalTime endTime = selectedAppointment.getEndTime();
+
+                        //Convert IDs to String
                         Integer selectedCustId = selectedAppointment.getCustomerId();
                         Integer userId = selectedAppointment.getUserId();
-
                         Integer contactId = selectedAppointment.getContactId();
+                        Contact selectedContact = returnSelectedContactFromID(contactId);
+                        User selectedUser = returnSelectedUserFromID(userId);
+                        Customer selectedCustomer = returnSelectedCustomerFromID(selectedCustId);
+
                         //Set the form values to the selectedCustomer values
                         aptNumberLabel.setText(aptId.toString());
                         titleTxtField.setText(title);
                         appointmentDescriptionTxtField.setText(valueOf(description));
                         locationTxtField.setText(location);
-                        //contactComboBox.setValue(contact);
+                        contactComboBox.setValue(selectedContact);
                         typeComboBox.setValue(type);
-                        //userComboBox.setValue();
+                        userComboBox.setValue(selectedUser);
                         startDatePicker.setValue(startDate);
                         startTimeHrComboBox.setValue(startTime);
                         endDatePicker.setValue(endDate);
                         endTimeHrComboBox.setValue(endTime);
-                        //customerComboBox.setValue();
+                        customerComboBox.setValue(selectedCustomer);
                         }
                 }
 
@@ -239,15 +329,238 @@ public class ModifyAppointmentController implements Initializable {
                 saveSuccessfulLabel.setVisible(false);
                 allFieldsRequiredLabel.setVisible(false);
                 dateAndTimeErrorLabel.setVisible(false);
-                //customerTable.getSelectionModel().clearSelection();
+                appointmentTable.getSelectionModel().clearSelection();
                 userComboBox.getSelectionModel().clearSelection();
+                customerComboBox.getSelectionModel().clearSelection();
+        }
+
+        public boolean validateStartBeforeEndTime() throws Exception {
+                try {
+                        setStartDateTimeSelection();
+                        setEndDateTimeSelection();
+                        LocalDateTime startSelection = getStartDate();
+                        LocalDateTime endSelection = getEndDate();
+                        if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
+                                return true;
+                        } else {
+                                return false;
+                        }
+                } catch (Exception e) {
+                        e.getMessage();
+                        e.getCause();
+                        e.printStackTrace();
+                }
+                return false;
         }
 
 
+        public boolean overlapValidationA(LocalDateTime startDate) throws SQLException {
 
-        @FXML void onSaveButtonAction(ActionEvent event) {
+                for (Appointment appointment : getAppointmentsByCustomerID) {
+                        LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
+                        LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
 
+                        if (((startDate.isAfter(startTimeExistingAppointment)) || (startDate.isEqual(startTimeExistingAppointment)))
+                                && (startDate).isBefore(endTimeExistingAppointment)) {
+                                setOverlappingAppointment(appointment);
+                                return true;
+                        }
+                }
+                return false;
         }
+
+        public boolean overlapValidationB(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
+
+
+                for (Appointment appointment : getAppointmentsByCustomerID) {
+                        LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
+                        LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
+
+                        if (((endDate.isBefore(endTimeExistingAppointment)) || (endDate.isEqual(endTimeExistingAppointment)))
+                                && (endDate).isAfter(startTimeExistingAppointment)) {
+                                setOverlappingAppointment(appointment);
+                                return true;
+                        }
+                }
+                return false;
+        }
+
+        public boolean overlapValidationC(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
+
+                for (Appointment appointment : getAppointmentsByCustomerID) {
+                        LocalDateTime startTimeExistingAppointment = appointment.getStartDateTime();
+                        LocalDateTime endTimeExistingAppointment = appointment.getEndDateTime();
+
+                        if (((startDate.isBefore(startTimeExistingAppointment)) || (startDate.isEqual(startTimeExistingAppointment)))
+                                && ((endDate.isAfter(endTimeExistingAppointment)) || (endDate.isEqual(endTimeExistingAppointment)))) {
+                                setOverlappingAppointment(appointment);
+                                return true;
+                        }
+                }
+                return false;
+        }
+
+        public LocalDateTime setStartDateTimeSelection() {
+                LocalDateTime startDateTimeSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
+                setStartDate(startDateTimeSelection);
+                return startDateTimeSelection;
+        }
+
+        public LocalDateTime setEndDateTimeSelection() {
+                LocalDateTime endDateTimeSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
+                setEndDate(endDateTimeSelection);
+                return endDateTimeSelection;
+        }
+
+        public void emptyFieldAlert() {
+                String title = titleTxtField.getText();
+                String location = locationTxtField.getText();
+                String description = appointmentDescriptionTxtField.getText();
+                Contact contact = contactComboBox.getValue();
+                String type = typeComboBox.getValue();
+                LocalTime startTime = startTimeHrComboBox.getValue();
+                LocalDate startDate = startDatePicker.getValue();
+                LocalTime endtime = endTimeHrComboBox.getValue();
+                LocalDate endDate = endDatePicker.getValue();
+                Customer selectedCustomer = customerComboBox.getValue();
+                User user = userComboBox.getValue();
+
+                if(title.trim().isEmpty()||location.trim().isEmpty()||description.trim().isEmpty()
+                        ||contact == null||type == null || startTime == null || startDate == null
+                        || endtime == null || endDate == null || selectedCustomer == null || user == null){
+                        alert();
+                        if (title.trim().isEmpty()) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                titleTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+                        }
+
+                        if (location.trim().isEmpty()) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                locationTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (description.trim().isEmpty()) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                appointmentDescriptionTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (type == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                typeComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (startDate == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                startDatePicker.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (startTime == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                startTimeHrComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (endDate == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                endDatePicker.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (endtime == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                endTimeHrComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (selectedCustomer == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                customerComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (user == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                userComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                        if (contact == null) {
+                                allFieldsRequiredLabel.setVisible(true);
+                                contactComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+                        }
+                }
+        }
+
+        public void alert(){
+                Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
+                infoRequiredAlert.setTitle("Information Required");
+                infoRequiredAlert.setHeaderText("Please enter all information.  Thank you! ");
+                infoRequiredAlert.setContentText("Please enter missing information");
+                infoRequiredAlert.showAndWait();
+        }
+        public  void overlapAlert(){
+                int overlapId = overlappingAppointment.getAppointmentId();
+                LocalDateTime overlapStartConversion = convertUTCToUserTime(overlappingAppointment.getStartDateTime());
+                LocalDateTime overlapEndConversion = convertUTCToUserTime(overlappingAppointment.getEndDateTime());
+                LocalDate overlapStartDate = overlapStartConversion.toLocalDate();
+                LocalTime overlapStartTime = overlapStartConversion.toLocalTime();
+                LocalDate overlapEndDate = overlapEndConversion.toLocalDate();
+                LocalTime overlapEndTime = overlapEndConversion.toLocalTime();
+                Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
+                infoRequiredAlert.setTitle("An Overlapping Appointment Was Found");
+                infoRequiredAlert.setHeaderText("This appointment overlaps with appointment ID: " + overlapId);
+                infoRequiredAlert.setContentText("Beginning on: " + overlapStartDate + " at " + overlapStartTime +
+                        " and ending on: " + overlapEndDate + " at " + overlapEndTime);
+                infoRequiredAlert.showAndWait();
+        }
+
+        @FXML
+        void onSaveButtonAction(ActionEvent event) throws Exception {
+                getAppointmentsByCustomerID();
+                emptyFieldAlert();
+
+                int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
+                String title = titleTxtField.getText();
+                String location = locationTxtField.getText();
+                int contactId = contactComboBox.getValue().getContactId();
+
+                String type = typeComboBox.getValue();
+
+                LocalDate startDate = startDatePicker.getValue();
+                LocalTime startTime = startTimeHrComboBox.getValue();
+                LocalDateTime userStartDateTime = LocalDateTime.of(startDate, startTime);
+                LocalDate endDate = endDatePicker.getValue();
+                LocalTime endTime = endTimeHrComboBox.getValue();
+                LocalDateTime userEndDateTime = LocalDateTime.of(endDate, endTime);
+
+                // Get times converted to UTC
+                LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
+                LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
+                System.out.println("Start and end times converted: " + startDateTime +" " + endDateTime);
+
+
+                String description = appointmentDescriptionTxtField.getText();
+                int customerId = customerComboBox.getSelectionModel().getSelectedItem().getCustomerId();
+                int userId = userComboBox.getValue().getUserId();
+
+
+                boolean validationResultStartBeforeEnd = validateStartBeforeEndTime(); //returns true if validation passes
+                boolean validationResultA = overlapValidationA(startDateTime); // returns false if validation passes
+                boolean validationResultB = overlapValidationB(startDateTime, endDateTime); // returns false if validation passes
+                boolean validationResultC = overlapValidationC(startDateTime, endDateTime); // returns false if validation passes
+                System.out.println("Validation Result Start before end: " + validationResultStartBeforeEnd);
+                System.out.println("validationResultA: " + validationResultA);
+                System.out.println("validationResultB: " + validationResultB);
+                System.out.println("ValidationResultC: " + validationResultC);
+
+                if((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
+                        (!locationTxtField.getText().isEmpty()) && (locationTxtField.getLength() < 50) &&
+                        (!appointmentDescriptionTxtField.getText().isEmpty()) && (appointmentDescriptionTxtField.getLength() < 50) &&
+                        (contactComboBox.getValue() != null) && (typeComboBox.getValue() != null) &&
+                        (startDatePicker.getValue() != null) && (startTimeHrComboBox != null) &&
+                        (endDatePicker.getValue() != null) && (endTimeHrComboBox != null) &&
+                        (customerComboBox.getSelectionModel().getSelectedItem() != null) && (userComboBox.getValue() != null)) {
+
+                        if (validateStartBeforeEndTime() == true && validationResultA == false && validationResultB == false && validationResultC == false) {
+                                Appointment appointmentToSave = new Appointment(appointmentId, title, description,
+                                        location, type, startDateTime, endDateTime, customerId, userId, contactId);
+                                AppointmentsImplement.updateAppointment(appointmentToSave);
+                                saveButton.setDisable(true);
+                                saveSuccessfulLabel.setVisible(true);
+                        } else {
+                                System.out.println("Conflicting appointment found");
+                                overlapAlert();
+                                saveErrorLabel.setVisible(true);
+                        }
+                }
+        }
+
 
 
 
