@@ -66,7 +66,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                     Appointment appointment = new Appointment (appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
                     getAllAppointments.add(appointment);
-                    System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
+                    //System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
                 }
             }
             else{System.out.println("ResultSet was null");}

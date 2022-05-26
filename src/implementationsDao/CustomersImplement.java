@@ -103,7 +103,8 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, first_level_divisions.Division, Country" +
                 " FROM client_schedule.customers, first_level_divisions, countries " +
                 " WHERE customers.Division_ID = first_level_divisions.Division_ID " +
-                " AND first_level_divisions.Country_ID = countries.Country_ID;";
+                " AND first_level_divisions.Country_ID = countries.Country_ID " +
+                "ORDER BY Customer_Name asc;";
         PreparedStatement getCustomersPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allCustomersQuery);
         System.out.println("customersImplementPreparedStatement was successful in CustomersImplement.getAllCustomers()");
         ResultSet allCustomersResults;
