@@ -613,6 +613,7 @@ public class ModifyAppointmentController implements Initializable {
                                 AppointmentsImplement.updateAppointment(appointmentToSave);
                                 saveButton.setDisable(true);
                                 saveSuccessfulLabel.setVisible(true);
+                                appointmentTable.getItems().clear();
                                 getAllAppointments();
                                 populateAptTable(allAppointments);
                         } else {
@@ -662,6 +663,7 @@ public class ModifyAppointmentController implements Initializable {
         @FXML
         void onActionDeleteAppointment(ActionEvent event) throws SQLException {
                 deleteAlert();
+                appointmentTable.getItems().clear();
                 getAllAppointments();
                 populateAptTable(allAppointments);
         }

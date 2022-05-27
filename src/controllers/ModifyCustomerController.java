@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 import static implementationsDao.CustomersImplement.addCustomer;
 import static implementationsDao.CustomersImplement.getAllCustomers;
+import static interfacesDao.CustomersInterface.allCustomers;
 import static java.lang.String.valueOf;
 
 public class ModifyCustomerController implements Initializable {
@@ -249,6 +250,7 @@ public class ModifyCustomerController implements Initializable {
             getDBResponseResponse();
 
             saveButton.setDisable(true);
+            allCustomersTable.getItems().clear();
             CustomersImplement.getAllCustomers();
             populateCustomerTable(getAllCustomers);
         }
@@ -377,6 +379,9 @@ public class ModifyCustomerController implements Initializable {
             CustomersImplement.deleteCustomer(customerId);
             deleteSuccessfulLabel.setVisible(true);
             deleteCustButton.setDisable(true);
+            allCustomersTable.getItems().clear();
+            getAllCustomers();
+            populateCustomerTable(allCustomers);
             deleteAlert.close();
 
         }
@@ -390,6 +395,7 @@ public class ModifyCustomerController implements Initializable {
     void onActionDeleteCustomer(ActionEvent event) throws SQLException {
         deleteAlert();
     }
+
     @FXML
     void clearForm(MouseEvent event) {
         custNameTxtField.clear();
