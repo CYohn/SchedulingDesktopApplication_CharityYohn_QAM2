@@ -275,6 +275,7 @@ public class ModifyAppointmentController implements Initializable {
         @FXML
         void onClickPopulateApptElements(MouseEvent event) {
                 if(!appointmentTable.getSelectionModel().isEmpty()){
+                        deleteButton.setDisable(false);
                         Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
                         //Get table values
@@ -556,6 +557,7 @@ public class ModifyAppointmentController implements Initializable {
                                 AppointmentsImplement.updateAppointment(appointmentToSave);
                                 saveButton.setDisable(true);
                                 saveSuccessfulLabel.setVisible(true);
+                                populateAptTable(allAppointments);
                         } else {
                                 System.out.println("Conflicting appointment found");
                                 overlapAlert();
@@ -599,6 +601,7 @@ public class ModifyAppointmentController implements Initializable {
         @FXML
         void onActionDeleteAppointment(ActionEvent event) throws SQLException {
                 deleteAlert();
+                populateAptTable(allAppointments);
         }
 
 
