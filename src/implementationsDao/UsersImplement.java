@@ -37,6 +37,7 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
     }
 
     public static void getAllUserNames() throws SQLException {
+        userNames.clear();
         String allCustomersQuery = "SELECT User_Name, User_ID" +
                 " FROM client_schedule.users";
 

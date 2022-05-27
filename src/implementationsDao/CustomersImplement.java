@@ -100,6 +100,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
 
 
     public static void getAllCustomers() throws SQLException {
+        getAllCustomers.clear();
         String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, first_level_divisions.Division, Country" +
                 " FROM client_schedule.customers, first_level_divisions, countries " +
                 " WHERE customers.Division_ID = first_level_divisions.Division_ID " +

@@ -18,6 +18,7 @@ public class ContactsImplement extends DatabaseConnection implements ContactsInt
     public static ObservableList<Contact> contactNames = FXCollections.observableArrayList();
 
     public static void getAllContactNames() throws SQLException {
+        contactNames.clear();
         String allContactNames = "SELECT Contact_Name, Contact_ID" +
                 " FROM client_schedule.contacts";
 

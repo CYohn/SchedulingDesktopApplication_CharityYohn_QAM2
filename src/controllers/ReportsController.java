@@ -1,7 +1,9 @@
 package controllers;
 
+import Objects.Appointment;
 import Objects.Contact;
 import Objects.Customer;
+import implementationsDao.AppointmentsImplement;
 import implementationsDao.ContactsImplement;
 import implementationsDao.CustomersImplement;
 import javafx.collections.FXCollections;
@@ -14,7 +16,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.String.valueOf;
 
 public class ReportsController implements Initializable {
 
@@ -26,6 +32,7 @@ public class ReportsController implements Initializable {
             this.monthNumber = monthNumber;
             this.monthName = monthName;
         }
+
         @Override
         public String toString(){
             return (monthNumber + ":   " + monthName);
@@ -46,14 +53,21 @@ public class ReportsController implements Initializable {
     Month november = new Month(11, "November");
     Month december = new Month(12, "December");
 
+
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
+
     private ObservableList<Contact> contactNames = ContactsImplement.contactNames;
 
+    public ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
+
     ObservableList<Customer> allCustomers = CustomersImplement.getAllCustomers;
+
     public void addAllMonths(){
         months.addAll(january, february, march, april, may, june, july, august, september, october, november, december);
     }
+
+
 
     @FXML
     private TableColumn<?, ?> aptContactColumn2;
@@ -150,16 +164,61 @@ public class ReportsController implements Initializable {
 
 
 
+    public ObservableList<Appointment> getAllAppointments() {
+        return allAppointments;
+    }
+
+
+
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addAllMonths();
+
+        try {
+            AppointmentsImplement.getAllAppointments();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("all appointments:  " + allAppointments);
+        for(Appointment appointment: allAppointments){
+            System.out.println("All Appointments at initialize:  contact ID: "+ appointment.getContactId() + "  Appointment ID  " + appointment.getAppointmentId());}
+
+
+
         monthComboBox.setItems(months);
         typeComboBox.setItems(appointmentTypes);
         contactComboBox.setItems(contactNames);
         customerComboBox.setItems(allCustomers);
 
+        contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                    if (!newValue) { //when focus is lost
+//                saveSuccessfulLabel.setVisible(false);
+//                saveErrorLabel.setVisible(false);
+//                saveButton.setDisable(false);
+//                allFieldsRequiredLabel.setVisible(false);
+                        //appointmentsByContact.clear();
+                        int selectedContactId = contactComboBox.getSelectionModel().getSelectedItem().getContactId();
+                        System.out.println(selectedContactId);
 
+                        ObservableList<Appointment> filteredByContact = allAppointments.filtered(appointment ->
+                        {
+                            if (appointment.getContactId() == selectedContactId) {
+                                return true;
+                            }
+                            return false;
+                        });
 
+                        System.out.println("filteredByContact list:  " + filteredByContact);
+                        for (Appointment a: filteredByContact
+                             ) {
+                                System.out.println("Apt Contact ID: " + a.getContactId() +
+                                        "  App ID: " +a.getAppointmentId());
+                        }
+                    }
+                });
 
     }
 }

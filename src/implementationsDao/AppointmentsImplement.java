@@ -18,6 +18,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
 
     public static void getAllAppointments() throws SQLException {
+        getAllAppointments.clear();
         String allAppointmentsQuery = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, customers.Customer_ID, users.User_ID, contacts.Contact_ID" +
                 " FROM client_schedule.appointments, customers, users, contacts " +
                 " WHERE appointments.Customer_ID = customers.Customer_ID " +
@@ -66,7 +67,9 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                     Appointment appointment = new Appointment (appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
                     getAllAppointments.add(appointment);
-                    //System.out.println("Appointment object populated in getAllAppointments list: " + appointment);
+                    System.out.println("Appointment object populated in getAllAppointments list:   " +
+                            "  Contact ID:  " + appointment.getContactId() +
+                            "  Appointment ID:  " + appointment.getAppointmentId());
                 }
             }
             else{System.out.println("ResultSet was null");}
