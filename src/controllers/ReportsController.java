@@ -11,9 +11,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -173,7 +173,7 @@ public class ReportsController implements Initializable {
     private ComboBox<Month> monthComboBox;
 
     @FXML
-    private TextField numberOfAppointments;
+    private Label numberOfAppointments;
 
     @FXML
     private ComboBox<String> typeComboBox;
@@ -191,26 +191,36 @@ public class ReportsController implements Initializable {
     }
 
 
-    public int appointmentsCount(){
+    public Integer appointmentsCount(){
 
-        Month selectedMonth = monthComboBox.getSelectionModel().getSelectedItem();
-        int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
-        String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
+        String selectedType;
 
-        if ((selectedMonth != null) && (selectedType == null)){
-            int numberOfAptInMonth = (int) allAppointments.stream()
+        if ((!monthComboBox.getSelectionModel().isEmpty()) && (typeComboBox.getSelectionModel().isEmpty())){
+
+            int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
+
+            Integer numberOfAptInMonth = (int) allAppointments.stream()
                     .filter(apt -> apt.getStartDate().getMonthValue() == selectedMonthNumber).count();
+            System.out.println("Number of Apt in Month  "+ numberOfAptInMonth);
             return numberOfAptInMonth;
         }
-        if((selectedMonth == null) && (selectedType != null)){
-            int numberOfAptOfType = (int) allAppointments.stream()
+        if((monthComboBox.getSelectionModel().isEmpty()) && (!typeComboBox.getSelectionModel().isEmpty())){
+
+            selectedType = typeComboBox.getSelectionModel().getSelectedItem();
+
+            Integer numberOfAptOfType = (int) allAppointments.stream()
                     .filter(apt -> apt.getType().equalsIgnoreCase(selectedType)).count();
+            System.out.println("Number of Apt Type  "+ numberOfAptOfType);
             return  numberOfAptOfType;
         }
-        if((selectedMonth != null) && (selectedType != null)){
-            int numberOfAptWithBothConstraints = (int) allAppointments.stream()
+        if((!monthComboBox.getSelectionModel().isEmpty()) && (!typeComboBox.getSelectionModel().isEmpty())){
+
+            selectedType = typeComboBox.getSelectionModel().getSelectedItem();
+            int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
+            Integer numberOfAptWithBothConstraints = (int) allAppointments.stream()
                     .filter(apt -> apt.getStartDate().getMonthValue() == selectedMonthNumber)
                     .filter(apt -> apt.getType().equalsIgnoreCase(selectedType)).count();
+            System.out.println("Number of Apt With both constraints  "+ numberOfAptWithBothConstraints);
             return numberOfAptWithBothConstraints;
         }
         return 0;
@@ -380,9 +390,19 @@ public class ReportsController implements Initializable {
             }
         });
 
+        monthComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                appointmentsCount();
+                numberOfAppointments.setText(appointmentsCount().toString()) ;
+            }
+        });
 
-
-
+        typeComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus lost
+                appointmentsCount();
+                numberOfAppointments.setText(appointmentsCount().toString()) ;
+            }
+        });
 
 
 
