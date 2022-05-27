@@ -1,0 +1,5 @@
+
+Unsuccessful login attempt by user:  InvalidUserLoggingTest 
+Timestamp: 2022-05-27 20:54:46.9499927 UTC Time
+Successful login by user:  test 
+Timestamp: 2022-05-27 20:55:04.0899543 UTC Time
