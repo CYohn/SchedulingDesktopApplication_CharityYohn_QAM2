@@ -137,6 +137,9 @@ public class ReportsController implements Initializable {
     private TableView<Appointment> contactAppointmentTable;
 
     @FXML
+    private ComboBox<Customer> customerComboBox;
+
+    @FXML
     private ComboBox<Contact> contactComboBox;
 
     @FXML
@@ -146,10 +149,7 @@ public class ReportsController implements Initializable {
     private TableColumn<?, ?> custIdColumn21;
 
     @FXML
-    private TableView<?> customerAppointmentTable;
-
-    @FXML
-    private ComboBox<Customer> customerComboBox;
+    private TableView<Appointment> customerAppointmentTable;
 
     @FXML
     private ComboBox<Month> monthComboBox;
@@ -199,7 +199,11 @@ public class ReportsController implements Initializable {
 
         contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                     if (!newValue) { //when focus is lost
-
+                        try {
+                            AppointmentsImplement.getAllAppointments();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                         int selectedContactId = contactComboBox.getSelectionModel().getSelectedItem().getContactId();
                         System.out.println(selectedContactId);
 
@@ -255,9 +259,82 @@ public class ReportsController implements Initializable {
                             custIdColumn2.setCellValueFactory(new PropertyValueFactory<>("customerId"));
                             userIdColumn2.setCellValueFactory(new PropertyValueFactory<>("userId"));
                         }
-
                     });
 
+/**
+ * @Lambda This listener has two lambda expressions. the first collects the argument, previous value, and newValue of the target.
+ * It then listens for a new value and when focus is lost on the target, it commences with the rest of the operations.
+ * the second lambda is noted below.
+ */
+        customerComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+            if (!newValue) { //when focus is lost
+                try {
+                    AppointmentsImplement.getAllAppointments();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                int selectedCustomerId = customerComboBox.getSelectionModel().getSelectedItem().getCustomerId();
+                System.out.println();
+
+                ObservableList<Appointment> appointmentsWithConvertedTimes2 = FXCollections.observableArrayList();
+                /**
+                 * @Lambda The lambda takes an appointment from the allAppointments list and compares the customer
+                 * ID to the selected customer ID. It then returns true if a match is found and adds the appointment to
+                 * the list filteredByCustomerID
+                 */
+                ObservableList<Appointment> filteredByCustomerID = allAppointments.filtered(appointment ->
+                {
+                    if (appointment.getCustomerId() == selectedCustomerId) {
+                        return true;
+                    }
+                    return false;
+                });
+
+                System.out.println("filteredByCustomer list:  " + filteredByCustomerID);
+
+                for (Appointment appointment: filteredByCustomerID) {
+
+                    //System.out.println("Appointment from the populate apt Table: " + appointment);
+                    LocalDateTime startUTC = appointment.getStartDateTime();
+                    LocalDateTime endUTC = appointment.getEndDateTime();
+                    LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
+                    LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
+                    LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
+                    LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
+
+                    int appointmentId = appointment.getAppointmentId();
+                    String title = appointment.getTitle();
+                    String description = appointment.getDescription();
+                    String location = appointment.getLocation();
+                    String type = appointment.getType();
+                    int customerId = appointment.getCustomerId();
+                    int userId = appointment.getUserId();
+                    int contactId = appointment.getContactId();
+
+                    Appointment convertedTimesAppointment2 = new Appointment
+                            (appointmentId, title, description, location, type, startDate, startTime,
+                                    endDate, endTime, customerId, userId, contactId);
+
+                    appointmentsWithConvertedTimes2.add(convertedTimesAppointment2);
+                }
+
+                customerAppointmentTable.setItems(appointmentsWithConvertedTimes2);
+
+                aptContactColumn21.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+                aptDescriptioncolumn21.setCellValueFactory(new PropertyValueFactory<>("description"));
+                aptEndDateColumn21.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+                aptEndTimeColumn21.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+                aptIdColumn21.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+                aptLocationColumn21.setCellValueFactory(new PropertyValueFactory<>("location"));
+                aptStartDateColumn21.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+                aptStartTimeColumn21.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+                aptTitleColum21.setCellValueFactory(new PropertyValueFactory<>("title"));
+                aptTypeColumn21.setCellValueFactory(new PropertyValueFactory<>("type"));
+                custIdColumn21.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+                userIdColumn21.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            }
+        });
 
     }
 }
