@@ -30,8 +30,8 @@ public class ReportsController implements Initializable {
 
 
     public class Month {
-        String monthName;
-        int monthNumber;
+        private String monthName;
+        private int monthNumber;
         public Month(int monthNumber, String monthName) {
             this.monthNumber = monthNumber;
             this.monthName = monthName;
@@ -41,7 +41,25 @@ public class ReportsController implements Initializable {
         public String toString(){
             return (monthNumber + ":   " + monthName);
         }
+
+        public String getMonthName() {
+            return monthName;
+        }
+
+        public void setMonthName(String monthName) {
+            this.monthName = monthName;
+        }
+
+        public int getMonthNumber() {
+            return monthNumber;
+        }
+
+        public void setMonthNumber(int monthNumber) {
+            this.monthNumber = monthNumber;
+        }
     }
+
+
 
     ObservableList<Month> months = FXCollections.observableArrayList();
     Month january = new Month(1, "January");
@@ -170,6 +188,32 @@ public class ReportsController implements Initializable {
 
     public ObservableList<Appointment> getAllAppointments() {
         return allAppointments;
+    }
+
+
+    public int appointmentsCount(){
+
+        Month selectedMonth = monthComboBox.getSelectionModel().getSelectedItem();
+        int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
+        String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
+
+        if ((selectedMonth != null) && (selectedType == null)){
+            int numberOfAptInMonth = (int) allAppointments.stream()
+                    .filter(apt -> apt.getStartDate().getMonthValue() == selectedMonthNumber).count();
+            return numberOfAptInMonth;
+        }
+        if((selectedMonth == null) && (selectedType != null)){
+            int numberOfAptOfType = (int) allAppointments.stream()
+                    .filter(apt -> apt.getType().equalsIgnoreCase(selectedType)).count();
+            return  numberOfAptOfType;
+        }
+        if((selectedMonth != null) && (selectedType != null)){
+            int numberOfAptWithBothConstraints = (int) allAppointments.stream()
+                    .filter(apt -> apt.getStartDate().getMonthValue() == selectedMonthNumber)
+                    .filter(apt -> apt.getType().equalsIgnoreCase(selectedType)).count();
+            return numberOfAptWithBothConstraints;
+        }
+        return 0;
     }
 
 
@@ -335,6 +379,13 @@ public class ReportsController implements Initializable {
                 userIdColumn21.setCellValueFactory(new PropertyValueFactory<>("userId"));
             }
         });
+
+
+
+
+
+
+
 
     }
 }
