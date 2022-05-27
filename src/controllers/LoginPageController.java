@@ -8,18 +8,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import main.Main;
 import utilities.DatabaseConnection;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static java.time.ZoneOffset.UTC;
 
 public class LoginPageController implements Initializable {
 
@@ -70,6 +74,10 @@ public class LoginPageController implements Initializable {
 
     @FXML
     private Label userLocationLabel;
+
+
+
+
 
 
     @FXML
@@ -137,13 +145,42 @@ public class LoginPageController implements Initializable {
         if (passwordField.getText().isEmpty() == true){passwordRequiredLabel.setVisible(true);}
 
         boolean validationStatus = validateUser();
-        if (validationStatus == false){incorrectInfoLabel.setVisible(true);}
+        if (validationStatus == false){
+            incorrectInfoLabel.setVisible(true);
+            try {
+                PrintWriter pw = new PrintWriter(new FileOutputStream(
+                        new File("login_activity.txt"),//Change to login_activity.txt
+                        true /* append = true */));
+                //out.txt will appear in the project's root directory under NetBeans projects
+                //Note that Notepad will not display the following lines on separate lines
+                pw.append("Unsuccessful login attempt by user:  " + userNameField.getText() + " \n");//This is the information to be appended DateTime, UserName etc.
+                pw.append("Timestamp: " + Timestamp.valueOf(LocalDateTime.now(UTC)) + " UTC Time\n");
+                pw.append("\n");
+                pw.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         if (validationStatus == true) {
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/views/TabbedPaneView.fxml"))));
             stage.setScene(new Scene(scene));
             stage.show();
+
+            try {
+                PrintWriter pw = new PrintWriter(new FileOutputStream(
+                        new File("login_activity.txt"),//Change to login_activity.txt
+                        true /* append = true */));
+                //out.txt will appear in the project's root directory under NetBeans projects
+                //Note that Notepad will not display the following lines on separate lines
+                pw.append("Successful login by user:  " + userNameField.getText() + " \n");//This is the information to be appended DateTime, UserName etc.
+                pw.append("Timestamp: " + Timestamp.valueOf(LocalDateTime.now(UTC)) + " UTC Time\n");
+                pw.append("\n");
+                pw.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             incorrectInfoLabel.setVisible(true);
         }
