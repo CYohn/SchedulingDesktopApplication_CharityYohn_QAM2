@@ -200,7 +200,7 @@ public class ReportsController implements Initializable {
             int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
 
             Integer numberOfAptInMonth = (int) allAppointments.stream()
-                    .filter(apt -> apt.getStartDate().getMonthValue() == selectedMonthNumber).count();
+                    .filter(apt -> apt.getStartDateTime().getMonthValue() == selectedMonthNumber).count();
             System.out.println("Number of Apt in Month  "+ numberOfAptInMonth);
             return numberOfAptInMonth;
         }
@@ -218,7 +218,7 @@ public class ReportsController implements Initializable {
             selectedType = typeComboBox.getSelectionModel().getSelectedItem();
             int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
             Integer numberOfAptWithBothConstraints = (int) allAppointments.stream()
-                    .filter(apt -> apt.getStartDate().getMonthValue() == selectedMonthNumber)
+                    .filter(apt -> apt.getStartDateTime().getMonthValue() == selectedMonthNumber)
                     .filter(apt -> apt.getType().equalsIgnoreCase(selectedType)).count();
             System.out.println("Number of Apt With both constraints  "+ numberOfAptWithBothConstraints);
             return numberOfAptWithBothConstraints;
