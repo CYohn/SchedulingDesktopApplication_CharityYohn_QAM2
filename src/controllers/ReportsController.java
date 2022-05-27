@@ -14,13 +14,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.lang.String.valueOf;
+import static utilities.TimezoneConversion.convertUTCToUserTime;
 
 public class ReportsController implements Initializable {
 
@@ -130,7 +134,7 @@ public class ReportsController implements Initializable {
     private TableColumn<?, ?> aptTypeColumn21;
 
     @FXML
-    private TableView<?> contactAppointmentTable;
+    private TableView<Appointment> contactAppointmentTable;
 
     @FXML
     private ComboBox<Contact> contactComboBox;
@@ -195,14 +199,11 @@ public class ReportsController implements Initializable {
 
         contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                     if (!newValue) { //when focus is lost
-//                saveSuccessfulLabel.setVisible(false);
-//                saveErrorLabel.setVisible(false);
-//                saveButton.setDisable(false);
-//                allFieldsRequiredLabel.setVisible(false);
-                        //appointmentsByContact.clear();
+
                         int selectedContactId = contactComboBox.getSelectionModel().getSelectedItem().getContactId();
                         System.out.println(selectedContactId);
 
+                        ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
                         ObservableList<Appointment> filteredByContact = allAppointments.filtered(appointment ->
                         {
                             if (appointment.getContactId() == selectedContactId) {
@@ -212,13 +213,51 @@ public class ReportsController implements Initializable {
                         });
 
                         System.out.println("filteredByContact list:  " + filteredByContact);
-                        for (Appointment a: filteredByContact
-                             ) {
-                                System.out.println("Apt Contact ID: " + a.getContactId() +
-                                        "  App ID: " +a.getAppointmentId());
+
+                        for (Appointment appointment: filteredByContact) {
+
+                                //System.out.println("Appointment from the populate apt Table: " + appointment);
+                                LocalDateTime startUTC = appointment.getStartDateTime();
+                                LocalDateTime endUTC = appointment.getEndDateTime();
+                                LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
+                                LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
+                                LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
+                                LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
+
+                                int appointmentId = appointment.getAppointmentId();
+                                String title = appointment.getTitle();
+                                String description = appointment.getDescription();
+                                String location = appointment.getLocation();
+                                String type = appointment.getType();
+                                int customerId = appointment.getCustomerId();
+                                int userId = appointment.getUserId();
+                                int contactId = appointment.getContactId();
+
+                                Appointment convertedTimesAppointment = new Appointment
+                                        (appointmentId, title, description, location, type, startDate, startTime,
+                                                endDate, endTime, customerId, userId, contactId);
+
+                                appointmentsWithConvertedTimes.add(convertedTimesAppointment);
+                            }
+
+                        contactAppointmentTable.setItems(appointmentsWithConvertedTimes);
+
+                            aptContactColumn2.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+                            aptDescriptioncolumn2.setCellValueFactory(new PropertyValueFactory<>("description"));
+                            aptEndDateColumn2.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+                            aptEndTimeColumn2.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+                            aptIdColumn2.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+                            aptLocationColumn2.setCellValueFactory(new PropertyValueFactory<>("location"));
+                            aptStartDateColumn2.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+                            aptStartTimeColumn2.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+                            aptTitleColum2.setCellValueFactory(new PropertyValueFactory<>("title"));
+                            aptTypeColumn2.setCellValueFactory(new PropertyValueFactory<>("type"));
+                            custIdColumn2.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+                            userIdColumn2.setCellValueFactory(new PropertyValueFactory<>("userId"));
                         }
-                    }
-                });
+
+                    });
+
 
     }
 }
