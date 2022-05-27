@@ -9,3 +9,24 @@ Timestamp: 2022-05-27 21:25:47.7070795 UTC Time
 Successful login by user:  admin 
 Timestamp: 2022-05-27 21:26:07.3348026 UTC Time
 
+Successful login by user:  test 
+Timestamp: 2022-05-27 21:41:23.089134 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-05-27 21:52:31.2655062 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-05-27 22:11:29.0802362 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-05-27 22:15:22.4134598 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-05-27 22:21:27.0470292 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-05-27 22:37:33.9445732 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-05-27 22:40:53.1224235 UTC Time
+

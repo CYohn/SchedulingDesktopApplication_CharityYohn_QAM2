@@ -301,8 +301,17 @@ public class AddAppointmentController extends TimezoneConversion implements Init
 
     @FXML
     void onSaveButtonAction(ActionEvent event) throws Exception {
-        getAppointmentsByCustomerID();
         emptyFieldAlert();
+        validateStartBeforeEndTime();
+
+        if((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
+                (!locationTxtField.getText().isEmpty()) && (locationTxtField.getLength() < 50) &&
+                (!appointmentDescriptionTxtField.getText().isEmpty()) && (appointmentDescriptionTxtField.getLength() < 50) &&
+                (contactComboBox.getValue() != null) && (typeComboBox.getValue() != null) &&
+                (startDatePicker.getValue() != null) && (startTimeHrComboBox != null) &&
+                (endDatePicker.getValue() != null) && (endTimeHrComboBox != null) &&
+                (customerTable.getSelectionModel().getSelectedItem() != null) && (userComboBox.getValue() != null)) {
+        getAppointmentsByCustomerID();
         String title = titleTxtField.getText();
         String location = locationTxtField.getText();
         int contactId = contactComboBox.getValue().getContactId();
@@ -336,26 +345,26 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         System.out.println("validationResultB: " + validationResultB);
         System.out.println("ValidationResultC: " + validationResultC);
 
-        if((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
-                (!locationTxtField.getText().isEmpty()) && (locationTxtField.getLength() < 50) &&
-                (!appointmentDescriptionTxtField.getText().isEmpty()) && (appointmentDescriptionTxtField.getLength() < 50) &&
-                (contactComboBox.getValue() != null) && (typeComboBox.getValue() != null) &&
-                (startDatePicker.getValue() != null) && (startTimeHrComboBox != null) &&
-                (endDatePicker.getValue() != null) && (endTimeHrComboBox != null) &&
-                (customerTable.getSelectionModel().getSelectedItem() != null) && (userComboBox.getValue() != null)) {
 
-            if (validateStartBeforeEndTime() == true && validationResultA == false && validationResultB == false && validationResultC == false) {
-                Appointment appointmentToSave = new Appointment(title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
-                AppointmentsImplement.addAppointment(appointmentToSave);
-                saveButton.setDisable(true);
-                saveSuccessfulLabel.setVisible(true);
-            } else {
-                System.out.println("Conflicting appointment found");
-                overlapAlert();
-                saveErrorLabel.setVisible(true);
+
+            if(validateStartBeforeEndTime() == true){
+
+                if (validationResultA == false && validationResultB == false && validationResultC == false) {
+                    Appointment appointmentToSave = new Appointment( title, description,
+                            location, type, startDateTime, endDateTime, customerId, userId, contactId);
+                    AppointmentsImplement.updateAppointment(appointmentToSave);
+                    saveButton.setDisable(true);
+                    saveSuccessfulLabel.setVisible(true);
+                } else {
+                    System.out.println("Conflicting appointment found");
+                    overlapAlert();
+                    saveErrorLabel.setVisible(true);
+                }
             }
+            else{dateAndTimeErrorLabel.setVisible(true);}
         }
     }
+
 
 
 public  void overlapAlert(){

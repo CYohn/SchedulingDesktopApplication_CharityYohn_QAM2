@@ -29,6 +29,7 @@ import java.util.ResourceBundle;
 
 import static implementationsDao.AppointmentsImplement.getAllAppointments;
 import static implementationsDao.AppointmentsImplement.getAppointmentsByCustomerID;
+import static implementationsDao.CustomersImplement.getAllCustomers;
 import static java.lang.String.valueOf;
 import static utilities.TimezoneConversion.convertUTCToUserTime;
 
@@ -111,6 +112,7 @@ public class ModifyAppointmentController implements Initializable {
         @FXML private Label descriptionLengthAlert;
         @FXML private Label aptNumberLabel;
         @FXML private Label deleteSuccessfulLabel;
+        @FXML private Label dateAndTimeErrorLabel2;
 
         public String getSelectedContactName() {
                 return selectedContactName;
@@ -332,10 +334,12 @@ public class ModifyAppointmentController implements Initializable {
                 saveSuccessfulLabel.setVisible(false);
                 allFieldsRequiredLabel.setVisible(false);
                 dateAndTimeErrorLabel.setVisible(false);
+                dateAndTimeErrorLabel2.setVisible(false);
                 appointmentTable.getSelectionModel().clearSelection();
                 userComboBox.getSelectionModel().clearSelection();
                 customerComboBox.getSelectionModel().clearSelection();
                 deleteSuccessfulLabel.setVisible(false);
+                clearBoxFormatting();
         }
 
         public boolean validateStartBeforeEndTime() throws Exception {
@@ -347,6 +351,8 @@ public class ModifyAppointmentController implements Initializable {
                         if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
                                 return true;
                         } else {
+                                dateAndTimeErrorLabel.setVisible(true);
+                                dateAndTimeErrorLabel2.setVisible(true);
                                 return false;
                         }
                 } catch (Exception e) {
@@ -481,6 +487,49 @@ public class ModifyAppointmentController implements Initializable {
                 }
         }
 
+        public void clearBoxFormatting(){
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        titleTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        locationTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
+
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        appointmentDescriptionTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
+
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        typeComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        startDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        startTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        endDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        endTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        customerComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        userComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+
+                        allFieldsRequiredLabel.setVisible(false);
+                        contactComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+        }
+
+
         public void alert(){
                 Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
                 infoRequiredAlert.setTitle("Information Required");
@@ -506,42 +555,9 @@ public class ModifyAppointmentController implements Initializable {
 
         @FXML
         void onSaveButtonAction(ActionEvent event) throws Exception {
-                getAppointmentsByCustomerID();
+
                 emptyFieldAlert();
-
-                int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
-                String title = titleTxtField.getText();
-                String location = locationTxtField.getText();
-                int contactId = contactComboBox.getValue().getContactId();
-
-                String type = typeComboBox.getValue();
-
-                LocalDate startDate = startDatePicker.getValue();
-                LocalTime startTime = startTimeHrComboBox.getValue();
-                LocalDateTime userStartDateTime = LocalDateTime.of(startDate, startTime);
-                LocalDate endDate = endDatePicker.getValue();
-                LocalTime endTime = endTimeHrComboBox.getValue();
-                LocalDateTime userEndDateTime = LocalDateTime.of(endDate, endTime);
-
-                // Get times converted to UTC
-                LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
-                LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
-                System.out.println("Start and end times converted: " + startDateTime +" " + endDateTime);
-
-
-                String description = appointmentDescriptionTxtField.getText();
-                int customerId = customerComboBox.getSelectionModel().getSelectedItem().getCustomerId();
-                int userId = userComboBox.getValue().getUserId();
-
-
-                boolean validationResultStartBeforeEnd = validateStartBeforeEndTime(); //returns true if validation passes
-                boolean validationResultA = overlapValidationA(startDateTime); // returns false if validation passes
-                boolean validationResultB = overlapValidationB(startDateTime, endDateTime); // returns false if validation passes
-                boolean validationResultC = overlapValidationC(startDateTime, endDateTime); // returns false if validation passes
-                System.out.println("Validation Result Start before end: " + validationResultStartBeforeEnd);
-                System.out.println("validationResultA: " + validationResultA);
-                System.out.println("validationResultB: " + validationResultB);
-                System.out.println("ValidationResultC: " + validationResultC);
+                validateStartBeforeEndTime();
 
                 if((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
                         (!locationTxtField.getText().isEmpty()) && (locationTxtField.getLength() < 50) &&
@@ -550,18 +566,63 @@ public class ModifyAppointmentController implements Initializable {
                         (startDatePicker.getValue() != null) && (startTimeHrComboBox != null) &&
                         (endDatePicker.getValue() != null) && (endTimeHrComboBox != null) &&
                         (customerComboBox.getSelectionModel().getSelectedItem() != null) && (userComboBox.getValue() != null)) {
+                        getAppointmentsByCustomerID();
 
-                        if (validateStartBeforeEndTime() == true && validationResultA == false && validationResultB == false && validationResultC == false) {
+                        if(validateStartBeforeEndTime() == true) {
+
+
+                        int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
+                        String title = titleTxtField.getText();
+                        String location = locationTxtField.getText();
+                        int contactId = contactComboBox.getValue().getContactId();
+
+                        String type = typeComboBox.getValue();
+
+                        LocalDate startDate = startDatePicker.getValue();
+                        LocalTime startTime = startTimeHrComboBox.getValue();
+                        LocalDateTime userStartDateTime = LocalDateTime.of(startDate, startTime);
+                        LocalDate endDate = endDatePicker.getValue();
+                        LocalTime endTime = endTimeHrComboBox.getValue();
+                        LocalDateTime userEndDateTime = LocalDateTime.of(endDate, endTime);
+
+                        // Get times converted to UTC
+                        LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
+                        LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
+                        System.out.println("Start and end times converted: " + startDateTime +" " + endDateTime);
+
+
+                        String description = appointmentDescriptionTxtField.getText();
+                        int customerId = customerComboBox.getSelectionModel().getSelectedItem().getCustomerId();
+                        int userId = userComboBox.getValue().getUserId();
+
+
+                        boolean validationResultStartBeforeEnd = validateStartBeforeEndTime(); //returns true if validation passes
+                        boolean validationResultA = overlapValidationA(startDateTime); // returns false if validation passes
+                        boolean validationResultB = overlapValidationB(startDateTime, endDateTime); // returns false if validation passes
+                        boolean validationResultC = overlapValidationC(startDateTime, endDateTime); // returns false if validation passes
+                        System.out.println("Validation Result Start before end: " + validationResultStartBeforeEnd);
+                        System.out.println("validationResultA: " + validationResultA);
+                        System.out.println("validationResultB: " + validationResultB);
+                        System.out.println("ValidationResultC: " + validationResultC);
+
+
+
+                        if (validationResultA == false && validationResultB == false && validationResultC == false) {
                                 Appointment appointmentToSave = new Appointment(appointmentId, title, description,
                                         location, type, startDateTime, endDateTime, customerId, userId, contactId);
                                 AppointmentsImplement.updateAppointment(appointmentToSave);
                                 saveButton.setDisable(true);
                                 saveSuccessfulLabel.setVisible(true);
+                                getAllAppointments();
                                 populateAptTable(allAppointments);
                         } else {
                                 System.out.println("Conflicting appointment found");
                                 overlapAlert();
                                 saveErrorLabel.setVisible(true);
+                        }
+                        }
+                        else{dateAndTimeErrorLabel.setVisible(true);
+                        dateAndTimeErrorLabel2.setVisible(true);
                         }
                 }
         }
@@ -601,6 +662,7 @@ public class ModifyAppointmentController implements Initializable {
         @FXML
         void onActionDeleteAppointment(ActionEvent event) throws SQLException {
                 deleteAlert();
+                getAllAppointments();
                 populateAptTable(allAppointments);
         }
 
@@ -608,7 +670,9 @@ public class ModifyAppointmentController implements Initializable {
 
         @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {
+                //Hide active labels
                 dateAndTimeErrorLabel.setVisible(false);
+                dateAndTimeErrorLabel2.setVisible(false);
                 titleLengthAlert.setVisible(false);
                 saveSuccessfulLabel.setVisible(false);
                 saveErrorLabel.setVisible(false);
@@ -632,5 +696,162 @@ public class ModifyAppointmentController implements Initializable {
                         e.printStackTrace();
                 }
                 populateAptTable(allAppointments);
+
+
+                TimezoneConversion.convertBusinessStartFromEstToLocalTime();
+                TimezoneConversion.convertBusinessEndFromEstToLocalTime();
+
+
+
+
+                endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus is lost
+                                Boolean validationResult = null;
+                                saveButton.setDisable(false);
+                                saveErrorLabel.setVisible(false);
+                                endTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                                try {
+                                        validationResult = validateStartBeforeEndTime();
+                                } catch (Exception e) {
+                                        e.printStackTrace();
+                                }
+                                if(validationResult) {
+                                        dateAndTimeErrorLabel.setVisible(false);
+                                        dateAndTimeErrorLabel2.setVisible(false);
+                                }
+                                else{dateAndTimeErrorLabel.setVisible(true);
+                                dateAndTimeErrorLabel2.setVisible(true);
+                                }
+                        }
+                });
+
+                endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus is lost
+                                endTimeHrComboBox.getValue();
+                                saveButton.setDisable(false);
+                                saveErrorLabel.setVisible(false);
+                                endDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
+                                        Boolean validationResult = null;
+                                        try {
+                                                validationResult = validateStartBeforeEndTime();
+                                        } catch (Exception e) {
+                                                e.printStackTrace();
+                                        }
+                                        if (validationResult) {
+                                                dateAndTimeErrorLabel.setVisible(false);
+                                                dateAndTimeErrorLabel2.setVisible(false);
+
+                                        } else { dateAndTimeErrorLabel.setVisible(true);
+                                        dateAndTimeErrorLabel2.setVisible(true);
+                                        }
+                                }
+                        }
+                });
+
+//Change listeners to validate text fields and warn the user in real time if input is over the allowed length
+                titleTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                titleTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                                if(titleTxtField.getLength() > 50) {
+                                        titleLengthAlert.setVisible(true);}
+                                else if(titleTxtField.getLength() < 50){titleLengthAlert.setVisible(false);}
+                        }
+                });
+
+                locationTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                locationTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                                if(locationTxtField.getLength() > 50) {
+                                        locationLengthAlert.setVisible(true);}
+                                else if(locationTxtField.getLength() < 50){locationLengthAlert.setVisible(false);}
+                        }
+                });
+
+                appointmentDescriptionTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                appointmentDescriptionTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                                if(appointmentDescriptionTxtField.getLength() > 50) {
+                                        descriptionLengthAlert.setVisible(true);}
+                                else if(appointmentDescriptionTxtField.getLength() < 50){descriptionLengthAlert.setVisible(false);}
+                        }
+                });
+
+                typeComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                typeComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                        }
+                });
+
+                userComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                userComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                        }
+                });
+
+                contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                contactComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                        }
+                });
+
+                appointmentTable.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                appointmentTable.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                                clearBoxFormatting();
+                        }
+                });
+
+                startDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                startDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                        }
+                });
+
+                startTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+                        if (!newValue) { //when focus lost
+                                saveSuccessfulLabel.setVisible(false);
+                                saveErrorLabel.setVisible(false);
+                                saveButton.setDisable(false);
+                                allFieldsRequiredLabel.setVisible(false);
+                                startTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                        }
+                });
+
+
+
+
         }
 }

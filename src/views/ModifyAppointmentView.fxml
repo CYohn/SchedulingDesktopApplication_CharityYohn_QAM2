@@ -130,7 +130,7 @@
             <Label fx:id="descriptionLengthAlert" text="Description must be less than 50 characters" textFill="#970101" GridPane.columnIndex="4" GridPane.rowIndex="11" />
             <ComboBox fx:id="startTimeHrComboBox" prefWidth="150.0" promptText="Select Time" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <ComboBox fx:id="endTimeHrComboBox" prefHeight="25.0" prefWidth="154.0" promptText="Select Hour" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-            <Label fx:id="dateAndTimeErrorLabel" prefHeight="20.0" prefWidth="396.0" text="End Time Must Be After Start Time" textAlignment="CENTER" textFill="#a10303" GridPane.columnIndex="4" GridPane.rowIndex="5">
+            <Label fx:id="dateAndTimeErrorLabel" prefHeight="20.0" prefWidth="396.0" text="End Time Must Be After Start Time" textAlignment="CENTER" textFill="#a10303" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="5">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -147,6 +147,12 @@
                </font>
             </Label>
             <ComboBox fx:id="customerComboBox" prefHeight="25.0" prefWidth="243.0" promptText="Select Customer" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+            <Label GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <Label fx:id="dateAndTimeErrorLabel2" prefHeight="20.0" prefWidth="396.0" text="And Appointments Must Be In The Future" textAlignment="CENTER" textFill="#a10303" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="6">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
       <GridPane layoutX="448.0" layoutY="675.0" prefHeight="90.0" prefWidth="292.0">
