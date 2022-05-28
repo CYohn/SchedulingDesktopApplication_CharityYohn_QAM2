@@ -40,6 +40,7 @@ public class LoginPageController implements Initializable {
 
     int loggedUserId;
 
+
     public int getLoggedUserId() {
         return loggedUserId;
     }
@@ -196,32 +197,33 @@ public class LoginPageController implements Initializable {
 
         if (validationStatus == true) {
 
-            /**
-             * The hard-coded appointment is in place to test the alert triggered by an appointment scheduled
-             * within 15 minutes to the user login.
-             */
-            LocalDateTime userTime = LocalDateTime.now().plusMinutes(14);
-            loggedUserId = getLoggedUserId();
-            Appointment appointmentOnLaunch = new Appointment(
-                    "On Launch",
-                    "Appointment created to test alert",
-                    "123 Software Lane, Springfield",
-                    "De-Briefing", userTime,
-                    userTime.plusMinutes(44),
-                    1,
-                    loggedUserId,
-                    1
-            );
+//            /**
+//             * This hard-coded appointment is in place to test the alert triggered by an appointment scheduled
+//             * within 15 minutes of the user login.
+//             */
+//            LocalDateTime userTime = LocalDateTime.now().plusMinutes(14);
+//            loggedUserId = getLoggedUserId();
+//            Appointment appointmentOnLaunch = new Appointment(
+//                    "On Launch",
+//                    "Appointment created to test alert",
+//                    "123 Software Lane, Springfield",
+//                    "De-Briefing", userTime,
+//                    userTime.plusMinutes(44),
+//                    1,
+//                    loggedUserId,
+//                    1
+//            );
 
-            AppointmentsImplement.addAppointment(appointmentOnLaunch);
-            searchForUpcomingAppointments();
+//            AppointmentsImplement.addAppointment(appointmentOnLaunch);
+
 
 
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/views/TabbedPaneView.fxml"))));
             stage.setScene(new Scene(scene));
             stage.show();
-
+            searchForUpcomingAppointments();
+            alertOfUpcomingAppointment();
             try {
                 PrintWriter pw = new PrintWriter(new FileOutputStream(
                         new File("login_activity.txt"),//Change to login_activity.txt
@@ -240,10 +242,15 @@ public class LoginPageController implements Initializable {
         }
     }
 
+
+    ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
+
+
     public void searchForUpcomingAppointments() {
-        ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
+
+        ObservableList<Appointment> allAppointments;
         ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
-        ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
+        allAppointments = AppointmentsImplement.getAllAppointments;
         loggedUserId = getLoggedUserId();
 
         try {
@@ -273,28 +280,59 @@ public class LoginPageController implements Initializable {
             Appointment convertedTimesAppointment = new Appointment
                     (appointmentId, title, description, location, type, startDate, startTime,
                             endDate, endTime, customerId, userId, contactId);
-
+            appointmentsWithConvertedTimes.clear();
             appointmentsWithConvertedTimes.add(convertedTimesAppointment);
 
             LocalDate userToday = LocalDate.now();
             LocalTime timePlus15Min = LocalTime.now().plusMinutes(15);
+            upcomingAppointments.clear();
             appointmentsWithConvertedTimes.stream()
                     .filter(apt -> apt.getUserId() == loggedUserId)
                     .filter(apt -> apt.getStartDate().equals(userToday))
                     .filter(apt -> apt.getStartTime().isBefore(timePlus15Min))
                     .forEach(upcomingAppointments::add);
-            System.out.println("Appointments within 15 minutes of login  "+ upcomingAppointments);
+            //System.out.println("Appointments within 15 minutes of login  "+ upcomingAppointments);
+        }
+    }
+
+
+
+    public void alertOfUpcomingAppointment(){
+        int numberOfUpcomingAppointments = (int) upcomingAppointments.stream().count();
+
+        if (numberOfUpcomingAppointments == 1){
+            System.out.println("Upcoming appointments list in the alertOfUpcomingAppointments method: \n" +
+                    upcomingAppointments);
+            for (Appointment apt: upcomingAppointments) {
+                int aptId = apt.getAppointmentId();
+                LocalDate aptStartDate = apt.getStartDate();
+                LocalTime aptStartTime = apt.getStartTime();
+
+                Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
+                infoRequiredAlert.setTitle("You Have An Appointment Starting in 15 Minutes or Less");
+                infoRequiredAlert.setHeaderText("Please See the Appointment Information Below: ");
+                infoRequiredAlert.setContentText("Appointment ID: " + aptId + " Starting at: " + aptStartTime + " On Date: " + aptStartDate);
+                infoRequiredAlert.showAndWait();
+            }
+        }
+        if (numberOfUpcomingAppointments == 0){
+            Alert infoRequiredAlert = new Alert(Alert.AlertType.INFORMATION);
+            infoRequiredAlert.setTitle("You Have No Upcoming Appointments");
+            //infoRequiredAlert.setHeaderText("Grab a coffee, you have 15 minutes with no appointments");
+            infoRequiredAlert.setContentText("Grab a coffee or tea, you have at least 15 minutes with no appointments");
+            infoRequiredAlert.showAndWait();
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         try {
             AppointmentsImplement.getAllAppointments();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Login Form Initialized!");
+        //System.out.println("Login Form Initialized!");
         passwordRequiredLabel.setVisible(false);
         userNameReqLabel.setVisible(false);
         incorrectInfoLabel.setVisible(false);

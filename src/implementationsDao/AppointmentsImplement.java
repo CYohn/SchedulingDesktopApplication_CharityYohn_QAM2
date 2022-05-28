@@ -25,7 +25,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
                 " AND appointments.User_ID = users.User_ID" +
                 " AND appointments.Contact_ID = contacts.Contact_ID";
         PreparedStatement getAppointmentsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allAppointmentsQuery);
-        System.out.println("getAppointmentsPreparedStatement was successful in AppointmentsImplement.getAllAppointments()");
+        //System.out.println("getAppointmentsPreparedStatement was successful in AppointmentsImplement.getAllAppointments()");
         ResultSet allAppointmentsResults;
 
         try {
@@ -67,9 +67,9 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                     Appointment appointment = new Appointment (appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId, contactId);
                     getAllAppointments.add(appointment);
-                    System.out.println("Appointment object populated in getAllAppointments list:   " +
-                            "  Contact ID:  " + appointment.getContactId() +
-                            "  Appointment ID:  " + appointment.getAppointmentId());
+                    //System.out.println("Appointment object populated in getAllAppointments list:   " +
+                    //        "  Contact ID:  " + appointment.getContactId() +
+                    //        "  Appointment ID:  " + appointment.getAppointmentId());
                 }
             }
             else{System.out.println("ResultSet was null");}
@@ -99,7 +99,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
             int userId = appointmentToAdd.getUserId();
             int contactId = appointmentToAdd.getContactId();
 
-            System.out.println("Appointment to send to the DB:  " + appointmentToAdd);
+            //System.out.println("Appointment to send to the DB:  " + appointmentToAdd);
 
 
                 String insertCustomerIntoDB = "INSERT INTO client_schedule.appointments (" +
@@ -149,7 +149,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
                 " FROM client_schedule.appointments " +
                 " WHERE appointments.Customer_ID = " + selectedCustomerId;
         PreparedStatement getAppointmentsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(allAppointmentsQuery);
-        System.out.println("getAppointmentsPreparedStatement was successful in AppointmentsImplement.getAppointmentsByCustomerID()");
+        //System.out.println("getAppointmentsPreparedStatement was successful in AppointmentsImplement.getAppointmentsByCustomerID()");
         ResultSet allAppointmentsResults;
 
         try {
@@ -160,18 +160,18 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                 while (allAppointmentsResults.next()) {
                     int appointmentId = allAppointmentsResults.getInt("Appointment_ID");
-                    System.out.println("getAppointmentsByCustomerID() appointmentId: " + appointmentId);
+                    //System.out.println("getAppointmentsByCustomerID() appointmentId: " + appointmentId);
 
                     LocalDateTime startDateTime = allAppointmentsResults.getTimestamp("Start").toLocalDateTime();
-                    System.out.println("getAppointmentsByCustomerID() startDateTime: " + startDateTime);
+                    //System.out.println("getAppointmentsByCustomerID() startDateTime: " + startDateTime);
 
                     LocalDateTime endDateTime = allAppointmentsResults.getTimestamp("End").toLocalDateTime();
-                    System.out.println("getAppointmentsByCustomerID() endDateTime: " + endDateTime);
+                    //System.out.println("getAppointmentsByCustomerID() endDateTime: " + endDateTime);
 
                     Appointment appointmentByCustomerId = new Appointment(appointmentId, startDateTime, endDateTime);
 
                     AppointmentsByCustomerID.add(appointmentByCustomerId);
-                    System.out.println("Appointment object populated in getAllAppointments list: " + appointmentByCustomerId);
+                    //System.out.println("Appointment object populated in getAllAppointments list: " + appointmentByCustomerId);
                 }
             }
             else{System.out.println("ResultSet was null");}

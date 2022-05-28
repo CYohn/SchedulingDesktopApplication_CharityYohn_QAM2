@@ -192,7 +192,7 @@ public class ModifyAppointmentController implements Initializable {
         public void populateAptTable(ObservableList<Appointment>allAppointments){
 
                 for(Appointment appointment : allAppointments){
-                        System.out.println("Appointment from the populate apt Table: " + appointment);
+                        //System.out.println("Appointment from the populate apt Table: " + appointment);
                         LocalDateTime startUTC = appointment.getStartDateTime();
                         LocalDateTime endUTC = appointment.getEndDateTime();
                         LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
