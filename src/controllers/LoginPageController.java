@@ -1,5 +1,8 @@
 package controllers;
 
+import implementationsDao.AppointmentsImplement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,12 +13,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.Main;
 import utilities.DatabaseConnection;
+import Objects.Appointment;
+import Objects.User;
 
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoField;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -24,12 +31,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.time.ZoneOffset.UTC;
+import static utilities.TimezoneConversion.convertUTCToUserTime;
 
 public class LoginPageController implements Initializable {
 
     Stage stage;
     Parent scene;
 
+    int loggedUserId;
+
+    public int getLoggedUserId() {
+        return loggedUserId;
+    }
+
+    public void setLoggedUserId(int loggedUserId) {
+        this.loggedUserId = loggedUserId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    String userName;
 
     private ResourceBundle languageResource;
 
@@ -93,14 +120,19 @@ public class LoginPageController implements Initializable {
 
         ResultSet getUserResults;
         try {
-            String getUserSearchStatement = "SELECT User_Name, Password FROM client_schedule.users " +
+            String getUserSearchStatement = "SELECT User_Name, Password, User_ID FROM client_schedule.users " +
                     "WHERE User_Name=" + "'" + userName + "';";
             PreparedStatement getUserFromDB = DatabaseConnection.getConnection().prepareStatement(getUserSearchStatement);
             getUserResults = getUserFromDB.executeQuery(getUserSearchStatement);
 
             while (getUserResults.next()) {
+                int loggedUserId = getUserResults.getInt("User_ID");
+                System.out.println("Results from getUserPassword: User_Id from DB: " + loggedUserId);
+                setLoggedUserId(loggedUserId);
+
                 userName = getUserResults.getString("User_Name");
                 System.out.println("Results from getUserPassword: User_Name from DB: " + userName);
+                setUserName(userName);
 
                 dbPassword = getUserResults.getString("Password");
                 System.out.println("Results from getUserPassword: Password from DB: " + dbPassword);
@@ -163,6 +195,28 @@ public class LoginPageController implements Initializable {
         }
 
         if (validationStatus == true) {
+
+            /**
+             * The hard-coded appointment is in place to test the alert triggered by an appointment scheduled
+             * within 15 minutes to the user login.
+             */
+            LocalDateTime userTime = LocalDateTime.now().plusMinutes(14);
+            loggedUserId = getLoggedUserId();
+            Appointment appointmentOnLaunch = new Appointment(
+                    "On Launch",
+                    "Appointment created to test alert",
+                    "123 Software Lane, Springfield",
+                    "De-Briefing", userTime,
+                    userTime.plusMinutes(44),
+                    1,
+                    loggedUserId,
+                    1
+            );
+
+            AppointmentsImplement.addAppointment(appointmentOnLaunch);
+            searchForUpcomingAppointments();
+
+
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/views/TabbedPaneView.fxml"))));
             stage.setScene(new Scene(scene));
@@ -186,10 +240,60 @@ public class LoginPageController implements Initializable {
         }
     }
 
+    public void searchForUpcomingAppointments() {
+        ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
+        ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
+        ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
+        loggedUserId = getLoggedUserId();
+
+        try {
+            AppointmentsImplement.getAllAppointments();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for (Appointment appointment : allAppointments) {
+
+            //System.out.println("Appointment from the populate apt Table: " + appointment);
+            LocalDateTime startUTC = appointment.getStartDateTime();
+            LocalDateTime endUTC = appointment.getEndDateTime();
+            LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
+            LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
+            LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
+            LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
+
+            int appointmentId = appointment.getAppointmentId();
+            String title = appointment.getTitle();
+            String description = appointment.getDescription();
+            String location = appointment.getLocation();
+            String type = appointment.getType();
+            int customerId = appointment.getCustomerId();
+            int userId = appointment.getUserId();
+            int contactId = appointment.getContactId();
+
+            Appointment convertedTimesAppointment = new Appointment
+                    (appointmentId, title, description, location, type, startDate, startTime,
+                            endDate, endTime, customerId, userId, contactId);
+
+            appointmentsWithConvertedTimes.add(convertedTimesAppointment);
+
+            LocalDate userToday = LocalDate.now();
+            LocalTime timePlus15Min = LocalTime.now().plusMinutes(15);
+            appointmentsWithConvertedTimes.stream()
+                    .filter(apt -> apt.getUserId() == loggedUserId)
+                    .filter(apt -> apt.getStartDate().equals(userToday))
+                    .filter(apt -> apt.getStartTime().isBefore(timePlus15Min))
+                    .forEach(upcomingAppointments::add);
+            System.out.println("Appointments within 15 minutes of login  "+ upcomingAppointments);
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        try {
+            AppointmentsImplement.getAllAppointments();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         System.out.println("Login Form Initialized!");
         passwordRequiredLabel.setVisible(false);
         userNameReqLabel.setVisible(false);

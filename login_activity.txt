@@ -1,0 +1,15 @@
+Unsuccessful login attempt by user:   
+Timestamp: 2022-05-27 23:06:33.2928904 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-05-27 23:06:50.7735074 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-05-28 00:04:43.3276963 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-05-28 00:13:14.7797834 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-05-28 00:17:28.6928023 UTC Time
+

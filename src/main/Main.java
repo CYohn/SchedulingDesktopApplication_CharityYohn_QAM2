@@ -34,21 +34,6 @@ public class Main extends Application {
     public static void main(String[] args) throws SQLException {
         DatabaseConnection.makeConnection();
 
-
-        LocalDateTime userTime = LocalDateTime.now().plusMinutes(14);
-        Appointment appointmentOnLaunch = new Appointment(
-                "On Launch",
-                "Appointment created to test alert",
-                "123 Software Lane, Springfield",
-                "De-Briefing", userTime,
-                userTime.plusMinutes(44),
-                2,
-                2,
-                2
-        );
-
-        AppointmentsImplement.addAppointment(appointmentOnLaunch);
-
         launch(args);
 
         DatabaseConnection.closeConnection();
