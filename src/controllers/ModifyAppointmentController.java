@@ -189,8 +189,10 @@ public class ModifyAppointmentController implements Initializable {
                 return null;
         }
 
-        public void populateAptTable(ObservableList<Appointment>allAppointments){
-
+        public void populateAptTable(ObservableList<Appointment>allAppointments) throws SQLException {
+                appointmentsWithConvertedTimes.clear();
+                allAppointments.clear();
+                getAllAppointments();
                 for(Appointment appointment : allAppointments){
                         //System.out.println("Appointment from the populate apt Table: " + appointment);
                         LocalDateTime startUTC = appointment.getStartDateTime();
@@ -688,22 +690,24 @@ public class ModifyAppointmentController implements Initializable {
                 typeComboBox.setItems(appointmentTypes);
                 userComboBox.setItems(userNames);
                 customerComboBox.setItems(allCustomers);
+
+                TimezoneConversion.convertBusinessStartFromEstToLocalTime();
+                TimezoneConversion.convertBusinessEndFromEstToLocalTime();
                 populateStartTimeComboBox();
                 populateEndTimeComboBox();
 
                 try {
+                        getAllAppointments.clear();
                         allAppointments.clear();
                         getAllAppointments();
                 } catch (SQLException e) {
                         e.printStackTrace();
                 }
-                populateAptTable(allAppointments);
-
-
-                TimezoneConversion.convertBusinessStartFromEstToLocalTime();
-                TimezoneConversion.convertBusinessEndFromEstToLocalTime();
-
-
+                try {
+                        populateAptTable(allAppointments);
+                } catch (SQLException e) {
+                        e.printStackTrace();
+                }
 
 
                 endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {

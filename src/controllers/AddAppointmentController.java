@@ -352,7 +352,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 if (validationResultA == false && validationResultB == false && validationResultC == false) {
                     Appointment appointmentToSave = new Appointment( title, description,
                             location, type, startDateTime, endDateTime, customerId, userId, contactId);
-                    AppointmentsImplement.updateAppointment(appointmentToSave);
+                    AppointmentsImplement.addAppointment(appointmentToSave);
                     saveButton.setDisable(true);
                     saveSuccessfulLabel.setVisible(true);
                 } else {
