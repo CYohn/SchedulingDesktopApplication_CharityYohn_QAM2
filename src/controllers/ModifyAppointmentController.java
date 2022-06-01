@@ -53,29 +53,54 @@ public class ModifyAppointmentController implements Initializable {
         Appointment overlappingAppointment;
         private static int selectedCustomerID;
 
-
+        /**
+         * Gets the start date and time
+         *
+         * @return start date and time
+         */
         public static LocalDateTime getStartDate() {
                 return startDate;
         }
 
+        /**
+         * Sets the start date and time
+         *
+         * @param startDate the start date and time
+         */
         public static void setStartDate(LocalDateTime startDate) {
                 ModifyAppointmentController.startDate = startDate;
         }
 
+        /**
+         * Gets the end date and time
+         *
+         * @return
+         */
         public static LocalDateTime getEndDate() {
                 return endDate;
         }
 
+        /**
+         * Sets the end date and time
+         *
+         * @param endDate sets the end date and time
+         */
         public static void setEndDate(LocalDateTime endDate) {
                 ModifyAppointmentController.endDate = endDate;
         }
 
-        @FXML private TableView<Appointment> appointmentTable;
-        @FXML private TableColumn<Appointment, Integer> aptContactColumn;
-        @FXML private TableColumn<Appointment, String> aptDescriptioncolumn;
-        @FXML private TableColumn<Appointment, LocalDate> aptEndDateColumn;
-        @FXML private TableColumn<Appointment, LocalTime> aptEndTimeColumn;
-        @FXML private TableColumn<Appointment, Integer> aptIdColumn;
+        @FXML
+        private TableView<Appointment> appointmentTable;
+        @FXML
+        private TableColumn<Appointment, Integer> aptContactColumn;
+        @FXML
+        private TableColumn<Appointment, String> aptDescriptioncolumn;
+        @FXML
+        private TableColumn<Appointment, LocalDate> aptEndDateColumn;
+        @FXML
+        private TableColumn<Appointment, LocalTime> aptEndTimeColumn;
+        @FXML
+        private TableColumn<Appointment, Integer> aptIdColumn;
         @FXML private TableColumn<Appointment, String> aptLocationColumn;
         @FXML private TableColumn<Appointment, LocalDate> aptStartDateColumn;
         @FXML private TableColumn<Appointment, LocalTime> aptStartTimeColumn;
@@ -105,55 +130,81 @@ public class ModifyAppointmentController implements Initializable {
 
         @FXML private Label dateAndTimeErrorLabel;
         @FXML private Label titleLengthAlert;
-        @FXML private Label saveSuccessfulLabel;
-        @FXML private Label saveErrorLabel;
-        @FXML private Label locationLengthAlert;
-        @FXML private Label allFieldsRequiredLabel;
-        @FXML private Label descriptionLengthAlert;
-        @FXML private Label aptNumberLabel;
-        @FXML private Label deleteSuccessfulLabel;
-        @FXML private Label dateAndTimeErrorLabel2;
+        @FXML
+        private Label saveSuccessfulLabel;
+        @FXML
+        private Label saveErrorLabel;
+        @FXML
+        private Label locationLengthAlert;
+        @FXML
+        private Label allFieldsRequiredLabel;
+        @FXML
+        private Label descriptionLengthAlert;
+        @FXML
+        private Label aptNumberLabel;
+        @FXML
+        private Label deleteSuccessfulLabel;
+        @FXML
+        private Label dateAndTimeErrorLabel2;
 
-        public String getSelectedContactName() {
-                return selectedContactName;
+        /**
+         * Sets the selected customer ID
+         *
+         * @param selectedCustomerID
+         */
+        public static void setSelectedCustomerID(int selectedCustomerID) {
+                ModifyAppointmentController.selectedCustomerID = selectedCustomerID;
         }
 
+        /**
+         * Sets the selected contact name
+         *
+         * @param selectedContactName the name of the selected contact
+         */
         public void setSelectedContactName(String selectedContactName) {
                 this.selectedContactName = selectedContactName;
         }
 
-        public String getSelectedCustomerName() {
-                return selectedCustomerName;
-        }
-
+        /**
+         * Sets the selected customer name
+         *
+         * @param selectedCustomerName
+         */
         public void setSelectedCustomerName(String selectedCustomerName) {
                 this.selectedCustomerName = selectedCustomerName;
         }
 
-        public String getSelectedUserName() {
-                return selectedUserName;
-        }
-
+        /**
+         * Sets the selected username
+         *
+         * @param selectedUserName
+         */
         public void setSelectedUserName(String selectedUserName) {
                 this.selectedUserName = selectedUserName;
         }
 
-
+        /**
+         * Sets and object with the overlapping appointment
+         *
+         * @param overlappingAppointment The overlapping appointment object
+         */
         public void setOverlappingAppointment(Appointment overlappingAppointment) {
                 this.overlappingAppointment = overlappingAppointment;
-        }
-
-        public static void setSelectedCustomerID(int selectedCustomerID) {
-                ModifyAppointmentController.selectedCustomerID = selectedCustomerID;
         }
 
         public ModifyAppointmentController() throws SQLException {
         }
 
-        public Contact returnSelectedContactFromID(int contactId){
+        /**
+         * Maches the selected contact with the contacts in the list to set the selected contact name and return the correct contact in the list.
+         *
+         * @param contactId The ID number of the selected contact
+         * @return The contact to whom the ID belongs
+         */
+        public Contact returnSelectedContactFromID(int contactId) {
                 Contact selectedContact = null;
-                for (Contact contact: contactNames){
-                        if (contact.getContactId() == contactId){
+                for (Contact contact : contactNames) {
+                        if (contact.getContactId() == contactId) {
                                 String contactName = contact.getContactName();
                                 setSelectedContactName(contactName);
                                 selectedContact = contact;
@@ -163,10 +214,16 @@ public class ModifyAppointmentController implements Initializable {
                 return null;
         }
 
-        public Customer returnSelectedCustomerFromID(int customerId){
+        /**
+         * Takes the ID number of the selected customer and returns the correct custome object.
+         *
+         * @param customerId The ID of the selected customer
+         * @return customer object selected
+         */
+        public Customer returnSelectedCustomerFromID(int customerId) {
                 Customer selectedCustomer = null;
-                for (Customer customer: allCustomers){
-                        if (customer.getCustomerId() == customerId){
+                for (Customer customer : allCustomers) {
+                        if (customer.getCustomerId() == customerId) {
                                 String customerName = customer.getCustomerName();
                                 setSelectedCustomerName(customerName);
                                 selectedCustomer = customer;
@@ -176,10 +233,16 @@ public class ModifyAppointmentController implements Initializable {
                 return null;
         }
 
-        public User returnSelectedUserFromID(int userId){
+        /**
+         * Returns the selected user object based on the user ID selected
+         *
+         * @param userId The ID of the user
+         * @return User object
+         */
+        public User returnSelectedUserFromID(int userId) {
                 User selectedUser = null;
-                for (User user: userNames){
-                        if (user.getUserId() == userId){
+                for (User user : userNames) {
+                        if (user.getUserId() == userId) {
                                 String userName = user.getUserName();
                                 setSelectedCustomerName(userName);
                                 selectedUser = user;
@@ -189,11 +252,19 @@ public class ModifyAppointmentController implements Initializable {
                 return null;
         }
 
-        public void populateAptTable(ObservableList<Appointment>allAppointments) throws SQLException {
+        /**
+         * Cell factory to populate the Appointment table.
+         * The method gets a fresh list of appointments and converts the times to the user timezone and splits the times
+         * into individual date / time variables. Then the method uses these new times to populate the appointments table.
+         *
+         * @param allAppointments
+         * @throws SQLException
+         */
+        public void populateAptTable(ObservableList<Appointment> allAppointments) throws SQLException {
                 appointmentsWithConvertedTimes.clear();
                 allAppointments.clear();
                 getAllAppointments();
-                for(Appointment appointment : allAppointments){
+                for (Appointment appointment : allAppointments) {
                         //System.out.println("Appointment from the populate apt Table: " + appointment);
                         LocalDateTime startUTC = appointment.getStartDateTime();
                         LocalDateTime endUTC = appointment.getEndDateTime();
@@ -235,8 +306,13 @@ public class ModifyAppointmentController implements Initializable {
         }
 
 
-
-        public void populateStartTimeComboBox(){
+        /**
+         * Populates the start time combo box.
+         * The method calls the time conversion in utilities to convert times from Eastern Time to the users local time.
+         * Then the method populates a combo box, only allowing the user to select times within business hours while showing the times
+         * in the correct timezone for the user.
+         */
+        public void populateStartTimeComboBox() {
                 LocalDateTime businessStartConverted = TimezoneConversion.getBusinessStartConverted();
                 LocalTime businessStartConvertedTime = businessStartConverted.toLocalTime();
                 int businessStartHour = businessStartConvertedTime.getHour();
@@ -255,7 +331,14 @@ public class ModifyAppointmentController implements Initializable {
                 }
         }
 
-        public void populateEndTimeComboBox(){LocalDateTime businessStartConverted = TimezoneConversion.getBusinessStartConverted();
+        /**
+         * Populates the end time combo box.
+         * The method calls the time conversion in utilities to convert times from Eastern Time to the users local time.
+         * Then the method populates a combo box, only allowing the user to select times within business hours while showing the times
+         * in the correct timezone for the user.
+         */
+        public void populateEndTimeComboBox() {
+                LocalDateTime businessStartConverted = TimezoneConversion.getBusinessStartConverted();
                 LocalTime businessStartConvertedTime = businessStartConverted.toLocalTime();
                 int businessStartHour = businessStartConvertedTime.getHour();
                 int businessStartMinute = businessStartConvertedTime.getMinute();
@@ -270,15 +353,18 @@ public class ModifyAppointmentController implements Initializable {
                 while (startHour.isBefore(endHour)) {
                         endTimeHrComboBox.getItems().add(startHour);
                         startHour = startHour.plusMinutes(15);
-                }}
+                }
+        }
 
 
-
-
-
+        /**
+         * Populates the form with information from the selection in the table
+         *
+         * @param event The user clicks on the table to select an appointment
+         */
         @FXML
         void onClickPopulateApptElements(MouseEvent event) {
-                if(!appointmentTable.getSelectionModel().isEmpty()){
+                if (!appointmentTable.getSelectionModel().isEmpty()) {
                         deleteButton.setDisable(false);
                         Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
 
@@ -314,11 +400,16 @@ public class ModifyAppointmentController implements Initializable {
                         endDatePicker.setValue(endDate);
                         endTimeHrComboBox.setValue(endTime);
                         customerComboBox.setValue(selectedCustomer);
-                        }
                 }
+        }
 
-
-        @FXML void onActionClearForm(ActionEvent event) {
+        /**
+         * Clears the form values
+         *
+         * @param event When the user clicks the clear button
+         */
+        @FXML
+        void onActionClearForm(ActionEvent event) {
 
                 titleTxtField.clear();
                 titleLengthAlert.setVisible(false);
@@ -344,6 +435,12 @@ public class ModifyAppointmentController implements Initializable {
                 clearBoxFormatting();
         }
 
+        /**
+         * Validates that the selected start time and date are before the end time and date and that the appointment is in th future
+         *
+         * @return true is the validation passes and false if the validation does not pass
+         * @throws Exception
+         */
         public boolean validateStartBeforeEndTime() throws Exception {
                 try {
                         setStartDateTimeSelection();
@@ -365,7 +462,14 @@ public class ModifyAppointmentController implements Initializable {
                 return false;
         }
 
-
+        /**
+         * The first of three validation methods for validating overlapping appointments
+         *
+         * @param startDate The user's selected start date and time of the appointment
+         *                  The validation passes if the method returns false
+         * @return returns true if an overlapping appointment is found, false if no overlapping appointment is found
+         * @throws SQLException getAppointmentsByCustomerID return a list of appointments from the database
+         */
         public boolean overlapValidationA(LocalDateTime startDate) throws SQLException {
 
                 for (Appointment appointment : getAppointmentsByCustomerID) {
@@ -381,7 +485,16 @@ public class ModifyAppointmentController implements Initializable {
                 return false;
         }
 
-        public boolean overlapValidationB(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
+        /**
+         * The second of three validation methods for validating overlapping appointments
+         * The validation passes if the method returns false
+         *
+         * @param endDate the user selected end date
+         * @return true if an overlapping appointment is found, false if no overlapping appointment is found
+         * @throws SQLException getAppointmentsByCustomerID return a list of appointments from the database
+         *                      which may throw an SQL Exception
+         */
+        public boolean overlapValidationB(LocalDateTime endDate) throws SQLException {
 
 
                 for (Appointment appointment : getAppointmentsByCustomerID) {
@@ -397,6 +510,16 @@ public class ModifyAppointmentController implements Initializable {
                 return false;
         }
 
+        /**
+         * The third of three validation methods for validating overlapping appointments
+         * The validation passes if the method returns false
+         *
+         * @param startDate the user's selected start date and time
+         * @param endDate   the user's selected end date and time
+         * @return true if an overlapping appointment is found, false if no overlapping appointment is found
+         * @throws SQLException getAppointmentsByCustomerID return a list of appointments from the database
+         *                      which may throw an SQL Exception
+         */
         public boolean overlapValidationC(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
 
                 for (Appointment appointment : getAppointmentsByCustomerID) {
@@ -412,18 +535,32 @@ public class ModifyAppointmentController implements Initializable {
                 return false;
         }
 
+        /**
+         * Gets the start date and time selected by the user and turns it into a LocalDatetime for sending to the database
+         *
+         * @return LocalDatetime start time and date
+         */
         public LocalDateTime setStartDateTimeSelection() {
                 LocalDateTime startDateTimeSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
                 setStartDate(startDateTimeSelection);
                 return startDateTimeSelection;
         }
 
+        /**
+         * Gets the end date and time selected by the user and turns it into a LocalDatetime for sending to the database
+         *
+         * @return LocalDatetime end time and date
+         */
         public LocalDateTime setEndDateTimeSelection() {
                 LocalDateTime endDateTimeSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
                 setEndDate(endDateTimeSelection);
                 return endDateTimeSelection;
         }
 
+        /**
+         * Checks for empty fields. If any empty field is found the method calls alert() to trigger a pop-up message and
+         * outlines the empty field with a red border. the red border is an effort to improve usability of the app from the user perspective.
+         */
         public void emptyFieldAlert() {
                 String title = titleTxtField.getText();
                 String location = locationTxtField.getText();
@@ -437,7 +574,7 @@ public class ModifyAppointmentController implements Initializable {
                 Customer selectedCustomer = customerComboBox.getValue();
                 User user = userComboBox.getValue();
 
-                if(title.trim().isEmpty()||location.trim().isEmpty()||description.trim().isEmpty()
+                if (title.trim().isEmpty()||location.trim().isEmpty()||description.trim().isEmpty()
                         ||contact == null||type == null || startTime == null || startDate == null
                         || endtime == null || endDate == null || selectedCustomer == null || user == null){
                         alert();
@@ -489,20 +626,23 @@ public class ModifyAppointmentController implements Initializable {
                 }
         }
 
-        public void clearBoxFormatting(){
+        /**
+         * Resets the formatting and error labels sho to the user on the form
+         */
+        public void clearBoxFormatting() {
 
-                        allFieldsRequiredLabel.setVisible(false);
-                        titleTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
+                allFieldsRequiredLabel.setVisible(false);
+                titleTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
 
-                        allFieldsRequiredLabel.setVisible(false);
-                        locationTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
-
-
-                        allFieldsRequiredLabel.setVisible(false);
-                        appointmentDescriptionTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
+                allFieldsRequiredLabel.setVisible(false);
+                locationTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
 
 
-                        allFieldsRequiredLabel.setVisible(false);
+                allFieldsRequiredLabel.setVisible(false);
+                appointmentDescriptionTxtField.setStyle("-fx-text-box-border: default; -fx-focus-color: default;");
+
+
+                allFieldsRequiredLabel.setVisible(false);
                         typeComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
 
 
@@ -524,22 +664,31 @@ public class ModifyAppointmentController implements Initializable {
                         allFieldsRequiredLabel.setVisible(false);
                         customerComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
 
-                        allFieldsRequiredLabel.setVisible(false);
-                        userComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                allFieldsRequiredLabel.setVisible(false);
+                userComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
 
-                        allFieldsRequiredLabel.setVisible(false);
-                        contactComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                allFieldsRequiredLabel.setVisible(false);
+                contactComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
         }
 
-
-        public void alert(){
+        /**
+         * An alert that pops up when an empty field is found before saving an appointment.
+         * This is the pop-up message itself, the validation is done in emptyFieldAlert().
+         */
+        public void alert() {
                 Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
                 infoRequiredAlert.setTitle("Information Required");
                 infoRequiredAlert.setHeaderText("Please enter all information.  Thank you! ");
                 infoRequiredAlert.setContentText("Please enter missing information");
                 infoRequiredAlert.showAndWait();
         }
-        public  void overlapAlert(){
+
+        /**
+         * The alert show to the user when an overlapping appointment is found.
+         * The alert converts the times show to the user's local time and advises what appointment overlaps with the
+         * time and date the user selected
+         */
+        public void overlapAlert() {
                 int overlapId = overlappingAppointment.getAppointmentId();
                 LocalDateTime overlapStartConversion = convertUTCToUserTime(overlappingAppointment.getStartDateTime());
                 LocalDateTime overlapEndConversion = convertUTCToUserTime(overlappingAppointment.getEndDateTime());
@@ -555,13 +704,25 @@ public class ModifyAppointmentController implements Initializable {
                 infoRequiredAlert.showAndWait();
         }
 
+        /**
+         * The save procedure
+         * The method first checks for empty fields and that the fields meet the length limits set by the database.
+         * Then the method validates that the appointment is in the future and that the start
+         * time and date is before the end time and date. If those validations pass, the method checks for overlapping appointments.
+         * If all validations pass the method converts the times to UTC time using the converter in the utilities package.
+         * Finally, it constructs an appointment object and sends the object to AppointmentsImplement.addAppointment to add to the database.
+         * If any of the validations fail, the method calls the appropriate error message to display to the user.
+         *
+         * @param event The user clicks save
+         * @throws Exception May throw an SQL Exception or runtime exception
+         */
         @FXML
         void onSaveButtonAction(ActionEvent event) throws Exception {
 
                 emptyFieldAlert();
                 validateStartBeforeEndTime();
 
-                if((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
+                if ((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
                         (!locationTxtField.getText().isEmpty()) && (locationTxtField.getLength() < 50) &&
                         (!appointmentDescriptionTxtField.getText().isEmpty()) && (appointmentDescriptionTxtField.getLength() < 50) &&
                         (contactComboBox.getValue() != null) && (typeComboBox.getValue() != null) &&
@@ -573,63 +734,66 @@ public class ModifyAppointmentController implements Initializable {
                         if(validateStartBeforeEndTime() == true) {
 
 
-                        int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
-                        String title = titleTxtField.getText();
-                        String location = locationTxtField.getText();
-                        int contactId = contactComboBox.getValue().getContactId();
+                                int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
+                                String title = titleTxtField.getText();
+                                String location = locationTxtField.getText();
+                                int contactId = contactComboBox.getValue().getContactId();
 
-                        String type = typeComboBox.getValue();
+                                String type = typeComboBox.getValue();
 
-                        LocalDate startDate = startDatePicker.getValue();
-                        LocalTime startTime = startTimeHrComboBox.getValue();
-                        LocalDateTime userStartDateTime = LocalDateTime.of(startDate, startTime);
-                        LocalDate endDate = endDatePicker.getValue();
-                        LocalTime endTime = endTimeHrComboBox.getValue();
-                        LocalDateTime userEndDateTime = LocalDateTime.of(endDate, endTime);
+                                LocalDate startDate = startDatePicker.getValue();
+                                LocalTime startTime = startTimeHrComboBox.getValue();
+                                LocalDateTime userStartDateTime = LocalDateTime.of(startDate, startTime);
+                                LocalDate endDate = endDatePicker.getValue();
+                                LocalTime endTime = endTimeHrComboBox.getValue();
+                                LocalDateTime userEndDateTime = LocalDateTime.of(endDate, endTime);
 
-                        // Get times converted to UTC
-                        LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
-                        LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
-                        System.out.println("Start and end times converted: " + startDateTime +" " + endDateTime);
-
-
-                        String description = appointmentDescriptionTxtField.getText();
-                        int customerId = customerComboBox.getSelectionModel().getSelectedItem().getCustomerId();
-                        int userId = userComboBox.getValue().getUserId();
+                                // Get times converted to UTC
+                                LocalDateTime startDateTime = TimezoneConversion.convertUserStartTimeToUTC(userStartDateTime);
+                                LocalDateTime endDateTime = TimezoneConversion.convertUserEndTimeToUTC(userEndDateTime);
+                                System.out.println("Start and end times converted: " + startDateTime +" " + endDateTime);
 
 
-                        boolean validationResultStartBeforeEnd = validateStartBeforeEndTime(); //returns true if validation passes
-                        boolean validationResultA = overlapValidationA(startDateTime); // returns false if validation passes
-                        boolean validationResultB = overlapValidationB(startDateTime, endDateTime); // returns false if validation passes
-                        boolean validationResultC = overlapValidationC(startDateTime, endDateTime); // returns false if validation passes
-                        System.out.println("Validation Result Start before end: " + validationResultStartBeforeEnd);
-                        System.out.println("validationResultA: " + validationResultA);
-                        System.out.println("validationResultB: " + validationResultB);
-                        System.out.println("ValidationResultC: " + validationResultC);
+                                String description = appointmentDescriptionTxtField.getText();
+                                int customerId = customerComboBox.getSelectionModel().getSelectedItem().getCustomerId();
+                                int userId = userComboBox.getValue().getUserId();
 
 
+                                boolean validationResultStartBeforeEnd = validateStartBeforeEndTime(); //returns true if validation passes
+                                boolean validationResultA = overlapValidationA(startDateTime); // returns false if validation passes
+                                boolean validationResultB = overlapValidationB(endDateTime); // returns false if validation passes
+                                boolean validationResultC = overlapValidationC(startDateTime, endDateTime); // returns false if validation passes
+                                System.out.println("Validation Result Start before end: " + validationResultStartBeforeEnd);
+                                System.out.println("validationResultA: " + validationResultA);
+                                System.out.println("validationResultB: " + validationResultB);
+                                System.out.println("ValidationResultC: " + validationResultC);
 
-                        if (validationResultA == false && validationResultB == false && validationResultC == false) {
-                                Appointment appointmentToSave = new Appointment(appointmentId, title, description,
-                                        location, type, startDateTime, endDateTime, customerId, userId, contactId);
-                                AppointmentsImplement.updateAppointment(appointmentToSave);
-                                saveButton.setDisable(true);
-                                saveSuccessfulLabel.setVisible(true);
-                                appointmentTable.getItems().clear();
-                                getAllAppointments();
-                                populateAptTable(allAppointments);
-                        } else {
-                                System.out.println("Conflicting appointment found");
-                                overlapAlert();
-                                saveErrorLabel.setVisible(true);
-                        }
-                        }
-                        else{dateAndTimeErrorLabel.setVisible(true);
-                        dateAndTimeErrorLabel2.setVisible(true);
+
+                                if (validationResultA == false && validationResultB == false && validationResultC == false) {
+                                        Appointment appointmentToSave = new Appointment(appointmentId, title, description,
+                                                location, type, startDateTime, endDateTime, customerId, userId, contactId);
+                                        AppointmentsImplement.updateAppointment(appointmentToSave);
+                                        saveButton.setDisable(true);
+                                        saveSuccessfulLabel.setVisible(true);
+                                        appointmentTable.getItems().clear();
+                                        getAllAppointments();
+                                        populateAptTable(allAppointments);
+                                } else {
+                                        System.out.println("Conflicting appointment found");
+                                        overlapAlert();
+                                        saveErrorLabel.setVisible(true);
+                                }
+                        } else{dateAndTimeErrorLabel.setVisible(true);
+                                dateAndTimeErrorLabel2.setVisible(true);
                         }
                 }
         }
 
+        /**
+         * An alert shown to the user to confirm the intention of deleting the selected appointment
+         *
+         * @throws SQLException
+         */
         public void deleteAlert() throws SQLException {
                 int appointmentId = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
                 LocalDate startDate = startDatePicker.getValue();
@@ -639,7 +803,7 @@ public class ModifyAppointmentController implements Initializable {
                 deleteAlert.setTitle("This will permanently delete appointment " + appointmentId);
                 deleteAlert.setHeaderText("Are you sur you want to delete appointment " + appointmentId + " ?");
                 deleteAlert.setContentText("Appointment for Customer: " + customerName +
-                        " Starting on " + startDate + " at " + startTime );
+                        " Starting on " + startDate + " at " + startTime);
                 //deleteAlert.showAndWait();
 
                 ButtonType yesButton = new ButtonType("Delete Appointment");
@@ -662,6 +826,12 @@ public class ModifyAppointmentController implements Initializable {
                 }
         }
 
+        /**
+         * The listener for the delete button
+         *
+         * @param event The user clicks the delete button
+         * @throws SQLException An exception that provides information on a database access error or other errors
+         */
         @FXML
         void onActionDeleteAppointment(ActionEvent event) throws SQLException {
                 deleteAlert();
@@ -671,7 +841,12 @@ public class ModifyAppointmentController implements Initializable {
         }
 
 
-
+        /**
+         * Initializes the page
+         *
+         * @param url
+         * @param resourceBundle
+         */
         @Override
         public void initialize(URL url, ResourceBundle resourceBundle) {
                 //Hide active labels
@@ -709,7 +884,10 @@ public class ModifyAppointmentController implements Initializable {
                         e.printStackTrace();
                 }
 
-
+/**
+ * Change listener for the end time combo box.
+ * Triggers the start time before end time validation in real time after the user has selected an end time.
+ */
                 endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus is lost
                                 Boolean validationResult = null;
@@ -724,20 +902,24 @@ public class ModifyAppointmentController implements Initializable {
                                 if(validationResult) {
                                         dateAndTimeErrorLabel.setVisible(false);
                                         dateAndTimeErrorLabel2.setVisible(false);
-                                }
-                                else{dateAndTimeErrorLabel.setVisible(true);
-                                dateAndTimeErrorLabel2.setVisible(true);
+                                } else {
+                                        dateAndTimeErrorLabel.setVisible(true);
+                                        dateAndTimeErrorLabel2.setVisible(true);
                                 }
                         }
                 });
 
+                /**
+                 * Change listener for the end date picker.
+                 * Triggers the start time before end time validation in real time after the user has selected an end time.
+                 */
                 endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus is lost
                                 endTimeHrComboBox.getValue();
                                 saveButton.setDisable(false);
                                 saveErrorLabel.setVisible(false);
                                 endDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                                if(!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
+                                if (!endTimeHrComboBox.getValue().equals(null)) { //if the end time is not null
                                         Boolean validationResult = null;
                                         try {
                                                 validationResult = validateStartBeforeEndTime();
@@ -748,14 +930,20 @@ public class ModifyAppointmentController implements Initializable {
                                                 dateAndTimeErrorLabel.setVisible(false);
                                                 dateAndTimeErrorLabel2.setVisible(false);
 
-                                        } else { dateAndTimeErrorLabel.setVisible(true);
-                                        dateAndTimeErrorLabel2.setVisible(true);
+                                        } else {
+                                                dateAndTimeErrorLabel.setVisible(true);
+                                                dateAndTimeErrorLabel2.setVisible(true);
                                         }
                                 }
                         }
                 });
 
 //Change listeners to validate text fields and warn the user in real time if input is over the allowed length
+
+                /**
+                 * Change listener to validate the length of text entries in real time.
+                 * Triggers an error label if the text entry is longer than the length allowed in the database
+                 */
                 titleTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -763,12 +951,18 @@ public class ModifyAppointmentController implements Initializable {
                                 saveButton.setDisable(false);
                                 allFieldsRequiredLabel.setVisible(false);
                                 titleTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                                if(titleTxtField.getLength() > 50) {
-                                        titleLengthAlert.setVisible(true);}
-                                else if(titleTxtField.getLength() < 50){titleLengthAlert.setVisible(false);}
+                                if (titleTxtField.getLength() > 50) {
+                                        titleLengthAlert.setVisible(true);
+                                } else if (titleTxtField.getLength() < 50) {
+                                        titleLengthAlert.setVisible(false);
+                                }
                         }
                 });
 
+                /**
+                 * Change listener to validate the length of text entries in real time.
+                 * Triggers an error label if the text entry is longer than the length allowed in the database
+                 */
                 locationTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -776,12 +970,18 @@ public class ModifyAppointmentController implements Initializable {
                                 saveButton.setDisable(false);
                                 allFieldsRequiredLabel.setVisible(false);
                                 locationTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                                if(locationTxtField.getLength() > 50) {
-                                        locationLengthAlert.setVisible(true);}
-                                else if(locationTxtField.getLength() < 50){locationLengthAlert.setVisible(false);}
+                                if (locationTxtField.getLength() > 50) {
+                                        locationLengthAlert.setVisible(true);
+                                } else if (locationTxtField.getLength() < 50) {
+                                        locationLengthAlert.setVisible(false);
+                                }
                         }
                 });
 
+                /**
+                 * Change listener to validate the length of text entries in real time.
+                 * Triggers an error label if the text entry is longer than the length allowed in the database
+                 */
                 appointmentDescriptionTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -789,12 +989,18 @@ public class ModifyAppointmentController implements Initializable {
                                 saveButton.setDisable(false);
                                 allFieldsRequiredLabel.setVisible(false);
                                 appointmentDescriptionTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                                if(appointmentDescriptionTxtField.getLength() > 50) {
-                                        descriptionLengthAlert.setVisible(true);}
-                                else if(appointmentDescriptionTxtField.getLength() < 50){descriptionLengthAlert.setVisible(false);}
+                                if (appointmentDescriptionTxtField.getLength() > 50) {
+                                        descriptionLengthAlert.setVisible(true);
+                                } else if (appointmentDescriptionTxtField.getLength() < 50) {
+                                        descriptionLengthAlert.setVisible(false);
+                                }
                         }
                 });
 
+                /**
+                 * Listener for the type combo box.
+                 * Resets the error labels if the user enters a new value
+                 */
                 typeComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -805,6 +1011,10 @@ public class ModifyAppointmentController implements Initializable {
                         }
                 });
 
+                /**
+                 * Listener for the user combo box.
+                 * Resets the error labels if the user enters a new value
+                 */
                 userComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -815,6 +1025,10 @@ public class ModifyAppointmentController implements Initializable {
                         }
                 });
 
+                /**
+                 * Listener for the contact combo box.
+                 * Resets the error labels if the user enters a new value
+                 */
                 contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -825,6 +1039,9 @@ public class ModifyAppointmentController implements Initializable {
                         }
                 });
 
+                /**
+                 * Change listener for the appointment table. Resets the error labels when the user selects a value.
+                 */
                 appointmentTable.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -836,6 +1053,10 @@ public class ModifyAppointmentController implements Initializable {
                         }
                 });
 
+                /**
+                 * Listener for the start date picker.
+                 * Resets the error labels if the user enters a new value
+                 */
                 startDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -846,6 +1067,10 @@ public class ModifyAppointmentController implements Initializable {
                         }
                 });
 
+                /**
+                 * Listener for the start time combo box.
+                 * Resets the error labels if the user enters a new value
+                 */
                 startTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                         if (!newValue) { //when focus lost
                                 saveSuccessfulLabel.setVisible(false);
@@ -855,9 +1080,6 @@ public class ModifyAppointmentController implements Initializable {
                                 startTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                         }
                 });
-
-
-
 
         }
 }

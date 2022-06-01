@@ -34,8 +34,6 @@ import static implementationsDao.CustomersImplement.addCustomer;
 public class AddCustomerController implements Initializable {
 
 
-
-
     public AddCustomerController() throws SQLException {
 
     }
@@ -140,19 +138,23 @@ public class AddCustomerController implements Initializable {
                 e.getMessage();
                 e.printStackTrace();
             }
-        }
+    }
 
+    /**
+     * Gets the division ID from the database
+     *
+     * @return returns the division ID from the database
+     */
+    public int getDivisionID() {
+        PreparedStatement findDivisionIDPreparedStatement;
+        String selectedDivision = divisionComboBox.getValue(); //Get the User's division selection
+        int customerDivisionID = 0;
 
-        public int getDivisionID() {
-            PreparedStatement findDivisionIDPreparedStatement;
-            String selectedDivision = divisionComboBox.getValue(); //Get the User's division selection
-            int customerDivisionID = 0;
-
-            try {
-                //Find the associated division ID based on the selected division name
-                String FindDivisionIDSearchStatement = ("SELECT Division_ID from first_level_divisions WHERE Division = '" + selectedDivision + "'");
-                findDivisionIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindDivisionIDSearchStatement);
-                ResultSet divisionIDResult = findDivisionIDPreparedStatement.executeQuery(FindDivisionIDSearchStatement);
+        try {
+            //Find the associated division ID based on the selected division name
+            String FindDivisionIDSearchStatement = ("SELECT Division_ID from first_level_divisions WHERE Division = '" + selectedDivision + "'");
+            findDivisionIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindDivisionIDSearchStatement);
+            ResultSet divisionIDResult = findDivisionIDPreparedStatement.executeQuery(FindDivisionIDSearchStatement);
 
 
                 while (divisionIDResult.next()) {
@@ -185,7 +187,11 @@ public class AddCustomerController implements Initializable {
         saveErrorLabel.setVisible(false);
     }
 
-    public void alert(){
+    /**
+     * This is the pop-up that appears as an alert when an empty field is found.
+     * The validation occurs in emptyFieldAlert()
+     */
+    public void alert() {
         Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
         infoRequiredAlert.setTitle("Information Required");
         infoRequiredAlert.setHeaderText("Please enter all information.  Thank you! ");
@@ -193,7 +199,10 @@ public class AddCustomerController implements Initializable {
         infoRequiredAlert.showAndWait();
     }
 
-    public void lengthAlert(){
+    /**
+     * A pop-up for the length alert
+     */
+    public void lengthAlert() {
         Alert lengthAlert = new Alert(Alert.AlertType.WARNING);
         lengthAlert.setTitle("Too Many Characters in the Field");
         lengthAlert.setHeaderText("Please adjust the length of your entry");
@@ -201,6 +210,10 @@ public class AddCustomerController implements Initializable {
         lengthAlert.showAndWait();
     }
 
+    /**
+     * This method checks for empty fields in the form.
+     * If any empty fields are found it triggers a pop-up alert and outlines the empty field in a red border
+     */
     public void emptyFieldAlert() {
         String name = custNameTxtField.getText();
         String address = addressTxtField.getText();
@@ -209,46 +222,60 @@ public class AddCustomerController implements Initializable {
         String country = countryComboBox.getValue();
         String division = divisionComboBox.getValue();
 
-        if(name.trim().isEmpty()||address.trim().isEmpty()||postalCode.trim().isEmpty()
-                ||phone.trim().isEmpty()||country == null||division == null){
+        if (name.trim().isEmpty() || address.trim().isEmpty() || postalCode.trim().isEmpty()
+                || phone.trim().isEmpty() || country == null || division == null){
             alert();
-        if (name.trim().isEmpty()) {
-            allFieldsRequiredLabel.setVisible(true);
-            custNameTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
-        }
+            if (name.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                custNameTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
 
-        if (address.trim().isEmpty()) {
-            allFieldsRequiredLabel.setVisible(true);
-            addressTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
-        }
-        if (postalCode.trim().isEmpty()) {
-            allFieldsRequiredLabel.setVisible(true);
-            postalCodeTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
-        }
-        if (phone.trim().isEmpty()) {
-            allFieldsRequiredLabel.setVisible(true);
-            custPhoneTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
-        }
-        if (country == null) {
-            allFieldsRequiredLabel.setVisible(true);
-            countryComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+            if (address.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                addressTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+            if (postalCode.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                postalCodeTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+            if (phone.trim().isEmpty()) {
+                allFieldsRequiredLabel.setVisible(true);
+                custPhoneTxtField.setStyle("-fx-text-box-border: #B22222; -fx-focus-color: #B22222;");
+            }
+            if (country == null) {
+                allFieldsRequiredLabel.setVisible(true);
+                countryComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
 
-        }
-        if (division == null) {
-            allFieldsRequiredLabel.setVisible(true);
-            divisionComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
-        }
+            }
+            if (division == null) {
+                allFieldsRequiredLabel.setVisible(true);
+                divisionComboBox.setStyle("-fx-border-color: #B22222; -fx-focus-color: #B22222;");
+            }
         }
     }
 
-    public void fieldLengthAlert(){
-        if(custNameTxtField.getLength() > 50){nameLengthAlert.setVisible(true);}
-        if(addressTxtField.getLength() > 100){addressLengthAlert.setVisible(true);}
-        if(postalCodeTxtField.getLength() > 50){postalLengthAlert.setVisible(true);}
-        if(custPhoneTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
+    /**
+     * Checks that the length of the text entries is under the limits imposed by the database
+     */
+    public void fieldLengthAlert() {
+        if (custNameTxtField.getLength() > 50) {
+            nameLengthAlert.setVisible(true);
+        }
+        if (addressTxtField.getLength() > 100) {
+            addressLengthAlert.setVisible(true);
+        }
+        if (postalCodeTxtField.getLength() > 50) {
+            postalLengthAlert.setVisible(true);
+        }
+        if (custPhoneTxtField.getLength() > 50) {
+            phoneLengthAlert.setVisible(true);
+        }
     }
 
-    public void hideLengthAlerts(){
+    /**
+     * Hised all length alerts
+     */
+    public void hideLengthAlerts() {
         addressLengthAlert.setVisible(false);
         nameLengthAlert.setVisible(false);
         phoneLengthAlert.setVisible(false);
@@ -256,17 +283,27 @@ public class AddCustomerController implements Initializable {
         allFieldsRequiredLabel.setVisible(false);
     }
 
+    /**
+     * This is the save procedure.
+     * The method first checks for empty fields. If validation passes, it creates a customer object and send the customer to
+     * CustomerImplement.addCustomer(customerToSave). Then the method checks for the database response. If the response is
+     * affirmative, a success label is shown to the user.
+     *
+     * @param event When the user clicks the save button
+     * @throws IOException  May throw an IOException because the method take form input
+     * @throws SQLException May throw an SQL exception because the method calls another method which saves the customer to the database
+     */
     @FXML
     void onSave(MouseEvent event) throws IOException, SQLException {
         fieldLengthAlert();
         emptyFieldAlert();
 
-        if((!custNameTxtField.getText().isEmpty()) && (custNameTxtField.getLength() < 50) &&
-        (!addressTxtField.getText().isEmpty()) && (addressTxtField.getLength() < 100) &&
-        (!postalCodeTxtField.getText().isEmpty()) && (postalCodeTxtField.getLength() < 50) &&
-        (!custPhoneTxtField.getText().isEmpty()) && (custPhoneTxtField.getLength() < 50) &&
-        (countryComboBox.getValue() != null) &&
-        (divisionComboBox.getValue() != null)) {
+        if ((!custNameTxtField.getText().isEmpty()) && (custNameTxtField.getLength() < 50) &&
+                (!addressTxtField.getText().isEmpty()) && (addressTxtField.getLength() < 100) &&
+                (!postalCodeTxtField.getText().isEmpty()) && (postalCodeTxtField.getLength() < 50) &&
+                (!custPhoneTxtField.getText().isEmpty()) && (custPhoneTxtField.getLength() < 50) &&
+                (countryComboBox.getValue() != null) &&
+                (divisionComboBox.getValue() != null)) {
 
             String customerName = custNameTxtField.getText();
             String customerAddress = addressTxtField.getText();
@@ -288,17 +325,20 @@ public class AddCustomerController implements Initializable {
                 saveSuccessfulLabel.setVisible(true);
                 System.out.println("Database response to adding the customer: " + databaseResponseToAddCustomer);
 
-            }
-            else {
+            } else {
                 saveErrorLabel.setVisible(true);
-                System.out.println("Customer not added");}
+                System.out.println("Customer not added");
+            }
         }
     }
 
 
-
-
-
+    /**
+     * Initializes the page
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Printing the observable list of names from the AddCustomer controller: " + divisionIDResult);
@@ -311,8 +351,11 @@ public class AddCustomerController implements Initializable {
         hideLengthAlerts();
 
 
-
         //Change listeners to validate text fields and warn the user in real time if input is over the allowed length
+        /**
+         * Change listener to validate the length of text entries in real time.
+         * Triggers an error label if the text entry is longer than the length allowed in the database
+         */
         custNameTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
@@ -320,12 +363,17 @@ public class AddCustomerController implements Initializable {
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
                 custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                if(custNameTxtField.getLength() > 50) {
-                    nameLengthAlert.setVisible(true);}
-                else if(custNameTxtField.getLength() < 50){nameLengthAlert.setVisible(false);}
+                if (custNameTxtField.getLength() > 50) {
+                    nameLengthAlert.setVisible(true);
+                } else if (custNameTxtField.getLength() < 50) {
+                    nameLengthAlert.setVisible(false);
                 }
+            }
         });
-
+        /**
+         * Change listener to validate the length of text entries in real time.
+         * Triggers an error label if the text entry is longer than the length allowed in the database
+         */
         addressTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
@@ -333,12 +381,18 @@ public class AddCustomerController implements Initializable {
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
                 addressTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                if(addressTxtField.getLength() > 100) {
-                    addressLengthAlert.setVisible(true);}
-                else if(addressTxtField.getLength() < 100){addressLengthAlert.setVisible(false);}
+                if (addressTxtField.getLength() > 100) {
+                    addressLengthAlert.setVisible(true);
+                } else if (addressTxtField.getLength() < 100) {
+                    addressLengthAlert.setVisible(false);
+                }
             }
         });
 
+        /**
+         * Change listener to validate the length of text entries in real time.
+         * Triggers an error label if the text entry is longer than the length allowed in the database
+         */
         postalCodeTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
@@ -346,12 +400,18 @@ public class AddCustomerController implements Initializable {
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
                 postalCodeTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                if(postalCodeTxtField.getLength() > 50) {
-                    postalLengthAlert.setVisible(true);}
-                else if(postalCodeTxtField.getLength() < 50){postalLengthAlert.setVisible(false);}
+                if (postalCodeTxtField.getLength() > 50) {
+                    postalLengthAlert.setVisible(true);
+                } else if (postalCodeTxtField.getLength() < 50) {
+                    postalLengthAlert.setVisible(false);
+                }
             }
         });
 
+        /**
+         * Change listener to validate the length of text entries in real time.
+         * Triggers an error label if the text entry is longer than the length allowed in the database
+         */
         custPhoneTxtField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
@@ -359,12 +419,17 @@ public class AddCustomerController implements Initializable {
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
                 custPhoneTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                if(custPhoneTxtField.getLength() > 50) {
-                    phoneLengthAlert.setVisible(true);}
-                else if(custPhoneTxtField.getLength() < 50){phoneLengthAlert.setVisible(false);}
+                if (custPhoneTxtField.getLength() > 50) {
+                    phoneLengthAlert.setVisible(true);
+                } else if (custPhoneTxtField.getLength() < 50) {
+                    phoneLengthAlert.setVisible(false);
+                }
             }
         });
-
+        /**
+         * Listener for the country combo box.
+         * Resets the error labels if the user enters a new value
+         */
         countryComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);
@@ -374,7 +439,10 @@ public class AddCustomerController implements Initializable {
                 countryComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
             }
         });
-
+        /**
+         * Listener for the division combo box.
+         * Resets the error labels if the user enters a new value
+         */
         divisionComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 saveSuccessfulLabel.setVisible(false);

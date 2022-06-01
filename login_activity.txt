@@ -1,78 +1,9 @@
-Unsuccessful login attempt by user:   
-Timestamp: 2022-05-27 23:06:33.2928904 UTC Time
+Successful login by user:  test 
+Timestamp: 2022-06-01 23:10:49.1364278 UTC Time
 
 Successful login by user:  test 
-Timestamp: 2022-05-27 23:06:50.7735074 UTC Time
+Timestamp: 2022-06-01 23:17:25.1793045 UTC Time
 
 Successful login by user:  test 
-Timestamp: 2022-05-28 00:04:43.3276963 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 00:13:14.7797834 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 00:17:28.6928023 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 03:09:06.0493674 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 03:17:09.4737544 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 03:18:52.6531094 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 03:30:14.3482274 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 03:32:48.4209186 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 03:34:31.8147255 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 03:43:02.0795118 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 03:47:10.3824576 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 03:47:48.8172161 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 03:58:30.2443795 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-28 04:05:35.5981653 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 04:06:04.0525266 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-28 04:24:39.5216631 UTC Time
-
-Unsuccessful login attempt by user:   
-Timestamp: 2022-05-29 20:04:49.6124869 UTC Time
-
-Unsuccessful login attempt by user:  kjlkj;kl/lkj/lkj 
-Timestamp: 2022-05-29 20:05:02.9096962 UTC Time
-
-Unsuccessful login attempt by user:  test 
-Timestamp: 2022-05-29 20:05:16.5605478 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-29 20:05:44.0611469 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-29 20:23:07.5970183 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-29 20:34:15.2753186 UTC Time
-
-Successful login by user:  admin 
-Timestamp: 2022-05-29 20:43:20.6431977 UTC Time
-
-Successful login by user:  test 
-Timestamp: 2022-05-29 20:50:54.6656595 UTC Time
+Timestamp: 2022-06-01 23:23:23.8466158 UTC Time
 

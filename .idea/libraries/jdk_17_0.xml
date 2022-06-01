@@ -1,13 +1,16 @@
 <component name="libraryTable">
   <library name="jdk-17.0">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.1" />
+      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.3.1/lib" />
     </CLASSES>
     <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/mysql-connector-odbc-noinstall-8.0.25-winx64/lib" />
+    </NATIVE>
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.1" />
+      <root url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.3.1/lib" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.1" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.1" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.3.1/lib" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17.0.3.1/lib" recursive="false" type="SOURCES" />
   </library>
 </component>

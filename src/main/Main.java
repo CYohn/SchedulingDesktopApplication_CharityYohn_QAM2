@@ -21,8 +21,15 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * Main class, extends the application
+ */
 public class Main extends Application {
+
+    /**
+     * @param primaryStage This is the primary stage
+     * @throws Exception Thorws an IOException
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/views/LoginPageView.fxml"))));

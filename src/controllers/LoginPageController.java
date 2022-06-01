@@ -40,19 +40,27 @@ public class LoginPageController implements Initializable {
 
     int loggedUserId;
 
-
+    /**
+     * gets the logges in user ID
+     *
+     * @return
+     */
     public int getLoggedUserId() {
         return loggedUserId;
     }
 
+    /**
+     * Sets the logged in user ID
+     */
     public void setLoggedUserId(int loggedUserId) {
         this.loggedUserId = loggedUserId;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
+    /**
+     * Sets the logged in username
+     *
+     * @param userName username
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -104,10 +112,11 @@ public class LoginPageController implements Initializable {
     private Label userLocationLabel;
 
 
-
-
-
-
+    /**
+     * Clears the form
+     *
+     * @param event When the user clicks the clear button
+     */
     @FXML
     void clearButtonClick(MouseEvent event) {
         userNameField.clear();
@@ -117,6 +126,14 @@ public class LoginPageController implements Initializable {
     static Connection connection = DatabaseConnection.getConnection();
     static PreparedStatement allUsersPreparedStatement;
 
+    /**
+     * Checks the username for a password match
+     * This will probably be revised on a future version
+     *
+     * @param userName The username entered by the user
+     * @return The user password
+     * @throws SQLException May throw an SQL exception when working with user information in the database
+     */
     public String getUserPassword(String userName) throws SQLException {
 
         ResultSet getUserResults;
@@ -148,6 +165,12 @@ public class LoginPageController implements Initializable {
         return dbPassword;
     }
 
+    /**
+     * Validates the user information
+     *
+     * @return Returns true if the user information correctly matches information in the database.
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     public boolean validateUser() throws SQLException {
         String password = passwordField.getText();
         System.out.println("User entered password in validateUser():" + password);
@@ -162,23 +185,37 @@ public class LoginPageController implements Initializable {
         if (dbPassword.equals(password)) {
             System.out.println("validateUser() results returns true");
             return true;
-        }
-
-        else {
+        } else {
             incorrectInfoLabel.setVisible(true);
             System.out.println("validateUser() results returns false");
             return false;
         }
     }
 
+    /**
+     * Login procedure
+     * First the method checks for empty fields and shows an error if any are found. If no fields are empty, the method
+     * calls the validation procedure. If validation is true then the method logs the login to login_activity.txt
+     * Additionally, if validation is true the method checks for upcoming user appointments and shows an alert with the information
+     * about whether an upcoming appointment is found or not.
+     * If validation is false the procedure shows an error and logs the invalid attempt to login_activity.txt
+     *
+     * @param event The user clicks the login button
+     * @throws IOException  Signals that an I/O exception of some sort has occurred
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     @FXML
     void loginButtonClick(MouseEvent event) throws IOException, SQLException {
 
-        if (userNameField.getText().isEmpty() == true){userNameReqLabel.setVisible(true);}
-        if (passwordField.getText().isEmpty() == true){passwordRequiredLabel.setVisible(true);}
+        if (userNameField.getText().isEmpty() == true) {
+            userNameReqLabel.setVisible(true);
+        }
+        if (passwordField.getText().isEmpty() == true) {
+            passwordRequiredLabel.setVisible(true);
+        }
 
         boolean validationStatus = validateUser();
-        if (validationStatus == false){
+        if (validationStatus == false) {
             incorrectInfoLabel.setVisible(true);
             try {
                 PrintWriter pw = new PrintWriter(new FileOutputStream(
@@ -216,8 +253,6 @@ public class LoginPageController implements Initializable {
 
 //            AppointmentsImplement.addAppointment(appointmentOnLaunch);
 
-
-
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/views/TabbedPaneView.fxml"))));
             stage.setScene(new Scene(scene));
@@ -245,7 +280,9 @@ public class LoginPageController implements Initializable {
 
     ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
 
-
+    /**
+     * Searches for upcoming appointments. This method is called if the login is successful.
+     */
     public void searchForUpcomingAppointments() {
 
         ObservableList<Appointment> allAppointments;
@@ -296,14 +333,16 @@ public class LoginPageController implements Initializable {
     }
 
 
-
-    public void alertOfUpcomingAppointment(){
+    /**
+     * Pop-up alert for upcoming appointments.
+     */
+    public void alertOfUpcomingAppointment() {
         int numberOfUpcomingAppointments = (int) upcomingAppointments.stream().count();
 
-        if (numberOfUpcomingAppointments == 1){
+        if (numberOfUpcomingAppointments == 1) {
             System.out.println("Upcoming appointments list in the alertOfUpcomingAppointments method: \n" +
                     upcomingAppointments);
-            for (Appointment apt: upcomingAppointments) {
+            for (Appointment apt : upcomingAppointments) {
                 int aptId = apt.getAppointmentId();
                 LocalDate aptStartDate = apt.getStartDate();
                 LocalTime aptStartTime = apt.getStartTime();
@@ -315,7 +354,7 @@ public class LoginPageController implements Initializable {
                 infoRequiredAlert.showAndWait();
             }
         }
-        if (numberOfUpcomingAppointments == 0){
+        if (numberOfUpcomingAppointments == 0) {
             Alert infoRequiredAlert = new Alert(Alert.AlertType.INFORMATION);
             infoRequiredAlert.setTitle("You Have No Upcoming Appointments");
             //infoRequiredAlert.setHeaderText("Grab a coffee, you have 15 minutes with no appointments");
@@ -324,6 +363,12 @@ public class LoginPageController implements Initializable {
         }
     }
 
+    /**
+     * Initializes the page
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -350,6 +395,9 @@ public class LoginPageController implements Initializable {
 
         this.languageResource = ResourceBundle.getBundle("utilities/Language", location);
 
+        /**
+         * Checks the display language and directs the page to the correct translation
+         */
         if (displayLanguage.equals("fr") || displayLanguage.equals("en")) {
 
             welcomeBackLabel.setText(languageResource.getString("welcomeBackLabel"));
@@ -366,6 +414,9 @@ public class LoginPageController implements Initializable {
             clearButton.setText(languageResource.getString("clearButtonText"));
         }
 
+        /**
+         * Change listener - hides the empty field error labels when the user moves focus away from the field
+         */
         userNameField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 userNameReqLabel.setVisible(false);
@@ -373,6 +424,9 @@ public class LoginPageController implements Initializable {
             }
         });
 
+        /**
+         * Change listener - hides the empty field error labels when the user moves focus away from the field
+         */
         passwordField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 passwordRequiredLabel.setVisible(false);

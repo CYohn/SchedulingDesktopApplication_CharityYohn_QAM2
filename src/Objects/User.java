@@ -11,7 +11,15 @@ public class User {
     private LocalDateTime createDate;
     private String createdBy;
 
-
+    /**
+     * Constructor used to retrieve a full user object
+     *
+     * @param userId     The user's ID
+     * @param userName   The user's name
+     * @param password   The user's password
+     * @param createDate The user's create date
+     * @param createdBy  Who created the user entry
+     */
     public User(int userId, String userName, String password, LocalDateTime createDate, String createdBy) {
         this.userId = userId;
         this.userName = userName;
@@ -20,53 +28,43 @@ public class User {
         this.createdBy = createdBy;
     }
 
+    /**
+     * Constructor used to populate combo boxes
+     *
+     * @param userId   User ID
+     * @param userName User name
+     */
     public User(int userId, String userName) {
         this.userId = userId;
         this.userName = userName;
     }
 
+    /**
+     * Returns a human friendly string representation of the user object
+     *
+     * @return String containing the user ID and username
+     */
     @Override
-    public String toString(){
+    public String toString() {
         return ("ID: " + userId + ",   Name: " + userName);
     }
 
+    /**
+     * Gets the user ID
+     *
+     * @return User ID
+     */
     public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
+    /**
+     * Gets the username
+     *
+     * @return Username
+     */
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
 }
