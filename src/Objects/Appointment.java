@@ -6,6 +6,9 @@ import java.time.LocalTime;
 
 public class Appointment {
 
+    /**
+     * Appointment variables
+     */
     private int appointmentId;
     private String title;
     private String description;
@@ -22,9 +25,19 @@ public class Appointment {
     private LocalTime endTime;
 
 
-
-
-    public Appointment(int appointmentId, String title, String description, String location, String type, LocalDateTime startDateTime, LocalDateTime endDateTime,int customerId, int userId, int contactId) {
+    /**
+     * @param appointmentId The appointment ID
+     * @param title         The appointment title
+     * @param description   The appointment description
+     * @param location      The appointment location
+     * @param type          The appointment type
+     * @param startDateTime The appointment start date and time, stored in the DB as a TIMESTAMP
+     * @param endDateTime   The appointment end date and time, stored in the DB as a TIMESTAMP
+     * @param customerId    The ID of the associated customer
+     * @param userId        The ID of the associated user
+     * @param contactId     The ID of the associated contact
+     */
+    public Appointment(int appointmentId, String title, String description, String location, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -37,7 +50,19 @@ public class Appointment {
         this.contactId = contactId;
     }
 
-
+    /**
+     * This constructor is used to save new appointments and is missing the appointment ID because the ID is assigned via the database index
+     *
+     * @param title         Appointment title
+     * @param description   Appointment description
+     * @param location      Appointment location
+     * @param type          Appointment type
+     * @param startDateTime Appointment start date and time
+     * @param endDateTime   Appointment end date and time
+     * @param customerId    ID of the associated customer
+     * @param userId        ID of the associated user
+     * @param contactId     ID of the associated contact
+     */
     public Appointment(String title, String description, String location, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId, int contactId) {
 
         this.title = title;
@@ -51,12 +76,35 @@ public class Appointment {
         this.contactId = contactId;
     }
 
+    /**
+     * This constructor is used to retrieve the dates and times of a specific appointment and is used for time validation
+     *
+     * @param appointmentId The ID of the appointment
+     * @param startDateTime The start date and time of the appointment
+     * @param endDateTime   The end date and time of the appointment
+     */
     public Appointment(int appointmentId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.appointmentId = appointmentId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
 
+    /**
+     * An appointment constructor with the times and dates separated. This constructor is used for populating tables, as separated times and dates are more human friendly than timestamps
+     *
+     * @param appointmentId The ID of the appointment
+     * @param title         The title of the appoitment
+     * @param description   The description of the appointment
+     * @param location      The location of the appointment
+     * @param type          Appointment type
+     * @param startDate     The start date of the appointment
+     * @param startTime     The start time of the appointment
+     * @param endDate       The appointmentend date
+     * @param endTime       The appointment end time
+     * @param customerId    The ID of the associated customer
+     * @param userId        The ID of the associated user
+     * @param contactId     The ID of the associated contact
+     */
     public Appointment(int appointmentId, String title, String description, String location, String type, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
@@ -72,115 +120,174 @@ public class Appointment {
         this.contactId = contactId;
     }
 
-
+    /**
+     * Gets the appointment type
+     *
+     * @return the appointment type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Sets the appointment type
+     *
+     * @param type The appointment type
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Gets the start date
+     *
+     * @return Appointment start date
+     */
     public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
+    /**
+     * Gets the appointment start time
+     *
+     * @return appointment start time
+     */
     public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
 
+    /**
+     * Gets the appointment end date
+     *
+     * @return Returns the appointment end date
+     */
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
 
+    /**
+     * Gets the appointment end time
+     *
+     * @return The appointment end time
+     */
     public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
 
+    /**
+     * Gets the appointment ID
+     *
+     * @return Appointment ID
+     */
     public int getAppointmentId() {
         return appointmentId;
     }
 
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
+    /**
+     * Gets the appointment title
+     *
+     * @return the appointment title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the appointment title
+     *
+     * @param title the title of the appointment
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Gets the appointment description
+     *
+     * @return Appointment description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the appointment description
+     *
+     * @param description The appointment description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the appointment location
+     *
+     * @return The appointment location
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Sets the appointment location
+     *
+     * @param location the location of the appointment
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * Gets the start date and time timestamp
+     *
+     * @return The start date and time
+     */
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-    }
 
+    /**
+     * Get the end date and time timestamp of the appointment
+     *
+     * @return end date and time
+     */
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
+    /**
+     * Gets the ID of the associated user
+     *
+     * @return User ID
+     */
     public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public int getContactId() {
         return contactId;
     }
 
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
-    }
 
+    /**
+     * Gets the ID of the associated customer
+     *
+     * @return customer ID
+     */
     public int getCustomerId() {
         return customerId;
     }
 
+    /**
+     * Sets the ID of the associated customer
+     *
+     * @param customerId The ID of the associated customer
+     */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
