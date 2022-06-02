@@ -12,17 +12,19 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1175.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifyCustomerController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="800.0" prefWidth="1175.0"
+            xmlns="http://javafx.com/javafx/18" fx:controller="controllers.ModifyCustomerController">
     <children>
         <Label layoutX="410.0" layoutY="47.0" text="Modify Customer">
             <font>
-                <Font size="30.0" />
+                <Font size="30.0"/>
             </font>
         </Label>
-        <TableView fx:id="allCustomersTable" layoutX="3.0" layoutY="140.0" onMouseClicked="#onTableClickGetSelectedCustomer" prefHeight="264.0" prefWidth="1169.0">
+        <TableView fx:id="allCustomersTable" layoutX="3.0" layoutY="140.0"
+                   onMouseClicked="#onTableClickGetSelectedCustomer" prefHeight="264.0" prefWidth="1169.0">
             <columns>
-                <TableColumn fx:id="custIdColumn" prefWidth="84.0" text="Cust ID" />
-                <TableColumn fx:id="custNameColumn" prefWidth="207.0" text="Name" />
+                <TableColumn fx:id="custIdColumn" prefWidth="84.0" text="Cust ID"/>
+                <TableColumn fx:id="custNameColumn" prefWidth="207.0" text="Name"/>
                 <TableColumn fx:id="custAddressColumn" prefWidth="334.0" text="Address" />
                 <TableColumn fx:id="custCountryColumn" prefWidth="151.0" text="Country" />
                 <TableColumn fx:id="custStateColumn" prefWidth="163.0" text="State/Province" />
@@ -101,7 +103,8 @@
                     </rowConstraints>
                     <children>
                         <Button fx:id="saveButton" mnemonicParsing="false" onMouseClicked="#onSave" prefHeight="25.0" prefWidth="90.0" text="Save" />
-                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearForm" prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1" />
+                        <Button fx:id="clearButton" mnemonicParsing="false" onMouseClicked="#clearForm"
+                                prefHeight="25.0" prefWidth="90.0" text="Clear" GridPane.columnIndex="1"/>
                     </children>
                 </GridPane>
                 <GridPane alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="16">

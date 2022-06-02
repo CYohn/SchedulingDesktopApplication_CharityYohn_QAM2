@@ -362,7 +362,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //custNameTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if (custNameTxtField.getLength() > 50) {
                     nameLengthAlert.setVisible(true);
                 } else if (custNameTxtField.getLength() < 50) {
@@ -380,7 +380,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                addressTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //addressTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if (addressTxtField.getLength() > 100) {
                     addressLengthAlert.setVisible(true);
                 } else if (addressTxtField.getLength() < 100) {
@@ -399,7 +399,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                postalCodeTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //postalCodeTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if (postalCodeTxtField.getLength() > 50) {
                     postalLengthAlert.setVisible(true);
                 } else if (postalCodeTxtField.getLength() < 50) {
@@ -418,7 +418,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                custPhoneTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //custPhoneTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if (custPhoneTxtField.getLength() > 50) {
                     phoneLengthAlert.setVisible(true);
                 } else if (custPhoneTxtField.getLength() < 50) {
@@ -436,7 +436,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                countryComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //countryComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
             }
         });
         /**
@@ -449,7 +449,7 @@ public class AddCustomerController implements Initializable {
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                divisionComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //divisionComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
             }
         });
 

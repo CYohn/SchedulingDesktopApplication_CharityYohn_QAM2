@@ -39,7 +39,6 @@ public class ModifyCustomerController implements Initializable {
 
     //TODO SET THE CLEAR BUTTON
 
-    //TODO deleteCustomer() - Going to work on appointments first
 
     ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
 
@@ -200,7 +199,6 @@ public class ModifyCustomerController implements Initializable {
 
                 while (divisionsResults.next()) {
                     String division = divisionsResults.getString("Division");
-                    divisionNames.clear();
                     divisionNames.add(division); //Add divisions to the ObservableList
                     stateComboBox.setItems(divisionNames); //Populate the ComboBox
                 }
@@ -398,13 +396,13 @@ public class ModifyCustomerController implements Initializable {
 
     @FXML
     void clearForm(MouseEvent event) {
+        allCustomersTable.getSelectionModel().clearSelection();
         custNameTxtField.clear();
         addressTxtField.clear();
         postalCodeTxtField.clear();
         custPhoneTxtField.clear();
         stateComboBox.getSelectionModel().clearSelection();
         countryComboBox.getSelectionModel().clearSelection();
-        allCustomersTable.getSelectionModel().clearSelection();
         saveSuccessfulLabel.setVisible(false);
         saveErrorLabel.setVisible(false);
         deleteSuccessfulLabel.setVisible(false);
@@ -430,7 +428,7 @@ public class ModifyCustomerController implements Initializable {
         System.out.println("All customers:  " + getAllCustomers);
         System.out.println("getAllCustomers list on initialize in ModifyCustomersController:  " + getAllCustomers);
 
-        System.out.println("Printing the observable list of names from the AddCustomer controller: " + divisionIDResult);
+        System.out.println("Printing the observable list of names from the ModifyCustomer controller: " + divisionIDResult);
         countryComboBox.setItems(divisionIDResult);
         stateComboBox.setDisable(true);
         saveErrorLabel.setVisible(false);
@@ -447,7 +445,7 @@ public class ModifyCustomerController implements Initializable {
                 deleteSuccessfulLabel.setVisible(false);
                 deleteCustButton.setDisable(false);
                 saveButton.setDisable(false);
-                allCustomersTable.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //allCustomersTable.setStyle("-fx-border-color: default; -fx-focus-color: default;");
             }
         });
 
