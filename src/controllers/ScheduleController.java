@@ -40,94 +40,94 @@ public class ScheduleController implements Initializable {
     private TableView<Appointment> appointmentTable2;
 
     @FXML
-    private TableColumn<?, ?> aptContactColumn;
+    private TableColumn<Appointment, Integer> aptContactColumn;
 
     @FXML
-    private TableColumn<?, ?> aptContactColumn1;
+    private TableColumn<Appointment, Integer> aptContactColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptContactColumn2;
+    private TableColumn<Appointment, Integer> aptContactColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptDescriptioncolumn;
+    private TableColumn<Appointment, String> aptDescriptioncolumn;
 
     @FXML
-    private TableColumn<?, ?> aptDescriptioncolumn1;
+    private TableColumn<Appointment, String> aptDescriptioncolumn1;
 
     @FXML
-    private TableColumn<?, ?> aptDescriptioncolumn2;
+    private TableColumn<Appointment, String> aptDescriptioncolumn2;
 
     @FXML
-    private TableColumn<?, ?> aptEndDateColumn;
+    private TableColumn<Appointment, LocalDate> aptEndDateColumn;
 
     @FXML
-    private TableColumn<?, ?> aptEndDateColumn1;
+    private TableColumn<Appointment, LocalDate> aptEndDateColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptEndDateColumn2;
+    private TableColumn<Appointment, LocalDate> aptEndDateColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptEndTimeColumn;
+    private TableColumn<Appointment, LocalTime> aptEndTimeColumn;
 
     @FXML
-    private TableColumn<?, ?> aptEndTimeColumn1;
+    private TableColumn<Appointment, LocalTime> aptEndTimeColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptEndTimeColumn2;
+    private TableColumn<Appointment, LocalTime> aptEndTimeColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptIdColumn;
+    private TableColumn<Appointment, Integer> aptIdColumn;
 
     @FXML
-    private TableColumn<?, ?> aptIdColumn1;
+    private TableColumn<Appointment, Integer> aptIdColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptIdColumn2;
+    private TableColumn<Appointment, Integer> aptIdColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptLocationColumn;
+    private TableColumn<Appointment, String> aptLocationColumn;
 
     @FXML
-    private TableColumn<?, ?> aptLocationColumn1;
+    private TableColumn<Appointment, String> aptLocationColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptLocationColumn2;
+    private TableColumn<Appointment, String> aptLocationColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptStartDateColumn;
+    private TableColumn<Appointment, LocalDate> aptStartDateColumn;
 
     @FXML
-    private TableColumn<?, ?> aptStartDateColumn1;
+    private TableColumn<Appointment, LocalDate> aptStartDateColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptStartDateColumn2;
+    private TableColumn<Appointment, LocalDate> aptStartDateColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptStartTimeColumn;
+    private TableColumn<Appointment, LocalTime> aptStartTimeColumn;
 
     @FXML
-    private TableColumn<?, ?> aptStartTimeColumn1;
+    private TableColumn<Appointment, LocalTime> aptStartTimeColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptStartTimeColumn2;
+    private TableColumn<Appointment, LocalTime> aptStartTimeColumn2;
 
     @FXML
-    private TableColumn<?, ?> aptTitleColum;
+    private TableColumn<Appointment, String> aptTitleColum;
 
     @FXML
-    private TableColumn<?, ?> aptTitleColum1;
+    private TableColumn<Appointment, String> aptTitleColum1;
 
     @FXML
-    private TableColumn<?, ?> aptTitleColum2;
+    private TableColumn<Appointment, String> aptTitleColum2;
 
     @FXML
-    private TableColumn<?, ?> aptTypeColumn;
+    private TableColumn<Appointment, String> aptTypeColumn;
 
     @FXML
-    private TableColumn<?, ?> aptTypeColumn1;
+    private TableColumn<Appointment, String> aptTypeColumn1;
 
     @FXML
-    private TableColumn<?, ?> aptTypeColumn2;
+    private TableColumn<Appointment, String> aptTypeColumn2;
 
     @FXML
     private Tab currentMonthTab;
@@ -136,44 +136,51 @@ public class ScheduleController implements Initializable {
     private Tab currentWeekTab;
 
     @FXML
-    private TableColumn<?, ?> custIdColumn;
+    private TableColumn<Appointment, Integer> custIdColumn;
 
     @FXML
-    private TableColumn<?, ?> custIdColumn1;
+    private TableColumn<Appointment, Integer> custIdColumn1;
 
     @FXML
-    private TableColumn<?, ?> custIdColumn2;
+    private TableColumn<Appointment, Integer> custIdColumn2;
 
     @FXML
-    private TableColumn<?, ?> userIdColumn;
+    private TableColumn<Appointment, Integer> userIdColumn;
 
     @FXML
-    private TableColumn<?, ?> userIdColumn1;
+    private TableColumn<Appointment, Integer> userIdColumn1;
 
     @FXML
-    private TableColumn<?, ?> userIdColumn2;
+    private TableColumn<Appointment, Integer> userIdColumn2;
 
-public void loadCurrentWeek(){
-    ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
-    try {
-        AppointmentsImplement.getAllAppointments();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    for (Appointment appointment: allAppointments) {
+    /**
+     * The method gets all the appointments from the database and translates the time from UTC to the user local time.
+     * The method then builds an appointment object which
+     *
+     * @Lambda is filtered by the current week of the year
+     * and then populates the table based on the filtered list.
+     */
+    public void loadCurrentWeek() {
+        ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
+        try {
+            AppointmentsImplement.getAllAppointments();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for (Appointment appointment : allAppointments) {
 
-        //System.out.println("Appointment from the populate apt Table: " + appointment);
-        LocalDateTime startUTC = appointment.getStartDateTime();
-        LocalDateTime endUTC = appointment.getEndDateTime();
-        LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
-        LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
-        LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
-        LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
+            //System.out.println("Appointment from the populate apt Table: " + appointment);
+            LocalDateTime startUTC = appointment.getStartDateTime();
+            LocalDateTime endUTC = appointment.getEndDateTime();
+            LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
+            LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
+            LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
+            LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
 
-        int appointmentId = appointment.getAppointmentId();
-        String title = appointment.getTitle();
-        String description = appointment.getDescription();
-        String location = appointment.getLocation();
+            int appointmentId = appointment.getAppointmentId();
+            String title = appointment.getTitle();
+            String description = appointment.getDescription();
+            String location = appointment.getLocation();
         String type = appointment.getType();
         int customerId = appointment.getCustomerId();
         int userId = appointment.getUserId();
@@ -193,34 +200,40 @@ public void loadCurrentWeek(){
     appointmentsWithConvertedTimes.stream()
             .filter(apt -> apt.getStartDate().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == weekOfYear)
             .forEach(aptsThisWeek::add);
-    System.out.println("Appointments this month  "+ aptsThisWeek);
+        System.out.println("Appointments this month  " + aptsThisWeek);
 
 
-    appointmentTable1.setItems(aptsThisWeek);
+        appointmentTable1.setItems(aptsThisWeek);
 
-    aptContactColumn1.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-    aptDescriptioncolumn1.setCellValueFactory(new PropertyValueFactory<>("description"));
-    aptEndDateColumn1.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-    aptEndTimeColumn1.setCellValueFactory(new PropertyValueFactory<>("endTime"));
-    aptIdColumn1.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
-    aptLocationColumn1.setCellValueFactory(new PropertyValueFactory<>("location"));
-    aptStartDateColumn1.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-    aptStartTimeColumn1.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-    aptTitleColum1.setCellValueFactory(new PropertyValueFactory<>("title"));
-    aptTypeColumn1.setCellValueFactory(new PropertyValueFactory<>("type"));
-    custIdColumn1.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-    userIdColumn1.setCellValueFactory(new PropertyValueFactory<>("userId"));
-}
-
-
+        aptContactColumn1.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        aptDescriptioncolumn1.setCellValueFactory(new PropertyValueFactory<>("description"));
+        aptEndDateColumn1.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        aptEndTimeColumn1.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        aptIdColumn1.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        aptLocationColumn1.setCellValueFactory(new PropertyValueFactory<>("location"));
+        aptStartDateColumn1.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        aptStartTimeColumn1.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        aptTitleColum1.setCellValueFactory(new PropertyValueFactory<>("title"));
+        aptTypeColumn1.setCellValueFactory(new PropertyValueFactory<>("type"));
+        custIdColumn1.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        userIdColumn1.setCellValueFactory(new PropertyValueFactory<>("userId"));
+    }
 
 
-
-
+    /**
+     * Initializes the page
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    loadCurrentWeek();
+        loadCurrentWeek();
 
+        /**
+         * @Lambda The lambda listens for a selection change on the tabs. If all appointments is selects it loads all
+         * the appointments into the table.
+         */
         allAppointmentsTab.setOnSelectionChanged(t -> {
             if (allAppointmentsTab.isSelected()) {
 
@@ -230,7 +243,7 @@ public void loadCurrentWeek(){
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                for (Appointment appointment: allAppointments) {
+                for (Appointment appointment : allAppointments) {
 
                     //System.out.println("Appointment from the populate apt Table: " + appointment);
                     LocalDateTime startUTC = appointment.getStartDateTime();
@@ -273,6 +286,10 @@ public void loadCurrentWeek(){
             }
         });
 
+        /**
+         * @Lambda listens for a selection change
+         * If the current month tab is selected the appointments are filtered based on the current month and loaded into the table.
+         */
         currentMonthTab.setOnSelectionChanged(t -> {
             if (currentMonthTab.isSelected()) {
 
@@ -282,7 +299,7 @@ public void loadCurrentWeek(){
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                for (Appointment appointment: allAppointments) {
+                for (Appointment appointment : allAppointments) {
 
                     //System.out.println("Appointment from the populate apt Table: " + appointment);
                     LocalDateTime startUTC = appointment.getStartDateTime();
@@ -334,10 +351,13 @@ public void loadCurrentWeek(){
             }
         });
 
+        /**
+         * Listens for a selection of the current week tab and calls the method loadCurrentWeek() if selected
+         */
         currentWeekTab.setOnSelectionChanged(t -> {
             if (currentWeekTab.isSelected()) {
                 loadCurrentWeek();
-                }
-            });
+            }
+        });
     }
 }
