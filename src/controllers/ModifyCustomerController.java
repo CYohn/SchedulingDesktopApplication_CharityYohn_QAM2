@@ -118,43 +118,56 @@ public class ModifyCustomerController implements Initializable {
     private Label allFieldsRequiredLabel;
 
 
-
     public ModifyCustomerController() throws SQLException {
     }
 
+    /**
+     * Populates the customers table
+     *
+     * @param getAllCustomers An observable list of AllCustomers retrieved from the database
+     */
+    public void populateCustomerTable(ObservableList<Customer> getAllCustomers) {
 
-    public void populateCustomerTable(ObservableList<Customer>getAllCustomers) {
+        allCustomersTable.setItems(getAllCustomers);
 
-            allCustomersTable.setItems(getAllCustomers);
-
-            custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-            custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
-            custCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
-            custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
-            custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
-            custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+        custIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        custNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        custAddressColumn.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+        custCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
+        custStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
+        custPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+        custPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
     }
 
+    /**
+     * Gets the customer selection
+     *
+     * @param event The user clicks on the table
+     */
     @FXML
     void onTableClickGetSelectedCustomer(MouseEvent event) {
-        if(!allCustomersTable.getSelectionModel().isEmpty()){
+        if (!allCustomersTable.getSelectionModel().isEmpty()) {
             Customer selectedCustomer = allCustomersTable.getSelectionModel().getSelectedItem();
             populateSelectedCustomer(selectedCustomer);
         }
     }
 
-    public void populateSelectedCustomer(Customer selectedCustomer){
+    /**
+     * Populated the form with the selected customer
+     *
+     * @param selectedCustomer The customer selected from the table
+     */
+    public void populateSelectedCustomer(Customer selectedCustomer) {
         //Get table values
-         String selectedAddress = selectedCustomer.getCustomerAddress();
-         Integer selectedCustId = selectedCustomer.getCustomerId();
-         String selectedName = selectedCustomer.getCustomerName();
-         String selectedPhone = selectedCustomer.getCustomerPhone();
-         String selectedPostal = selectedCustomer.getCustomerPostalCode();
-         String selectedState = selectedCustomer.getDivision();
-         String selectedCountry = selectedCustomer.getCountry();
+        String selectedAddress = selectedCustomer.getCustomerAddress();
+        Integer selectedCustId = selectedCustomer.getCustomerId();
+        String selectedName = selectedCustomer.getCustomerName();
+        String selectedPhone = selectedCustomer.getCustomerPhone();
+        String selectedPostal = selectedCustomer.getCustomerPostalCode();
+        String selectedState = selectedCustomer.getDivision();
+        String selectedCountry = selectedCustomer.getCountry();
 
-         //Set the form values to the selectedCustomer values
+        //Set the form values to the selectedCustomer values
         custNameTxtField.setText(selectedName);
         custIdLabel.setText(valueOf(selectedCustId));
         addressTxtField.setText(selectedAddress);
@@ -212,12 +225,22 @@ public class ModifyCustomerController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * This is the save procedure.
+     * The method first checks for empty fields. If no fields are empty the method takes in the user input and creates
+     * a customer object which is then sent to the databse. If the database responds in the affirmative, a success label
+     * is shown to the user. Otherwise, an error label is shown.
+     *
+     * @param event the user clicks the save button
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     @FXML
-    void onSave(MouseEvent event) throws IOException, SQLException {
+    void onSave(MouseEvent event) throws SQLException {
         fieldLengthAlert();
         emptyFieldAlert();
 
-        if((!custNameTxtField.getText().isEmpty()) && (custNameTxtField.getLength() < 50) &&
+        if ((!custNameTxtField.getText().isEmpty()) && (custNameTxtField.getLength() < 50) &&
                 (!addressTxtField.getText().isEmpty()) && (addressTxtField.getLength() < 100) &&
                 (!postalCodeTxtField.getText().isEmpty()) && (postalCodeTxtField.getLength() < 50) &&
                 (!custPhoneTxtField.getText().isEmpty()) && (custPhoneTxtField.getLength() < 50) &&
@@ -254,20 +277,30 @@ public class ModifyCustomerController implements Initializable {
         }
     }
 
+    /**
+     * Gets the response from the database
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     public void getDBResponseResponse() throws SQLException {
         int databaseResponseToUpdateCustomer = CustomersImplement.updateCustomer(customerToUpdateHolder);
         System.out.println("databaseResponseToUpdateCustomer: " + databaseResponseToUpdateCustomer);
-        if (databaseResponseToUpdateCustomer == 1){
+        if (databaseResponseToUpdateCustomer == 1) {
             saveSuccessfulLabel.setVisible(true);
             System.out.println("Database response to adding the customer: " + databaseResponseToUpdateCustomer);
 
-        }
-        else {
+        } else {
             saveErrorLabel.setVisible(true);
-            System.out.println("Customer not added");}
+            System.out.println("Customer not added");
+        }
 
     }
 
+    /**
+     * Gets the division ID from the database
+     *
+     * @return returns the division ID from the database
+     */
     public int getDivisionID() {
         PreparedStatement findDivisionIDPreparedStatement;
         String selectedDivision = stateComboBox.getValue(); //Get the User's division selection
@@ -294,14 +327,29 @@ public class ModifyCustomerController implements Initializable {
         return customerDivisionID;
     }
 
-    public void fieldLengthAlert(){
-        if(custNameTxtField.getLength() > 50){nameLengthAlert.setVisible(true);}
-        if(addressTxtField.getLength() > 100){addressLengthAlert.setVisible(true);}
-        if(postalCodeTxtField.getLength() > 50){postalLengthAlert.setVisible(true);}
-        if(custPhoneTxtField.getLength() > 50){phoneLengthAlert.setVisible(true);}
+    /**
+     * Checks that the length of the fields is less than the limits set by the database.
+     * Shows an error if the field is too long.
+     */
+    public void fieldLengthAlert() {
+        if (custNameTxtField.getLength() > 50) {
+            nameLengthAlert.setVisible(true);
+        }
+        if (addressTxtField.getLength() > 100) {
+            addressLengthAlert.setVisible(true);
+        }
+        if (postalCodeTxtField.getLength() > 50) {
+            postalLengthAlert.setVisible(true);
+        }
+        if (custPhoneTxtField.getLength() > 50) {
+            phoneLengthAlert.setVisible(true);
+        }
     }
 
-    public void hideLengthAlerts(){
+    /**
+     * Hides the length alert labels
+     */
+    public void hideLengthAlerts() {
         addressLengthAlert.setVisible(false);
         nameLengthAlert.setVisible(false);
         phoneLengthAlert.setVisible(false);
@@ -309,6 +357,9 @@ public class ModifyCustomerController implements Initializable {
         allFieldsRequiredLabel.setVisible(false);
     }
 
+    /**
+     * Shows an alert and outlines the field if the field is empty.
+     */
     public void emptyFieldAlert() {
         String name = custNameTxtField.getText();
         String address = addressTxtField.getText();
@@ -317,8 +368,8 @@ public class ModifyCustomerController implements Initializable {
         String country = countryComboBox.getValue();
         String division = stateComboBox.getValue();
 
-        if(name.trim().isEmpty()||address.trim().isEmpty()||postalCode.trim().isEmpty()
-                ||phone.trim().isEmpty()||country == null||division == null){
+        if (name.trim().isEmpty() || address.trim().isEmpty() || postalCode.trim().isEmpty()
+                || phone.trim().isEmpty() ||country == null||division == null){
             alert();
             if (name.trim().isEmpty()) {
                 allFieldsRequiredLabel.setVisible(true);
@@ -348,7 +399,11 @@ public class ModifyCustomerController implements Initializable {
             }
         }
     }
-    public void alert(){
+
+    /**
+     * The pop-up alert which is triggered when an empty field is found
+     */
+    public void alert() {
         Alert infoRequiredAlert = new Alert(Alert.AlertType.WARNING);
         infoRequiredAlert.setTitle("Information Required");
         infoRequiredAlert.setHeaderText("Please enter all information.  Thank you! ");
@@ -356,13 +411,20 @@ public class ModifyCustomerController implements Initializable {
         infoRequiredAlert.showAndWait();
     }
 
+    /**
+     * Requests confirmation from the user that they want to permanently delete the customer from the database. If the
+     * user responds affirmative the customer is deleted and a success label is shown. If the user responds in the negative
+     * the customer is not deleted and the box closes.
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     public void deleteAlert() throws SQLException {
         int customerId = allCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
         String customerName = allCustomersTable.getSelectionModel().getSelectedItem().getCustomerName();
         Alert deleteAlert = new Alert(Alert.AlertType.WARNING);
         deleteAlert.setTitle("This will permanently delete the customer and ALL customer appointments ");
-        deleteAlert.setHeaderText("Are you sure you want to delete customer: " + customerName + "  ID: " + customerId +" ?");
-        deleteAlert.setContentText("All customer appointments will also be permanently deleted." );
+        deleteAlert.setHeaderText("Are you sure you want to delete customer: " + customerName + "  ID: " + customerId + " ?");
+        deleteAlert.setContentText("All customer appointments will also be permanently deleted.");
         //deleteAlert.showAndWait();
 
         ButtonType yesButton = new ButtonType("Delete Customer");
@@ -371,8 +433,7 @@ public class ModifyCustomerController implements Initializable {
         deleteAlert.getButtonTypes().setAll(yesButton, cancelButton);
 
         Optional<ButtonType> result = deleteAlert.showAndWait();
-        if(result.get() == yesButton)
-        {
+        if(result.get() == yesButton) {
             AppointmentsImplement.deleteAppointmentByCustomerId(customerId);
             CustomersImplement.deleteCustomer(customerId);
             deleteSuccessfulLabel.setVisible(true);
@@ -382,18 +443,27 @@ public class ModifyCustomerController implements Initializable {
             populateCustomerTable(allCustomers);
             deleteAlert.close();
 
-        }
-        else if(result.get() == cancelButton)
-        {
+        } else if (result.get() == cancelButton) {
             deleteAlert.close();
         }
     }
 
+    /**
+     * This is an action listener for the delete button.
+     *
+     * @param event The user presses the delete button
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     @FXML
     void onActionDeleteCustomer(ActionEvent event) throws SQLException {
         deleteAlert();
     }
 
+    /**
+     * Clears the user's selections from the form
+     *
+     * @param event The user presses the clear button
+     */
     @FXML
     void clearForm(MouseEvent event) {
         allCustomersTable.getSelectionModel().clearSelection();
@@ -410,7 +480,12 @@ public class ModifyCustomerController implements Initializable {
         hideLengthAlerts();
     }
 
-
+    /**
+     * Initializes the page
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("ModifyCustomerController initialized");
@@ -435,7 +510,9 @@ public class ModifyCustomerController implements Initializable {
         saveSuccessfulLabel.setVisible(false);
         saveButton.setDisable(false);
 
-
+/**
+ * Action listener for the customers table. this resets the error alerts and enables the save button.
+ */
         allCustomersTable.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (newValue) { //when focused
                 saveSuccessfulLabel.setVisible(false);
