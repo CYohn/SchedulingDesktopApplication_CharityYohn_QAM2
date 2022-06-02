@@ -21,46 +21,19 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ResourceBundle;
 
-import static java.lang.String.valueOf;
 import static utilities.TimezoneConversion.convertUTCToUserTime;
 
 public class ReportsController implements Initializable {
 
-
-    public class Month {
-        private String monthName;
-        private int monthNumber;
-        public Month(int monthNumber, String monthName) {
-            this.monthNumber = monthNumber;
-            this.monthName = monthName;
-        }
-
-        @Override
-        public String toString(){
-            return (monthNumber + ":   " + monthName);
-        }
-
-        public String getMonthName() {
-            return monthName;
-        }
-
-        public void setMonthName(String monthName) {
-            this.monthName = monthName;
-        }
-
-        public int getMonthNumber() {
-            return monthNumber;
-        }
-
-        public void setMonthNumber(int monthNumber) {
-            this.monthNumber = monthNumber;
-        }
-    }
-
-
-
+    /**
+     * Gets all appointments from the database
+     */
+    public ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
+    /**
+     * Creates the month objects
+     */
     ObservableList<Month> months = FXCollections.observableArrayList();
     Month january = new Month(1, "January");
     Month february = new Month(2, "February");
@@ -74,82 +47,99 @@ public class ReportsController implements Initializable {
     Month october = new Month(10, "October");
     Month november = new Month(11, "November");
     Month december = new Month(12, "December");
-
-
+    /**
+     * Gets all customers from the database
+     */
+    ObservableList<Customer> allCustomers = CustomersImplement.getAllCustomers;
+    /**
+     * The observable list of appointment types
+     */
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
-
+    /**
+     * Gets contacts from the database
+     */
     private ObservableList<Contact> contactNames = ContactsImplement.contactNames;
+    @FXML
+    private TableColumn<Appointment, Integer> aptContactColumn2;
+    @FXML
+    private TableColumn<Appointment, Integer> aptContactColumn21;
+    @FXML
+    private TableColumn<Appointment, String> aptDescriptioncolumn2;
+    @FXML
+    private TableColumn<Appointment, String> aptDescriptioncolumn21;
+    @FXML
+    private TableColumn<Appointment, LocalDate> aptEndDateColumn2;
+    @FXML
+    private TableColumn<Appointment, LocalDate> aptEndDateColumn21;
+    @FXML
+    private TableColumn<Appointment, LocalTime> aptEndTimeColumn2;
+    @FXML
+    private TableColumn<Appointment, LocalTime> aptEndTimeColumn21;
+    @FXML
+    private TableColumn<Appointment, Integer> aptIdColumn2;
+    @FXML
+    private TableColumn<Appointment, Integer> aptIdColumn21;
+    @FXML
+    private TableColumn<Appointment, String> aptLocationColumn2;
+    @FXML
+    private TableColumn<Appointment, String> aptLocationColumn21;
+    @FXML
+    private TableColumn<Appointment, LocalDate> aptStartDateColumn2;
+    @FXML
+    private TableColumn<Appointment, LocalDate> aptStartDateColumn21;
+    @FXML
+    private TableColumn<Appointment, LocalTime> aptStartTimeColumn2;
+    @FXML
+    private TableColumn<Appointment, LocalTime> aptStartTimeColumn21;
+    @FXML
+    private TableColumn<Appointment, String> aptTitleColum2;
+    @FXML
+    private TableColumn<Appointment, String> aptTitleColum21;
+    @FXML
+    private TableColumn<Appointment, String> aptTypeColumn2;
+    @FXML
+    private TableColumn<Appointment, String> aptTypeColumn21;
 
-    public ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
-
-    ObservableList<Customer> allCustomers = CustomersImplement.getAllCustomers;
-
-    public void addAllMonths(){
+    /**
+     * Adds all the months to an observable list
+     */
+    public void addAllMonths() {
         months.addAll(january, february, march, april, may, june, july, august, september, october, november, december);
     }
 
+    /**
+     * Creates an inner class to list and wrok with the months of the year
+     */
+    public class Month {
+        private String monthName;
+        private int monthNumber;
 
+        public Month(int monthNumber, String monthName) {
+            this.monthNumber = monthNumber;
+            this.monthName = monthName;
+        }
 
-    @FXML
-    private TableColumn<?, ?> aptContactColumn2;
+        /**
+         * Creates a human friendly string representation of the month object
+         *
+         * @return
+         */
+        @Override
+        public String toString() {
+            return (monthNumber + ":   " + monthName);
+        }
 
-    @FXML
-    private TableColumn<?, ?> aptContactColumn21;
+        /**
+         * Gets the assigned number of the month (ex: January == 1, Februrary == 2 etc.)
+         *
+         * @return the month number
+         */
+        public int getMonthNumber() {
+            return monthNumber;
+        }
 
-    @FXML
-    private TableColumn<?, ?> aptDescriptioncolumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptDescriptioncolumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptEndDateColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptEndDateColumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptEndTimeColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptEndTimeColumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptIdColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptIdColumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptLocationColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptLocationColumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptStartDateColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptStartDateColumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptStartTimeColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptStartTimeColumn21;
-
-    @FXML
-    private TableColumn<?, ?> aptTitleColum2;
-
-    @FXML
-    private TableColumn<?, ?> aptTitleColum21;
-
-    @FXML
-    private TableColumn<?, ?> aptTypeColumn2;
-
-    @FXML
-    private TableColumn<?, ?> aptTypeColumn21;
+    }
 
     @FXML
     private TableView<Appointment> contactAppointmentTable;
