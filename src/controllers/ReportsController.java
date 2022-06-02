@@ -175,26 +175,33 @@ public class ReportsController implements Initializable {
     private TableColumn<?, ?> userIdColumn21;
 
 
-
     public ObservableList<Appointment> getAllAppointments() {
         return allAppointments;
     }
 
-
-    public Integer appointmentsCount(){
+    /**
+     * Checks which combo box is selected and modifies the search based on the selection.
+     * for example if the user on selects the number of appointments in a month the result is for only the month. If the
+     * user selects the number of appointments by type only, the result is appointments by type, and if the user makes a
+     * selection in both boxes the results are bother parameters.
+     *
+     * @return Returns the number of appointments based on the user selection
+     * @Lambda The lambdas filter the all appointments, checking against the selected month number to type, or both
+     */
+    public Integer appointmentsCount() {
 
         String selectedType;
 
-        if ((!monthComboBox.getSelectionModel().isEmpty()) && (typeComboBox.getSelectionModel().isEmpty())){
+        if ((!monthComboBox.getSelectionModel().isEmpty()) && (typeComboBox.getSelectionModel().isEmpty())) {
 
             int selectedMonthNumber = monthComboBox.getSelectionModel().getSelectedItem().getMonthNumber();
 
             Integer numberOfAptInMonth = (int) allAppointments.stream()
                     .filter(apt -> apt.getStartDateTime().getMonthValue() == selectedMonthNumber).count();
-            System.out.println("Number of Apt in Month  "+ numberOfAptInMonth);
+            System.out.println("Number of Apt in Month  " + numberOfAptInMonth);
             return numberOfAptInMonth;
         }
-        if((monthComboBox.getSelectionModel().isEmpty()) && (!typeComboBox.getSelectionModel().isEmpty())){
+        if ((monthComboBox.getSelectionModel().isEmpty()) && (!typeComboBox.getSelectionModel().isEmpty())) {
 
             selectedType = typeComboBox.getSelectionModel().getSelectedItem();
 
@@ -210,17 +217,19 @@ public class ReportsController implements Initializable {
             Integer numberOfAptWithBothConstraints = (int) allAppointments.stream()
                     .filter(apt -> apt.getStartDateTime().getMonthValue() == selectedMonthNumber)
                     .filter(apt -> apt.getType().equalsIgnoreCase(selectedType)).count();
-            System.out.println("Number of Apt With both constraints  "+ numberOfAptWithBothConstraints);
+            System.out.println("Number of Apt With both constraints  " + numberOfAptWithBothConstraints);
             return numberOfAptWithBothConstraints;
         }
         return 0;
     }
 
 
-
-
-
-
+    /**
+     * Initializes the page
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addAllMonths();
@@ -240,7 +249,10 @@ public class ReportsController implements Initializable {
         typeComboBox.setItems(appointmentTypes);
         contactComboBox.setItems(contactNames);
         customerComboBox.setItems(allCustomers);
-
+/**
+ * Listener for the contact combobox.
+ * @ Lambda filters the all appointments based on the selected contact ID
+ */
         contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
                     if (!newValue) { //when focus is lost
                         try {
@@ -261,7 +273,9 @@ public class ReportsController implements Initializable {
                         });
 
                         System.out.println("filteredByContact list:  " + filteredByContact);
-
+/**
+ * Populates the appointments table with appointments filtered by contact
+ */
                         for (Appointment appointment: filteredByContact) {
 
                                 //System.out.println("Appointment from the populate apt Table: " + appointment);
@@ -335,9 +349,12 @@ public class ReportsController implements Initializable {
                     return false;
                 });
 
+                /**
+                 * Populates the table filtered by customer
+                 */
                 System.out.println("filteredByCustomer list:  " + filteredByCustomerID);
 
-                for (Appointment appointment: filteredByCustomerID) {
+                for (Appointment appointment : filteredByCustomerID) {
 
                     //System.out.println("Appointment from the populate apt Table: " + appointment);
                     LocalDateTime startUTC = appointment.getStartDateTime();
@@ -380,10 +397,13 @@ public class ReportsController implements Initializable {
             }
         });
 
+        /**
+         * @Lambda The listener listens for a new argument and sets the text based on the appointments count
+         */
         monthComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus lost
                 appointmentsCount();
-                numberOfAppointments.setText(appointmentsCount().toString()) ;
+                numberOfAppointments.setText(appointmentsCount().toString());
             }
         });
 
