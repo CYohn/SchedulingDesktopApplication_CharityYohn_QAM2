@@ -287,8 +287,15 @@ public class AddAppointmentController extends TimezoneConversion implements Init
      * @return LocalDatetime start time and date
      */
     public LocalDateTime setStartDateTimeSelection() {
-        LocalDateTime startDateTimeSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
-        setStartDate(startDateTimeSelection);
+        LocalDateTime startDateTimeSelection = LocalDateTime.of(9999, 12, 31, 23, 59);
+        if ((startDatePicker.getValue() != null) && (startTimeHrComboBox.getValue() != null) &&
+                (endTimeHrComboBox.getValue() != null) && (endTimeHrComboBox.getValue() != null)) {
+            startDateTimeSelection = LocalDateTime.of(startDatePicker.getValue(), startTimeHrComboBox.getValue());
+            setStartDate(startDateTimeSelection);
+            return startDateTimeSelection;
+        } else {
+            System.out.println("Start Date is Empty");
+        }//do nothing
         return startDateTimeSelection;
     }
 
@@ -298,8 +305,12 @@ public class AddAppointmentController extends TimezoneConversion implements Init
      * @return LocalDatetime end time and date
      */
     public LocalDateTime setEndDateTimeSelection() {
-        LocalDateTime endDateTimeSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
-        setEndDate(endDateTimeSelection);
+        LocalDateTime endDateTimeSelection = LocalDateTime.of(2022, 01, 01, 00, 01);
+        if ((endDatePicker.getValue() != null) && (endTimeHrComboBox.getValue() != null)) {
+            endDateTimeSelection = LocalDateTime.of(endDatePicker.getValue(), endTimeHrComboBox.getValue());
+            setEndDate(endDateTimeSelection);
+            return endDateTimeSelection;
+        }
         return endDateTimeSelection;
     }
 
@@ -309,24 +320,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
      * @return true is the validation passes and false if the validation does not pass
      * @throws Exception
      */
-    public boolean validateStartBeforeEndTime() throws Exception {
-        try {
-            setStartDateTimeSelection();
-            setEndDateTimeSelection();
-            LocalDateTime startSelection = getStartDate();
-            LocalDateTime endSelection = getEndDate();
-            if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            e.getMessage();
-            e.getCause();
-            e.printStackTrace();
-        }
-        return false;
-    }
+
 
     /**
      * The first of three validation methods for validating overlapping appointments
@@ -400,6 +394,27 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         return false;
     }
 
+    public boolean validateStartBeforeEndTime() throws Exception {
+        try {
+            if ((endDatePicker.getValue() != null) && (startDatePicker.getValue() != null) &&
+                    (endTimeHrComboBox.getValue() != null) && (startTimeHrComboBox.getValue() != null)) {
+                setStartDateTimeSelection();
+                setEndDateTimeSelection();
+                LocalDateTime startSelection = getStartDate();
+                LocalDateTime endSelection = getEndDate();
+                if (endSelection.isAfter(startSelection) && startSelection.isAfter(LocalDateTime.now())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.getMessage();
+            e.getCause();
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * The save procedure
@@ -416,11 +431,9 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     @FXML
     void onSaveButtonAction(ActionEvent event) throws Exception {
         emptyFieldAlert();
-
-
-        if ((!titleTxtField.getText().isEmpty()) && (titleTxtField.getLength() < 50) &&
-                (!locationTxtField.getText().isEmpty()) && (locationTxtField.getLength() < 50) &&
-                (!appointmentDescriptionTxtField.getText().isEmpty()) && (appointmentDescriptionTxtField.getLength() < 50) &&
+        if ((titleTxtField.getText() != null) && (titleTxtField.getLength() < 50) &&
+                (locationTxtField.getText() != null) && (locationTxtField.getLength() < 50) &&
+                (appointmentDescriptionTxtField.getText() != null) && (appointmentDescriptionTxtField.getLength() < 50) &&
                 (contactComboBox.getValue() != null) && (typeComboBox.getValue() != null) &&
                 (startDatePicker.getValue() != null) && (startTimeHrComboBox != null) &&
                 (endDatePicker.getValue() != null) && (endTimeHrComboBox != null) &&
@@ -657,19 +670,21 @@ public class AddAppointmentController extends TimezoneConversion implements Init
  */
         endTimeHrComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus is lost
-                Boolean validationResult = null;
-                saveButton.setDisable(false);
-                saveErrorLabel.setVisible(false);
-                endTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
-                try {
-                    validationResult = validateStartBeforeEndTime();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (validationResult) {
-                    dateAndTimeErrorLabel.setVisible(false);
-                } else {
-                    dateAndTimeErrorLabel.setVisible(true);
+                if ((endTimeHrComboBox.getValue() != null) && (endDatePicker.getValue() != null)) {
+                    Boolean validationResult = null;
+                    saveButton.setDisable(false);
+                    saveErrorLabel.setVisible(false);
+                    //endTimeHrComboBox.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
+                    try {
+                        validationResult = validateStartBeforeEndTime();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (validationResult) {
+                        dateAndTimeErrorLabel.setVisible(false);
+                    } else {
+                        dateAndTimeErrorLabel.setVisible(true);
+                    }
                 }
             }
         });
@@ -680,11 +695,12 @@ public class AddAppointmentController extends TimezoneConversion implements Init
          */
         endDatePicker.focusedProperty().addListener((arg0, oldValue, newValue) -> {
             if (!newValue) { //when focus is lost
-                endTimeHrComboBox.getValue();
-                saveButton.setDisable(false);
-                saveErrorLabel.setVisible(false);
-                endDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
                 if (endTimeHrComboBox.getValue() != null) { //if the end time is not null
+                    endTimeHrComboBox.getValue();
+                    saveButton.setDisable(false);
+                    saveErrorLabel.setVisible(false);
+                    //endDatePicker.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
+
                     Boolean validationResult = null;
                     try {
                         validationResult = validateStartBeforeEndTime();
@@ -711,7 +727,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                titleTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //titleTxtField.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
                 if (titleTxtField.getLength() > 50) {
                     titleLengthAlert.setVisible(true);
                 } else if (titleTxtField.getLength() < 50) {
@@ -730,7 +746,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                locationTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //locationTxtField.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
                 if (locationTxtField.getLength() > 50) {
                     locationLengthAlert.setVisible(true);
                 } else if (locationTxtField.getLength() < 50) {
@@ -749,7 +765,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                appointmentDescriptionTxtField.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //appointmentDescriptionTxtField.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
                 if (appointmentDescriptionTxtField.getLength() > 50) {
                     descriptionLengthAlert.setVisible(true);
                 } else if (appointmentDescriptionTxtField.getLength() < 50) {
@@ -768,7 +784,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                typeComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //typeComboBox.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
             }
         });
 
@@ -782,7 +798,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                userComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //userComboBox.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
             }
         });
 
@@ -796,7 +812,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                contactComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //contactComboBox.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
             }
         });
 
@@ -810,7 +826,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                customerTable.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //customerTable.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
             }
         });
 
@@ -824,7 +840,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                startDatePicker.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //startDatePicker.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
             }
         });
 
@@ -838,10 +854,8 @@ public class AddAppointmentController extends TimezoneConversion implements Init
                 saveErrorLabel.setVisible(false);
                 saveButton.setDisable(false);
                 allFieldsRequiredLabel.setVisible(false);
-                startTimeHrComboBox.setStyle("-fx-border-color: default; -fx-focus-color: default;");
+                //startTimeHrComboBox.setStyle("-fx-border-color: light-grey; -fx-focus-color: white;");
             }
         });
-
-
     }
 }
