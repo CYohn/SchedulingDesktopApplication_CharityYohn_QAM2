@@ -25,11 +25,11 @@
             <columns>
                 <TableColumn fx:id="custIdColumn" prefWidth="84.0" text="Cust ID"/>
                 <TableColumn fx:id="custNameColumn" prefWidth="207.0" text="Name"/>
-                <TableColumn fx:id="custAddressColumn" prefWidth="334.0" text="Address" />
-                <TableColumn fx:id="custCountryColumn" prefWidth="151.0" text="Country" />
-                <TableColumn fx:id="custStateColumn" prefWidth="163.0" text="State/Province" />
-                <TableColumn fx:id="custPostalCodeColumn" prefWidth="92.0" text="Postal Code" />
-                <TableColumn fx:id="custPhoneColumn" prefWidth="137.0" text="Phone" />
+                <TableColumn fx:id="custAddressColumn" prefWidth="334.0" text="Address"/>
+                <TableColumn fx:id="custCountryColumn" prefWidth="151.0" text="Country"/>
+                <TableColumn fx:id="custStateColumn" prefWidth="163.0" text="State/Province"/>
+                <TableColumn fx:id="custPostalCodeColumn" prefWidth="92.0" text="Postal Code"/>
+                <TableColumn fx:id="custPhoneColumn" prefWidth="137.0" text="Phone"/>
             </columns>
         </TableView>
         <GridPane fx:id="applicationFormLeft" layoutX="410.0" layoutY="414.0" prefHeight="354.0" prefWidth="481.0">
