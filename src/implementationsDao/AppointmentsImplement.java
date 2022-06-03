@@ -10,6 +10,9 @@ import utilities.DatabaseConnection;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/**
+ * This class works with the database to create, read, update, and delete appointments. The class implements the appointments interface.
+ */
 public class AppointmentsImplement implements AppointmentsInterface {
     /**
      * getAllAppointments is an observableList to store all appointments
@@ -191,8 +194,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
                     appointmentsByCustomerID.add(appointmentByCustomerId);
                     //System.out.println("Appointment object populated in getAllAppointments list: " + appointmentByCustomerId);
                 }
-            }
-            else{System.out.println("ResultSet was null");
+            } else{System.out.println("ResultSet was null");
             }
 
         } catch (SQLException throwables) {
@@ -207,9 +209,10 @@ public class AppointmentsImplement implements AppointmentsInterface {
     /**
      * Updates the appointment in the database.
      *
-     * @param appointment
-     * @return
-     * @throws SQLException
+     * @param appointment The appointment selected by the user to be updated in the database
+     * @return Returns the number of rows affected in the database.
+     * Because only one appointment is being updated, the method should return 1.
+     * @throws SQLException An exception that provides information on a database access error or other errors
      */
     public static int updateAppointment(Appointment appointment) throws SQLException {
 
@@ -235,7 +238,7 @@ public class AppointmentsImplement implements AppointmentsInterface {
                 "Customer_ID = ?, " +
                 "User_ID = ?, " +
                 "Contact_ID = ? " +
-        "WHERE Appointment_ID = " + appointmentId;
+                "WHERE Appointment_ID = " + appointmentId;
         PreparedStatement updateAppointmentPreparedStatement = DatabaseConnection.getConnection().prepareStatement(updateSql);
 
         updateAppointmentPreparedStatement.setInt(1, appointmentId);
@@ -253,16 +256,32 @@ public class AppointmentsImplement implements AppointmentsInterface {
         return dbResponse;
     }
 
-
+    /**
+     * Deletes an appointment in the database. Searches for the selected appointment via the appointment ID.
+     *
+     * @param appointmentId The ID of the appointment selected by the user from the appointment table on the Modify Appointment screen.
+     * @return Returns the number of rows affected. Because we are only deleting one appointment at a time a successful response in 1.
+     * If unsuccessful, the method will return 0.
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static int deleteAppointment(int appointmentId) throws SQLException {
-        String deleteSql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentId +";";
+        String deleteSql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + appointmentId + ";";
         PreparedStatement updateAppointmentPreparedStatement = DatabaseConnection.getConnection().prepareStatement(deleteSql);
         int dbResponse = updateAppointmentPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
     }
 
+    /**
+     * Deletes an appointment by customer ID. This method is called when the user deletes a customer. Because of foreign key
+     * contraints, the customer's appointments must also be deleted.
+     *
+     * @param customerId The ID of the customer who's appointments must be deleted
+     * @return Returns the number of rows affected in the database. Because a customer may have more than one appointment,
+     * but may also have no appointments a successful return is greater than or equal to zero.
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     public static int deleteAppointmentByCustomerId(int customerId) throws SQLException {
-        String deleteSql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + customerId +";";
+        String deleteSql = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = " + customerId + ";";
         PreparedStatement updateAppointmentPreparedStatement = DatabaseConnection.getConnection().prepareStatement(deleteSql);
         int dbResponse = updateAppointmentPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
