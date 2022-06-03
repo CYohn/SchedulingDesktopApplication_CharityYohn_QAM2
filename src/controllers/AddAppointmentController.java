@@ -50,7 +50,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     private ObservableList<User> userNames = UsersImplement.userNames;
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
-    private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.AppointmentsByCustomerID;
+    private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.appointmentsByCustomerID;
 
 
     @FXML

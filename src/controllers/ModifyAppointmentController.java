@@ -43,7 +43,7 @@ public class ModifyAppointmentController implements Initializable {
         ObservableList<Appointment>allAppointments = getAllAppointments;
         ObservableList<Appointment>appointmentsWithConvertedTimes = FXCollections.observableArrayList();
         ObservableList<Customer> allCustomers = CustomersImplement.getAllCustomers;
-        private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.AppointmentsByCustomerID;
+    private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.appointmentsByCustomerID;
 
         private String selectedContactName;
         private String selectedCustomerName;

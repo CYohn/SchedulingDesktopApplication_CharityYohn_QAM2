@@ -1,7 +1,6 @@
 package implementationsDao;
 
 import Objects.Appointment;
-import Objects.Customer;
 import controllers.AddAppointmentController;
 import interfacesDao.AppointmentsInterface;
 import javafx.collections.FXCollections;
@@ -12,11 +11,21 @@ import java.sql.*;
 import java.time.LocalDateTime;
 
 public class AppointmentsImplement implements AppointmentsInterface {
-
+    /**
+     * getAllAppointments is an observableList to store all appointments
+     */
     public static ObservableList<Appointment> getAllAppointments = FXCollections.observableArrayList();
-    public static ObservableList<Appointment> AppointmentsByCustomerID = FXCollections.observableArrayList();
 
+    /**
+     * appointmentsByCustomerID is an observable list to store appointments which were filtered by customer ID
+     */
+    public static ObservableList<Appointment> appointmentsByCustomerID = FXCollections.observableArrayList();
 
+    /**
+     * Gets all appointments from the database and adds them to an ObservableList
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     public static void getAllAppointments() throws SQLException {
         getAllAppointments.clear();
         String allAppointmentsQuery = "SELECT Appointment_ID, Title, Description, Location, Type, Start, End, customers.Customer_ID, users.User_ID, contacts.Contact_ID" +
@@ -71,11 +80,10 @@ public class AppointmentsImplement implements AppointmentsInterface {
                     //        "  Contact ID:  " + appointment.getContactId() +
                     //        "  Appointment ID:  " + appointment.getAppointmentId());
                 }
+            } else{System.out.println("ResultSet was null");
             }
-            else{System.out.println("ResultSet was null");}
 
-        }
-        catch(SQLException throwables){
+        } catch (SQLException throwables) {
             System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
             throwables.getMessage();
             throwables.getCause();
@@ -83,6 +91,12 @@ public class AppointmentsImplement implements AppointmentsInterface {
         }
     }
 
+    /**
+     * Adds appointments from the user interface to the database
+     *
+     * @param appointmentToAdd An appointment object constructed from the add appointment controller
+     * @return Returns a response from the database. If successful, the response is 1, if not successful the response is 0
+     */
     public static int addAppointment(Appointment appointmentToAdd) {
         int databaseResponseToUpdate = 0;
         try {
@@ -102,35 +116,35 @@ public class AppointmentsImplement implements AppointmentsInterface {
             //System.out.println("Appointment to send to the DB:  " + appointmentToAdd);
 
 
-                String insertCustomerIntoDB = "INSERT INTO client_schedule.appointments (" +
-                        "Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
-                        "VALUES(?,?,?,?,?,?,?,?,?);";
+            String insertCustomerIntoDB = "INSERT INTO client_schedule.appointments (" +
+                    "Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
+                    "VALUES(?,?,?,?,?,?,?,?,?);";
 
 
-                PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
+            PreparedStatement insertPreparedStatement = DatabaseConnection.getConnection().prepareStatement(insertCustomerIntoDB);
 
 
-                insertPreparedStatement.setString(1, title);
-                insertPreparedStatement.setString(2, description);
-                insertPreparedStatement.setString(3, location);
-                insertPreparedStatement.setString(4, type);
+            insertPreparedStatement.setString(1, title);
+            insertPreparedStatement.setString(2, description);
+            insertPreparedStatement.setString(3, location);
+            insertPreparedStatement.setString(4, type);
 
-                insertPreparedStatement.setTimestamp(5, startDateTime);
-                insertPreparedStatement.setTimestamp(6, endDateTime);
+            insertPreparedStatement.setTimestamp(5, startDateTime);
+            insertPreparedStatement.setTimestamp(6, endDateTime);
 
-                insertPreparedStatement.setInt(7, customerId);
-                insertPreparedStatement.setInt(8, userId);
-                insertPreparedStatement.setInt(9, contactId);
+            insertPreparedStatement.setInt(7, customerId);
+            insertPreparedStatement.setInt(8, userId);
+            insertPreparedStatement.setInt(9, contactId);
 
-                databaseResponseToUpdate = insertPreparedStatement.executeUpdate();
+            databaseResponseToUpdate = insertPreparedStatement.executeUpdate();
 
-                // Updating Query
-                if (databaseResponseToUpdate == 1) {
-                    System.out.println("Table Updated Successfully.......");
-                    System.out.println("databaseResponseToUpdate: " + databaseResponseToUpdate);
-                    return databaseResponseToUpdate;
-                }
-                else{System.out.println("Database did not add the appointment successfully. DB encountered an error.");}
+            // Updating Query
+            if (databaseResponseToUpdate == 1) {
+                System.out.println("Table Updated Successfully.......");
+                System.out.println("databaseResponseToUpdate: " + databaseResponseToUpdate);
+                return databaseResponseToUpdate;
+            } else{System.out.println("Database did not add the appointment successfully. DB encountered an error.");
+            }
 
         } catch (SQLException e) {
             System.out.println("addAppointment encountered an error in the AppointmentsImplement file:");
@@ -142,7 +156,11 @@ public class AppointmentsImplement implements AppointmentsInterface {
     }
 
 
-
+    /**
+     * Filters and retrieved customers from the database by customer ID
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors
+     */
     public static void getAppointmentsByCustomerID() throws SQLException {
         String selectedCustomerId = String.valueOf(AddAppointmentController.getSelectedCustomerID());
         String allAppointmentsQuery = "SELECT Appointment_ID, Start, End" +
@@ -170,14 +188,14 @@ public class AppointmentsImplement implements AppointmentsInterface {
 
                     Appointment appointmentByCustomerId = new Appointment(appointmentId, startDateTime, endDateTime);
 
-                    AppointmentsByCustomerID.add(appointmentByCustomerId);
+                    appointmentsByCustomerID.add(appointmentByCustomerId);
                     //System.out.println("Appointment object populated in getAllAppointments list: " + appointmentByCustomerId);
                 }
             }
-            else{System.out.println("ResultSet was null");}
+            else{System.out.println("ResultSet was null");
+            }
 
-        }
-        catch(SQLException throwables){
+        } catch (SQLException throwables) {
             System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
             throwables.getMessage();
             throwables.getCause();
@@ -186,7 +204,13 @@ public class AppointmentsImplement implements AppointmentsInterface {
     }
 
 
-    //@Override
+    /**
+     * Updates the appointment in the database.
+     *
+     * @param appointment
+     * @return
+     * @throws SQLException
+     */
     public static int updateAppointment(Appointment appointment) throws SQLException {
 
         int appointmentId = appointment.getAppointmentId();
