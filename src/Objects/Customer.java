@@ -6,16 +6,42 @@ import implementationsDao.CustomersImplement;
 
 import java.lang.reflect.Constructor;
 
+/**
+ * This class is the constructor class for the customer object.
+ */
 public class Customer {
 
-
+    /**
+     * The customer ID.
+     */
     private int customerId;
+    /**
+     * The customer name.
+     */
     private String customerName;
+    /**
+     * The customer address.
+     */
     private String customerAddress;
+    /**
+     * The customer postal code.
+     */
     private String customerPostalCode;
+    /**
+     * The customer phone.
+     */
     private String customerPhone;
+    /**
+     * The customer country.
+     */
     private String country;
+    /**
+     * The customer division Id.
+     */
     private int customerDivisionId;
+    /**
+     * The customer division name.
+     */
     private String division;
 
 
@@ -175,5 +201,4 @@ public class Customer {
     public String getDivision() {
         return division;
     }
-
 }

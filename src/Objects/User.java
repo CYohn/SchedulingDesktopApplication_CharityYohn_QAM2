@@ -3,30 +3,19 @@ package Objects;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**
+ * This class is the constructor class for user objects.
+ */
 public class User {
-
-    private int userId;
-    private String userName;
-    private String password;
-    private LocalDateTime createDate;
-    private String createdBy;
-
     /**
-     * Constructor used to retrieve a full user object
-     *
-     * @param userId     The user's ID
-     * @param userName   The user's name
-     * @param password   The user's password
-     * @param createDate The user's create date
-     * @param createdBy  Who created the user entry
+     * The user's ID.
      */
-    public User(int userId, String userName, String password, LocalDateTime createDate, String createdBy) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-    }
+    private int userId;
+    /**
+     * The user's username.
+     */
+    private String userName;
+
 
     /**
      * Constructor used to populate combo boxes

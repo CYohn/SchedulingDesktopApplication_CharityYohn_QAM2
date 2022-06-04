@@ -4,24 +4,66 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * This class is the constructor class for the appointment object.
+ */
 public class Appointment {
 
     /**
-     * Appointment variables
+     * The appointment ID.
      */
     private int appointmentId;
+    /**
+     * The appointment title.
+     */
     private String title;
+    /**
+     * The appointment description.
+     */
     private String description;
+    /**
+     * The appointment location.
+     */
     private String location;
+    /**
+     * The appointment type.
+     */
     private String type;
+    /**
+     * The appointment start date and time.
+     */
     private LocalDateTime startDateTime;
+    /**
+     * The appointment end date and time.
+     */
     private LocalDateTime endDateTime;
+    /**
+     * The user ID associated with the appointment.
+     */
     private int userId;
+    /**
+     * The contact ID associated with the appointment.
+     */
     private int contactId;
+    /**
+     * The customer ID associated with the appointment.
+     */
     private int customerId;
+    /**
+     * The start date of the appointment.
+     */
     private LocalDate startDate;
+    /**
+     * The start time of the appointment.
+     */
     private LocalTime startTime;
+    /**
+     * The end date of the appointment.
+     */
     private LocalDate endDate;
+    /**
+     * The end time of the appointment.
+     */
     private LocalTime endTime;
 
 

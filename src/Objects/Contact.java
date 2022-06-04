@@ -1,29 +1,21 @@
 package Objects;
 
+/**
+ * This class is the contructor class for contact objects.
+ */
 public class Contact {
 
     /**
-     * Contact variables
+     * Contact ID.
      */
     private int contactId;
+    /**
+     * Contact name.
+     */
     private String contactName;
-    private String email;
 
     /**
      * Constructor used to get the contact from the Database
-     *
-     * @param contactId   Contact ID
-     * @param contactName Contact Name
-     * @param email       Contact email
-     */
-    public Contact(int contactId, String contactName, String email) {
-        this.contactId = contactId;
-        this.contactName = contactName;
-        this.email = email;
-    }
-
-    /**
-     * Constructor used to populate combo boxes
      *
      * @param contactId   Contact ID
      * @param contactName Contact Name
@@ -32,6 +24,7 @@ public class Contact {
         this.contactId = contactId;
         this.contactName = contactName;
     }
+
 
     /**
      * Method overrides how the object is presented in string form for a more human friendly representation in combo boxes.
@@ -60,6 +53,5 @@ public class Contact {
     public String getContactName() {
         return contactName;
     }
-
 
 }
