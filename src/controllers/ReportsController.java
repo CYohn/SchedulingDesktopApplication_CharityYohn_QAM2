@@ -25,6 +25,9 @@ import java.util.ResourceBundle;
 
 import static utilities.TimezoneConversion.convertUTCToUserTime;
 
+/**
+ * This class is a controller which controls the reports page.
+ */
 public class ReportsController implements Initializable {
 
     /**
@@ -32,7 +35,7 @@ public class ReportsController implements Initializable {
      */
     public ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
     /**
-     * Creates the month objects
+     * An observable list of months
      */
     ObservableList<Month> months = FXCollections.observableArrayList();
     Month january = new Month(1, "January");
@@ -169,37 +172,10 @@ public class ReportsController implements Initializable {
     }
 
     /**
-     * Creates an inner class to list and wrok with the months of the year
+     * The label to show the number of appointments based on the search criteria of the Month / Type / Month and Type combination.
      */
-    public class Month {
-        private String monthName;
-        private int monthNumber;
-
-        public Month(int monthNumber, String monthName) {
-            this.monthNumber = monthNumber;
-            this.monthName = monthName;
-        }
-
-        /**
-         * Creates a human friendly string representation of the month object
-         *
-         * @return
-         */
-        @Override
-        public String toString() {
-            return (monthNumber + ":   " + monthName);
-        }
-
-        /**
-         * Gets the assigned number of the month (ex: January == 1, Februrary == 2 etc.)
-         *
-         * @return the month number
-         */
-        public int getMonthNumber() {
-            return monthNumber;
-        }
-
-    }
+    @FXML
+    private Label numberOfAppointments;
 
     /**
      * The table to sort appointments by contact.
@@ -236,11 +212,52 @@ public class ReportsController implements Initializable {
      */
     @FXML
     private ComboBox<Month> monthComboBox;
+
     /**
-     * The lable to show the number of appointments based on the search criteria of the Month / Type / Month & Type combination.
+     * Creates an inner class to list and work with the months of the year
      */
-    @FXML
-    private Label numberOfAppointments;
+    public class Month {
+        /**
+         * The name of the month
+         */
+        private String monthName;
+        /**
+         * The number of the month in the year.
+         */
+        private int monthNumber;
+
+        /**
+         * The constructor for the month object.
+         *
+         * @param monthNumber The number of the month in the year.
+         * @param monthName   The name of the month.
+         */
+        public Month(int monthNumber, String monthName) {
+            this.monthNumber = monthNumber;
+            this.monthName = monthName;
+        }
+
+        /**
+         * Creates a human friendly string representation of the month object
+         *
+         * @return A string representing the month
+         */
+        @Override
+        public String toString() {
+            return (monthNumber + ":   " + monthName);
+        }
+
+        /**
+         * Gets the assigned number of the month (ex: January == 1, Februrary == 2 etc.)
+         *
+         * @return the month number
+         */
+        public int getMonthNumber() {
+            return monthNumber;
+        }
+
+    }
+
     /**
      * The combo box to select the type.
      */
@@ -321,7 +338,6 @@ public class ReportsController implements Initializable {
         System.out.println("all appointments:  " + allAppointments);
         for(Appointment appointment: allAppointments){
             System.out.println("All Appointments at initialize:  contact ID: "+ appointment.getContactId() + "  Appointment ID  " + appointment.getAppointmentId());}
-
 
 
         monthComboBox.setItems(months);
@@ -492,8 +508,6 @@ public class ReportsController implements Initializable {
                 numberOfAppointments.setText(appointmentsCount().toString()) ;
             }
         });
-
-
 
 
     }

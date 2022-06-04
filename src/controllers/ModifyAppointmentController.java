@@ -111,12 +111,11 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Gets the end date and time
+     * A constructor to catch SQL Exceptions.
      *
-     * @return
+     * @throws SQLException An exception that provides information on a database access error or other errors.
      */
-    public static LocalDateTime getEndDate() {
-        return endDate;
+    public ModifyAppointmentController() throws SQLException {
     }
 
     /**
@@ -336,11 +335,12 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Sets the selected customer ID
+     * Gets the end date and time
      *
-     * @param selectedCustomerID
+     * @return The end date and time
      */
-    public static void setSelectedCustomerID(int selectedCustomerID) {
+    public static LocalDateTime getEndDate() {
+        return endDate;
     }
 
     /**
@@ -353,21 +353,20 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     * Sets the selected customer name
+     * Sets the selected customer ID.
      *
-     * @param selectedCustomerName
+     * @param selectedCustomerID The selected customer ID.
      */
-    public void setSelectedCustomerName(String selectedCustomerName) {
-        this.selectedCustomerName = selectedCustomerName;
+    public static void setSelectedCustomerID(int selectedCustomerID) {
     }
 
     /**
-     * Sets the selected username
+     * Sets the selected customer name
      *
-     * @param selectedUserName
+     * @param selectedCustomerName the selected customer name.
      */
-    public void setSelectedUserName(String selectedUserName) {
-        this.selectedUserName = selectedUserName;
+    public void setSelectedCustomerName(String selectedCustomerName) {
+        this.selectedCustomerName = selectedCustomerName;
     }
 
     /**
@@ -379,11 +378,17 @@ public class ModifyAppointmentController implements Initializable {
         this.overlappingAppointment = overlappingAppointment;
     }
 
-    public ModifyAppointmentController() throws SQLException {
+    /**
+     * Sets the selected username.
+     *
+     * @param selectedUserName The selected username.
+     */
+    public void setSelectedUserName(String selectedUserName) {
+        this.selectedUserName = selectedUserName;
     }
 
     /**
-     * Maches the selected contact with the contacts in the list to set the selected contact name and return the correct contact in the list.
+     * Matches the selected contact with the contacts in the list to set the selected contact name and return the correct contact in the list.
      *
      * @param contactId The ID number of the selected contact
      * @return The contact to whom the ID belongs
@@ -444,8 +449,8 @@ public class ModifyAppointmentController implements Initializable {
      * The method gets a fresh list of appointments and converts the times to the user timezone and splits the times
      * into individual date / time variables. Then the method uses these new times to populate the appointments table.
      *
-     * @param allAppointments
-     * @throws SQLException
+     * @param allAppointments an observable list of all appointments
+     * @throws SQLException An exception that provides information on a database access error or other errors.
      */
     public void populateAptTable(ObservableList<Appointment> allAppointments) throws SQLException {
         appointmentsWithConvertedTimes.clear();
@@ -988,7 +993,7 @@ public class ModifyAppointmentController implements Initializable {
     /**
      * An alert shown to the user to confirm the intention of deleting the selected appointment
      *
-     * @throws SQLException
+     * @throws SQLException An exception that provides information on a database access error or other errors.
      */
     public void deleteAlert() throws SQLException {
         if ((appointmentTable.getSelectionModel().getSelectedItem() != null) && (titleTxtField.getText() != null) && (titleTxtField.getLength() < 50) &&
@@ -1043,8 +1048,7 @@ public class ModifyAppointmentController implements Initializable {
 
 
     /**
-     * Initializes the page
-     *
+     * Initializes the page.
      * @param url
      * @param resourceBundle
      */

@@ -24,7 +24,7 @@ public class ContactsImplement extends DatabaseConnection {
     /**
      * Gets all contact names and ID numbers from the database and adds them to an observableList.
      *
-     * @throws SQLException
+     * @throws SQLException An exception that provides information on a database access error or other errors.
      */
     public static void getAllContactNames() throws SQLException {
         contactNames.clear();

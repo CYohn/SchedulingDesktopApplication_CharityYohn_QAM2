@@ -46,6 +46,9 @@ public class LoginPageController implements Initializable {
      */
     Stage stage;
 
+    /**
+     * The logged in user ID
+     */
     int loggedUserId;
     /**
      * Sets the scene
@@ -53,10 +56,12 @@ public class LoginPageController implements Initializable {
     Parent scene;
 
     /**
-     * Sets the logged in user ID
+     * gets the logged in user ID
+     *
+     * @return Logged in user ID
      */
-    public void setLoggedUserId(int loggedUserId) {
-        this.loggedUserId = loggedUserId;
+    public int getLoggedUserId() {
+        return loggedUserId;
     }
 
     /**
@@ -312,12 +317,12 @@ public class LoginPageController implements Initializable {
     }
 
     /**
-     * gets the logged in user ID
+     * Sets the logged in user ID
      *
-     * @return
+     * @param loggedUserId The logged in user ID
      */
-    public int getLoggedUserId() {
-        return loggedUserId;
+    public void setLoggedUserId(int loggedUserId) {
+        this.loggedUserId = loggedUserId;
     }
 
     /**

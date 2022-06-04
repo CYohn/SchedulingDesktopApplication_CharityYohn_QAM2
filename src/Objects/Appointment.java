@@ -310,7 +310,11 @@ public class Appointment {
         return userId;
     }
 
-
+    /**
+     * gets the contact ID
+     *
+     * @return the contact ID
+     */
     public int getContactId() {
         return contactId;
     }

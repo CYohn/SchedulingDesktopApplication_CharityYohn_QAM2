@@ -18,6 +18,11 @@ public class CustomersImplement extends DatabaseConnection {
      */
     public static ObservableList<Customer> getAllCustomers = FXCollections.observableArrayList();
 
+    /**
+     * A constructor to catch SQL exceptions
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public CustomersImplement() throws SQLException {
     }
 

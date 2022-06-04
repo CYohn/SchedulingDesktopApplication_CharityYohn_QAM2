@@ -279,7 +279,7 @@ public class AddAppointmentController extends TimezoneConversion implements Init
     /**
      * Gets the selected customer ID from the table
      *
-     * @return
+     * @return Customer ID
      */
     public static int getSelectedCustomerID() {
         return selectedCustomerID;

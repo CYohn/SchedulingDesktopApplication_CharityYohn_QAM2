@@ -112,6 +112,12 @@ public class DatabaseConnection {
         return null;
     }
 
+    /**
+     * Gets the prepared statement
+     *
+     * @return the prepared statement
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static PreparedStatement getPreparedStatement() throws SQLException {
         if (preparedStatement != null)
             return preparedStatement;

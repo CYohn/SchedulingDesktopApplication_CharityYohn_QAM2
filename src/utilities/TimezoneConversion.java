@@ -30,7 +30,7 @@ public class TimezoneConversion {
     /**
      * Sets the converted business start date and time.
      *
-     * @param businessStartConverted
+     * @param businessStartConverted The converted start time
      */
     public static void setBusinessStartConverted(LocalDateTime businessStartConverted) {
         TimezoneConversion.businessStartConverted = businessStartConverted;
@@ -48,7 +48,7 @@ public class TimezoneConversion {
     /**
      * Sets the converted business end date and time.
      *
-     * @param businessEndConverted
+     * @param businessEndConverted The converted end time.
      */
     public static void setBusinessEndConverted(LocalDateTime businessEndConverted) {
         TimezoneConversion.businessEndConverted = businessEndConverted;
@@ -78,7 +78,7 @@ public class TimezoneConversion {
     /**
      * Converts the business end date and time from eastern to the user's local time.
      *
-     * @return
+     * @return The converted time to user local time and date
      */
     public static LocalDateTime convertBusinessEndFromEstToLocalTime() {
         //create a ZonedDatetime for today at 10:00pm EST converted to UTC
@@ -115,7 +115,7 @@ public class TimezoneConversion {
      * Converts the user's selected end time from eastern to UTC.
      *
      * @param userEndDateTime The user's selected end time.
-     * @return
+     * @return the end time converted to UTC
      */
     public static LocalDateTime convertUserEndTimeToUTC(LocalDateTime userEndDateTime) {
         String userTimeZone = TimeZone.getDefault().getID();

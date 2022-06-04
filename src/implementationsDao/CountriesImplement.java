@@ -11,6 +11,12 @@ import java.sql.*;
  * This class interacts with the database. The class gets all countries from the database and adds them to an observable list.
  */
 public class CountriesImplement extends DatabaseConnection {
+
+    /**
+     * A constructor to catch SQL exceptions
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public CountriesImplement() throws SQLException {
     }
 

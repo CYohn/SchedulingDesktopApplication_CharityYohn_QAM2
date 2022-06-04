@@ -194,7 +194,11 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Label allFieldsRequiredLabel;
 
-
+    /**
+     * A constructor to catch exceptions.
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public ModifyCustomerController() throws SQLException {
     }
 
