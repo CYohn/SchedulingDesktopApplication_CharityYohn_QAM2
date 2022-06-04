@@ -11,24 +11,41 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
+
+/**
+ * This is the controller for the tabbed pane. It loads the views in a pane inside of each tab. This controller also
+ * listens for changes in the tab selection and reloads each page when the tab is re-selected.
+ */
 public class TabbedPaneController implements Initializable {
 
-
+    /**
+     * The tab to load or reload the Add appointment page.
+     */
     @FXML
     private Tab addAppointmentTab;
-
+    /**
+     * the tab to load or reload the add customer page.
+     */
     @FXML
     private Tab addCustomerTab;
-
+    /**
+     * The tab to load or reload the modify appointment page.
+     */
     @FXML
     private Tab modifyAppointmentTab;
-
+    /**
+     * the tab to load or re-load the modify customer page.
+     */
     @FXML
     private Tab modifyCustomerTab;
-
+    /**
+     * The tab to load or reload the reports page.
+     */
     @FXML
     private Tab reportsTab;
-
+    /**
+     * The tab to load or re-load the scheduling page.
+     */
     @FXML
     private Tab schedulingTab;
 

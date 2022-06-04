@@ -103,20 +103,4 @@ public class CountriesImplement extends DatabaseConnection implements CountriesI
         return countryNames;
     }
 
-
-
-    //@Override
-    public void updateCountry() {
-
-    }
-
-    //@Override
-    public void deleteCountry() {
-
-    }
-
-    //@Override
-    public void addCountry() {
-
-    }
 }

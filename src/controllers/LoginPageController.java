@@ -33,21 +33,24 @@ import java.util.logging.Logger;
 import static java.time.ZoneOffset.UTC;
 import static utilities.TimezoneConversion.convertUTCToUserTime;
 
+/**
+ * A controller which controls the login page.
+ */
 public class LoginPageController implements Initializable {
-
+    /**
+     * A variable which holds the user's password.
+     */
+    private static String dbPassword;
+    /**
+     * Sets the stage
+     */
     Stage stage;
-    Parent scene;
 
     int loggedUserId;
-
     /**
-     * gets the logges in user ID
-     *
-     * @return
+     * Sets the scene
      */
-    public int getLoggedUserId() {
-        return loggedUserId;
-    }
+    Parent scene;
 
     /**
      * Sets the logged in user ID
@@ -65,49 +68,83 @@ public class LoginPageController implements Initializable {
         this.userName = userName;
     }
 
+    /**
+     * The user name entry on the form
+     */
     String userName;
-
+    /**
+     * An ObservableList to hold the upcoming appointments. An observable list was chosen in the event that more than one
+     * upcoming appointment is found.
+     */
+    ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
+    /**
+     * A resource bundle for page translation.
+     */
     private ResourceBundle languageResource;
-
+    /**
+     * A simple form label welcoming the user back. This terminology was chosen because in a business sense, the user is
+     * likely a daily user of the application. For example, the target user for an application such as this might be office staff.
+     */
     @FXML
     private Label welcomeBackLabel;
-
+    /**
+     * An error label which appears if the user does not input a username and attempts to log in.
+     */
     @FXML
     private Label userNameReqLabel;
-
+    /**
+     * A text field label indicating where to enter the username.
+     */
     @FXML
     private Label userNameLabel;
-
+    /**
+     * A text field label indicating where to enter the user's password.
+     */
     @FXML
     private Label passwordLabel;
-
+    /**
+     * A form label asking the user to log in.
+     */
     @FXML
     private Label loginInstructionLabel;
-
+    /**
+     * The clear button clears the form.
+     */
     @FXML
     private Button clearButton;
-
+    /**
+     * The login button is where the user presses to attempt to log in.
+     */
     @FXML
     private Button loginButton;
-
+    /**
+     * A text field to enter a password. This password text field hides the user's password by default.
+     */
     @FXML
     private PasswordField passwordField;
-
+    /**
+     * A text field to enter the user's username.
+     */
     @FXML
     private TextField userNameField;
-
-
+    /**
+     * A warning label which appears if the user's username or password do not match the entries in the database.
+     */
     @FXML
     private Label incorrectInfoLabel;
-
+    /**
+     * A warning label which appears if the user attempts to login without entering a password.
+     */
     @FXML
     private Label passwordRequiredLabel;
-
+    /**
+     * A label which shows the user's location obtained from their device.
+     */
     @FXML
     private Label locationLabel;
-
-    private static String dbPassword;
-
+    /**
+     * A label which indicates what the location is.
+     */
     @FXML
     private Label userLocationLabel;
 
@@ -122,9 +159,6 @@ public class LoginPageController implements Initializable {
         userNameField.clear();
         passwordField.clear();
     }
-
-    static Connection connection = DatabaseConnection.getConnection();
-    static PreparedStatement allUsersPreparedStatement;
 
     /**
      * Checks the username for a password match
@@ -277,8 +311,14 @@ public class LoginPageController implements Initializable {
         }
     }
 
-
-    ObservableList<Appointment> upcomingAppointments = FXCollections.observableArrayList();
+    /**
+     * gets the logged in user ID
+     *
+     * @return
+     */
+    public int getLoggedUserId() {
+        return loggedUserId;
+    }
 
     /**
      * Searches for upcoming appointments. This method is called if the login is successful.

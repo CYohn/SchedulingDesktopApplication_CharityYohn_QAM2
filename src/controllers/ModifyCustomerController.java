@@ -25,85 +25,172 @@ import static implementationsDao.CustomersImplement.getAllCustomers;
 import static interfacesDao.CustomersInterface.allCustomers;
 import static java.lang.String.valueOf;
 
+
+/**
+ * This class is a controller which controls the Modify Customer page.
+ */
 public class ModifyCustomerController implements Initializable {
 
-    //TODO SET THE CLEAR BUTTON
-
-
+    /**
+     * A list of countries used to populate the countries combo box.
+     */
     ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
-
+    /**
+     * An object variable to hold the customer to update or delete.
+     * The customer object is passed from onSave() to getDBResponseResponse().
+     * It passes through the customer update and the customer delete methods in CustomerImplement.
+     */
+    Customer customerToUpdateHolder = null;
+    /**
+     * A table from which to select the customer to update or delete.
+     */
     @FXML
     private TableView<Customer> allCustomersTable;
 
-    Customer customerToUpdateHolder = null; // To pass customer object from onSave() to getDBResponseResponse()
-
     //Table Columns
-
+    /**
+     * The address column in the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> custAddressColumn;
+    /**
+     * The country column in the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> custCountryColumn;
+    /**
+     * the ID column in the customer table.
+     */
     @FXML
     private TableColumn<Customer, Integer> custIdColumn;
+    /**
+     * The name column in the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> custNameColumn;
+    /**
+     * The phone column in the customer table
+     */
     @FXML
     private TableColumn<Customer, String> custPhoneColumn;
+    /**
+     * The postal code column in the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> custPostalCodeColumn;
+    /**
+     * The divisions column in the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> custStateColumn;
 
     //Form text fields
+    /**
+     * A text field to enter the customer's phone number
+     */
     @FXML
     private TextField custPhoneTxtField;
+    /**
+     * A text field to enter the customer's name.
+     */
     @FXML
     private TextField custNameTxtField;
+    /**
+     * A text field to enter the customer's postal code.
+     */
     @FXML
     private TextField postalCodeTxtField;
+    /**
+     * A text field to enter the customer's address.
+     */
     @FXML
     private TextField addressTxtField;
 
     //Form ComboBoxes
+    /**
+     * A combo box box to allow the suer to select a state or province.
+     */
     @FXML
     private ComboBox<String> stateComboBox;
+    /**
+     * A combo box to allow the user to select a country.
+     */
     @FXML
     private ComboBox<String> countryComboBox;
 
 
     //Form labels
+    /**
+     * A label to inform the user that the customer was successfully deleted.
+     */
     @FXML
     private Label deleteSuccessfulLabel;
+
+    /**
+     * A label to inform the user that the customer was updated successfully.
+     */
     @FXML
     private Label updateSuccessfulLabel;
+
+    /**
+     * A label to hold the customer's ID. This field is not editable by the user and is for informational purposes only.
+     */
     @FXML
     private Label custIdLabel;
+    /**
+     * An error label informing the user that the entry was not saved. An entry may not save is any field is empty.
+     * Other causes of save errors, although less likely could be due to connectivity issues with the database, changes to the database tables, or changes to
+     * user account access.
+     */
     @FXML
     private Label saveErrorLabel;
+    /**
+     * A label to inform the user that the save was successful.
+     */
     @FXML
     private Label saveSuccessfulLabel;
 
     //Form buttons
+    /**
+     * The save button.
+     */
     @FXML
     private Button saveButton;
+    /**
+     * The clear button.
+     */
     @FXML
     private Button clearButton;
+    /**
+     * The delete button.
+     */
     @FXML
     private Button deleteCustButton;
 
     //Form Alert Labels
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
     @FXML
     private Label addressLengthAlert;
-
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
     @FXML
     private Label nameLengthAlert;
-
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
     @FXML
     private Label phoneLengthAlert;
-
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
     @FXML
     private Label postalLengthAlert;
-
+    /**
+     * An error label which appears when the user tries to save the form missing a field.
+     */
     @FXML
     private Label allFieldsRequiredLabel;
 
@@ -166,6 +253,7 @@ public class ModifyCustomerController implements Initializable {
         countryComboBox.setValue(selectedCountry);
         stateComboBox.setValue(selectedState);
     }
+
     /**
      * Method enables and populates the Divisions ComboBox. First the method uses the user's input from the country combobox
      * to find the associated country ID. The method then uses the countryID to cross reference the associated divisions stored

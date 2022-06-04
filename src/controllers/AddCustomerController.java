@@ -31,63 +31,103 @@ import static implementationsDao.CustomersImplement.addCustomer;
 
 //Idea for future revisions: Add a customer search feature to allow the user to see if a customer already exists
 
+/**
+ * This class is a controller which controls the add customer page.
+ */
 public class AddCustomerController implements Initializable {
 
+    /**
+     * An observable list of countries. This list is populated by a method in the CountriesImplement file.
+     */
+    ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
+    /**
+     * An error label informing the user that the entry was not saved. An entry may not save is any field is empty.
+     * Other causes of save errors, although less likely could be due to connectivity issues with the database, changes to the database tables, or changes to
+     * user account access.
+     */
+    @FXML
+    private Label saveErrorLabel;
+    /**
+     * A label to inform the user that the entry was saved successfully.
+     */
+    @FXML
+    private Label saveSuccessfulLabel;
+    /**
+     * An input field for the customer's address
+     */
+    @FXML
+    private TextField addressTxtField;
+    /**
+     * A button to clear the form.
+     */
+    @FXML
+    private Button clearButton;
+    /**
+     * A combo box to allow the user to select the customer's country. A selection in this combo box enables the
+     * divisions combo box which is filtered based on the country selection.
+     */
+    @FXML
+    private ComboBox<String> countryComboBox;
+    /**
+     * A test field to input the customer's name.
+     */
+    @FXML
+    private TextField custNameTxtField;
+    /**
+     * A text field to input the customer's phone
+     */
+    @FXML
+    private TextField custPhoneTxtField;
+    /**
+     * A text field to input the customer's postal code.
+     */
+    @FXML
+    private TextField postalCodeTxtField;
+    /**
+     * The save button.
+     */
+    @FXML
+    private Button saveButton;
+    /**
+     * A combo box for the selection of the customer's division. Initially, the division combo box is disabled. After
+     * the user selects a country, the division combo box populates with the appropriate divisions based on the country selection.
+     */
+    @FXML
+    private ComboBox<String> divisionComboBox;
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
+    @FXML
+    private Label addressLengthAlert;
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
+    @FXML
+    private Label nameLengthAlert;
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
+    @FXML
+    private Label phoneLengthAlert;
+    /**
+     * A label to inform the user that the input was too long to conform to the database requirements for field length.
+     */
+    @FXML
+    private Label postalLengthAlert;
+    /**
+     * An error label which appears when the user tries to save the form missing a field.
+     */
+    @FXML
+    private Label allFieldsRequiredLabel;
 
+    /**
+     * A consrtructor in place to catch exceptions.
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public AddCustomerController() throws SQLException {
 
     }
-
-    ObservableList<Country> allCountries = CountriesImplement.populateCountriesList();
-    ObservableList<String> divisionIDResult = CountriesImplement.populateCountryNamesList();
-
-    @FXML
-    private Label saveErrorLabel;
-
-    @FXML
-    private Label saveSuccessfulLabel;
-
-    @FXML
-    private TextField addressTxtField;
-
-    @FXML
-    private GridPane applicationFormLeft;
-
-    @FXML
-    private Button clearButton;
-
-    @FXML
-    private ComboBox<String> countryComboBox;
-
-    @FXML
-    private TextField custNameTxtField;
-
-    @FXML
-    private TextField custPhoneTxtField;
-
-    @FXML
-    private TextField postalCodeTxtField;
-
-    @FXML
-    private Button saveButton;
-
-    @FXML
-    private ComboBox<String> divisionComboBox;
-
-    @FXML
-    private Label addressLengthAlert;
-
-    @FXML
-    private Label nameLengthAlert;
-
-    @FXML
-    private Label phoneLengthAlert;
-
-    @FXML
-    private Label postalLengthAlert;
-
-    @FXML
-    private Label allFieldsRequiredLabel;
 
 
     /**
@@ -109,35 +149,35 @@ public class AddCustomerController implements Initializable {
 
         ObservableList<String> divisionNames = FXCollections.observableArrayList(); //To store the divisions
 
-            try {
-                //Find the associated country ID based on the selected country
-                String FindCountryIDSearchStatement = ("SELECT Country_ID from countries WHERE Country = '" + selectedCountry + "'");
-                sqlFindCountryIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindCountryIDSearchStatement);
-                ResultSet countryIDResult = sqlFindCountryIDPreparedStatement.executeQuery(FindCountryIDSearchStatement);
+        try {
+            //Find the associated country ID based on the selected country
+            String FindCountryIDSearchStatement = ("SELECT Country_ID from countries WHERE Country = '" + selectedCountry + "'");
+            sqlFindCountryIDPreparedStatement = DatabaseConnection.getConnection().prepareStatement(FindCountryIDSearchStatement);
+            ResultSet countryIDResult = sqlFindCountryIDPreparedStatement.executeQuery(FindCountryIDSearchStatement);
 
-                while (countryIDResult.next()) {
-                    int countryID = countryIDResult.getInt("Country_ID");
-                    System.out.println("Country ID was found: " + countryID);
+            while (countryIDResult.next()) {
+                int countryID = countryIDResult.getInt("Country_ID");
+                System.out.println("Country ID was found: " + countryID);
 
-                    //Find the appropriate divisions based on the country ID found above
-                    String sqlDivisionsQuery = ("SELECT Division FROM first_level_divisions WHERE Country_ID = " + countryID + " ORDER BY Division ASC");
-                    getDivisionsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(sqlDivisionsQuery);
-                    ResultSet divisionsResults = getDivisionsPreparedStatement.executeQuery(sqlDivisionsQuery);
+                //Find the appropriate divisions based on the country ID found above
+                String sqlDivisionsQuery = ("SELECT Division FROM first_level_divisions WHERE Country_ID = " + countryID + " ORDER BY Division ASC");
+                getDivisionsPreparedStatement = DatabaseConnection.getConnection().prepareStatement(sqlDivisionsQuery);
+                ResultSet divisionsResults = getDivisionsPreparedStatement.executeQuery(sqlDivisionsQuery);
 
-                    while (divisionsResults.next()) {
-                        String division = divisionsResults.getString("Division");
-                        divisionNames.add(division); //Add divisions to the ObservableList
-                        divisionComboBox.setItems(divisionNames); //Populate the ComboBox
-                    }
-                    System.out.println("Divisions successfully populated");
+                while (divisionsResults.next()) {
+                    String division = divisionsResults.getString("Division");
+                    divisionNames.add(division); //Add divisions to the ObservableList
+                    divisionComboBox.setItems(divisionNames); //Populate the ComboBox
                 }
-
-            } catch (Exception e) {
-                System.out.println("SQLException thrown in populateDivisionNamesList() method in the AddCustomerController file");
-                e.getCause();
-                e.getMessage();
-                e.printStackTrace();
+                System.out.println("Divisions successfully populated");
             }
+
+        } catch (Exception e) {
+            System.out.println("SQLException thrown in populateDivisionNamesList() method in the AddCustomerController file");
+            e.getCause();
+            e.getMessage();
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -157,19 +197,19 @@ public class AddCustomerController implements Initializable {
             ResultSet divisionIDResult = findDivisionIDPreparedStatement.executeQuery(FindDivisionIDSearchStatement);
 
 
-                while (divisionIDResult.next()) {
-                    customerDivisionID = divisionIDResult.getInt("Division_ID");
-                    System.out.println("Division ID was found in the getDivisionID method: " + customerDivisionID);
-                    return customerDivisionID;
-                }
-            } catch (SQLException throwables) {
-                System.out.println("getDivisionID method in the AddCustomerController encountered an error: ");
-                throwables.getCause();
-                throwables.getMessage();
-                throwables.printStackTrace();
+            while (divisionIDResult.next()) {
+                customerDivisionID = divisionIDResult.getInt("Division_ID");
+                System.out.println("Division ID was found in the getDivisionID method: " + customerDivisionID);
+                return customerDivisionID;
             }
-            return customerDivisionID;
+        } catch (SQLException throwables) {
+            System.out.println("getDivisionID method in the AddCustomerController encountered an error: ");
+            throwables.getCause();
+            throwables.getMessage();
+            throwables.printStackTrace();
         }
+        return customerDivisionID;
+    }
 
     /**
      * Clears the Add Customer form.

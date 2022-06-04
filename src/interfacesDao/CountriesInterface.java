@@ -12,10 +12,4 @@ import java.sql.SQLException;
 public interface CountriesInterface {
 
 
-    public void updateCountry();
-
-    public void deleteCountry();
-
-    public void addCountry();
-
 }

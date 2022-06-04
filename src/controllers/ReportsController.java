@@ -60,44 +60,104 @@ public class ReportsController implements Initializable {
      * Gets contacts from the database
      */
     private ObservableList<Contact> contactNames = ContactsImplement.contactNames;
+    /**
+     * The contact column of the top appointments table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptContactColumn2;
+    /**
+     * The contact colun of the second appointment table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptContactColumn21;
+    /**
+     * The description column of the first appointments table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptDescriptioncolumn2;
+    /**
+     * The description column of the second appointments table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptDescriptioncolumn21;
+    /**
+     * The end date column of the first appointment table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptEndDateColumn2;
+    /**
+     * the end date column of the second appointment table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptEndDateColumn21;
+    /**
+     * the end time column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptEndTimeColumn2;
+    /**
+     * the end time column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptEndTimeColumn21;
+    /**
+     * The id column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptIdColumn2;
+    /**
+     * the id column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptIdColumn21;
+    /**
+     * the location column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptLocationColumn2;
+    /**
+     * The location column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptLocationColumn21;
+    /**
+     * The start date column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptStartDateColumn2;
+    /**
+     * The start date column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptStartDateColumn21;
+    /**
+     * The start time column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptStartTimeColumn2;
+    /**
+     * The start time column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptStartTimeColumn21;
+    /**
+     * the title column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTitleColum2;
+    /**
+     * The title column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTitleColum21;
+    /**
+     * The type column of the first table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTypeColumn2;
+    /**
+     * The type column of the second table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTypeColumn21;
 
@@ -141,43 +201,62 @@ public class ReportsController implements Initializable {
 
     }
 
+    /**
+     * The table to sort appointments by contact.
+     */
     @FXML
     private TableView<Appointment> contactAppointmentTable;
-
+    /**
+     * The combo box to select a customer by which to sort the appointments.
+     */
     @FXML
     private ComboBox<Customer> customerComboBox;
-
+    /**
+     * The combo box to select the contact by which to sort the appointments.
+     */
     @FXML
     private ComboBox<Contact> contactComboBox;
-
+    /**
+     * The ID column of the first table.
+     */
     @FXML
     private TableColumn<?, ?> custIdColumn2;
-
+    /**
+     * The id column of the second table.
+     */
     @FXML
     private TableColumn<?, ?> custIdColumn21;
-
+    /**
+     * The appointments table which shows the result for the customer filter.
+     */
     @FXML
     private TableView<Appointment> customerAppointmentTable;
-
+    /**
+     * The combo box to check the month.
+     */
     @FXML
     private ComboBox<Month> monthComboBox;
-
+    /**
+     * The lable to show the number of appointments based on the search criteria of the Month / Type / Month & Type combination.
+     */
     @FXML
     private Label numberOfAppointments;
-
+    /**
+     * The combo box to select the type.
+     */
     @FXML
     private ComboBox<String> typeComboBox;
-
+    /**
+     * the user ID column of the first table.
+     */
     @FXML
     private TableColumn<?, ?> userIdColumn2;
-
+    /**
+     * The user ID column of the second table.
+     */
     @FXML
     private TableColumn<?, ?> userIdColumn21;
 
-
-    public ObservableList<Appointment> getAllAppointments() {
-        return allAppointments;
-    }
 
     /**
      * Checks which combo box is selected and modifies the search based on the selection.
@@ -254,70 +333,70 @@ public class ReportsController implements Initializable {
  * @ Lambda filters the all appointments based on the selected contact ID
  */
         contactComboBox.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-                    if (!newValue) { //when focus is lost
-                        try {
-                            AppointmentsImplement.getAllAppointments();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                        int selectedContactId = contactComboBox.getSelectionModel().getSelectedItem().getContactId();
-                        System.out.println(selectedContactId);
+            if (!newValue) { //when focus is lost
+                try {
+                    AppointmentsImplement.getAllAppointments();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                int selectedContactId = contactComboBox.getSelectionModel().getSelectedItem().getContactId();
+                System.out.println(selectedContactId);
 
-                        ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
-                        ObservableList<Appointment> filteredByContact = allAppointments.filtered(appointment ->
-                        {
-                            if (appointment.getContactId() == selectedContactId) {
-                                return true;
-                            }
-                            return false;
-                        });
+                ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
+                ObservableList<Appointment> filteredByContact = allAppointments.filtered(appointment ->
+                {
+                    if (appointment.getContactId() == selectedContactId) {
+                        return true;
+                    }
+                    return false;
+                });
 
-                        System.out.println("filteredByContact list:  " + filteredByContact);
+                System.out.println("filteredByContact list:  " + filteredByContact);
 /**
  * Populates the appointments table with appointments filtered by contact
  */
-                        for (Appointment appointment: filteredByContact) {
+                for (Appointment appointment : filteredByContact) {
 
-                                //System.out.println("Appointment from the populate apt Table: " + appointment);
-                                LocalDateTime startUTC = appointment.getStartDateTime();
-                                LocalDateTime endUTC = appointment.getEndDateTime();
-                                LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
-                                LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
-                                LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
-                                LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
+                    //System.out.println("Appointment from the populate apt Table: " + appointment);
+                    LocalDateTime startUTC = appointment.getStartDateTime();
+                    LocalDateTime endUTC = appointment.getEndDateTime();
+                    LocalDate startDate = convertUTCToUserTime(startUTC).toLocalDate();
+                    LocalTime startTime = convertUTCToUserTime(startUTC).toLocalTime();
+                    LocalDate endDate = convertUTCToUserTime(endUTC).toLocalDate();
+                    LocalTime endTime = convertUTCToUserTime(endUTC).toLocalTime();
 
-                                int appointmentId = appointment.getAppointmentId();
-                                String title = appointment.getTitle();
-                                String description = appointment.getDescription();
-                                String location = appointment.getLocation();
-                                String type = appointment.getType();
-                                int customerId = appointment.getCustomerId();
-                                int userId = appointment.getUserId();
-                                int contactId = appointment.getContactId();
+                    int appointmentId = appointment.getAppointmentId();
+                    String title = appointment.getTitle();
+                    String description = appointment.getDescription();
+                    String location = appointment.getLocation();
+                    String type = appointment.getType();
+                    int customerId = appointment.getCustomerId();
+                    int userId = appointment.getUserId();
+                    int contactId = appointment.getContactId();
 
-                                Appointment convertedTimesAppointment = new Appointment
-                                        (appointmentId, title, description, location, type, startDate, startTime,
-                                                endDate, endTime, customerId, userId, contactId);
+                    Appointment convertedTimesAppointment = new Appointment
+                            (appointmentId, title, description, location, type, startDate, startTime,
+                                    endDate, endTime, customerId, userId, contactId);
 
-                                appointmentsWithConvertedTimes.add(convertedTimesAppointment);
-                            }
+                    appointmentsWithConvertedTimes.add(convertedTimesAppointment);
+                }
 
-                        contactAppointmentTable.setItems(appointmentsWithConvertedTimes);
+                contactAppointmentTable.setItems(appointmentsWithConvertedTimes);
 
-                            aptContactColumn2.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-                            aptDescriptioncolumn2.setCellValueFactory(new PropertyValueFactory<>("description"));
-                            aptEndDateColumn2.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-                            aptEndTimeColumn2.setCellValueFactory(new PropertyValueFactory<>("endTime"));
-                            aptIdColumn2.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
-                            aptLocationColumn2.setCellValueFactory(new PropertyValueFactory<>("location"));
-                            aptStartDateColumn2.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-                            aptStartTimeColumn2.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-                            aptTitleColum2.setCellValueFactory(new PropertyValueFactory<>("title"));
-                            aptTypeColumn2.setCellValueFactory(new PropertyValueFactory<>("type"));
-                            custIdColumn2.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-                            userIdColumn2.setCellValueFactory(new PropertyValueFactory<>("userId"));
-                        }
-                    });
+                aptContactColumn2.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+                aptDescriptioncolumn2.setCellValueFactory(new PropertyValueFactory<>("description"));
+                aptEndDateColumn2.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+                aptEndTimeColumn2.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+                aptIdColumn2.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+                aptLocationColumn2.setCellValueFactory(new PropertyValueFactory<>("location"));
+                aptStartDateColumn2.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+                aptStartTimeColumn2.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+                aptTitleColum2.setCellValueFactory(new PropertyValueFactory<>("title"));
+                aptTypeColumn2.setCellValueFactory(new PropertyValueFactory<>("type"));
+                custIdColumn2.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+                userIdColumn2.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            }
+        });
 
 /**
  * @Lambda This listener has two lambda expressions. the first collects the argument, previous value, and newValue of the target.

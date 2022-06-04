@@ -32,102 +32,209 @@ import static implementationsDao.UsersImplement.getAllUserNames;
 
 // Idea for future revisions: If the User ID is the same as the person who logs in, assign the user ID based on the login
 
+/**
+ * This class is a controller class for the Add appointments screen.
+ */
 public class AddAppointmentController extends TimezoneConversion implements Initializable {
 
     /**
-     * Add appointment variables
+     * The user's selected start date and time. This variable is used in the validation methods.
      */
     private static LocalDateTime startDate;
+    /**
+     * The user's selected end date and time. This variable is used in the validation methods.
+     */
     private static LocalDateTime endDate;
-    Customer selectedCustomer;
+    /**
+     * The iD of the customer selected in the customer table.
+     */
     private static int selectedCustomerID;
+    /**
+     * The customer selected by the user in the customer table.
+     */
+    Customer selectedCustomer;
+    /**
+     * The overlapping appointment found in the overlapping appointments validation. This is used in the pop-up to inform the user
+     * of which appointment the selected start time and date overlaps with. Intended to increase the applications's usability.
+     */
     Appointment overlappingAppointment;
 
     /**
-     * Observable lists
+     * Observable list of contact names. Used to set the contacts combo box.
      */
     private ObservableList<Contact> contactNames = ContactsImplement.contactNames;
+
+    /**
+     * Observable list of user names. Used to set the contents of the users combo box.
+     */
     private ObservableList<User> userNames = UsersImplement.userNames;
+
+    /**
+     * Observable list of appointment types. Used to set the contents of the types combo box.
+     */
     private ObservableList<String> appointmentTypes = FXCollections.observableArrayList
             ("Planning Session", "Progress Update", "De-Briefing");
+
+    /**
+     * Observable list of appointments filtered and obtained by the database. The list is filtered by customer ID.
+     */
     private ObservableList<Appointment> getAppointmentsByCustomerID = AppointmentsImplement.appointmentsByCustomerID;
 
 
-    @FXML
-    private GridPane applicationFormLeft;
-
-
     //Table and columns
+    /**
+     * Table used to select the customer to associate with the appointment
+     */
     @FXML
     private TableView<Customer> customerTable;
 
+    /**
+     * The customer ID column of the customer table
+     */
     @FXML
     private TableColumn<Customer, Integer> customerIdColumn;
 
+    /**
+     * The name column of the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> customerNameColumn;
 
+    /**
+     * the phone column of the customer table.
+     */
     @FXML
     private TableColumn<Customer, String> customerPhoneColumn;
 
     //Text Fields
+    /**
+     * The text field to enter the title of the appointment
+     */
     @FXML
     private TextField titleTxtField;
+
+    /**
+     * The text area to input the description field of the appointment.
+     */
     @FXML
     private TextArea appointmentDescriptionTxtField;
 
+    /**
+     * The text field to input the location of the appointment.
+     */
     @FXML
     private TextField locationTxtField;
 
-   //Date pickers
+    //Date pickers
+    /**
+     * Element for input of the start date selection
+     */
     @FXML
     private DatePicker startDatePicker;
 
+    /**
+     * Element for input of the end date selection
+     */
     @FXML
     private DatePicker endDatePicker;
 
     //Form ComboBoxes
+    /**
+     * Combo box which holds all of the contacts in the database.
+     */
     @FXML
     private ComboBox<Contact> contactComboBox;
 
+    /**
+     * Combo box for choosing the end time of the appointment. This combo box is configure to only allow time selections during business hours.
+     * The bos also shows times converted from Easter time (United States NY) to the user's local times.
+     */
     @FXML
     private ComboBox<LocalTime> endTimeHrComboBox;
 
+    /**
+     * Combo box for choosing the start time of the appointment. This combo box is configure to only allow time selections during business hours.
+     * The bos also shows times converted from Easter time (United States NY) to the user's local times.
+     */
     @FXML
     private ComboBox<LocalTime> startTimeHrComboBox;
 
+    /**
+     * Combo Box for choosing the appointment type.
+     */
     @FXML
     private ComboBox<String> typeComboBox;
 
+    /**
+     * Combo box for the selection of the user associated with the appointment. The users are pulled from the database.
+     */
     @FXML
     private ComboBox<User> userComboBox;
 
-   //Form Buttons
-   @FXML
-   private Button saveButton;
+    //Form Buttons
 
+    /**
+     * Button to save the appointment.
+     */
+    @FXML
+    private Button saveButton;
+
+    /**
+     * Button to clear the form.
+     */
     @FXML
     private Button clearButton;
 
     //Active Form Labels
+    /**
+     * Label which appears when an error has occurred concerning the date and times. The date and times go through two
+     * real time validations. The first validation checks that the start date and time is before the end date and time. The
+     * second validation checks that the appointment is in the future. If either of these validations fail the form will
+     * show this error message.
+     */
     @FXML
     private Label dateAndTimeErrorLabel;
 
+    /**
+     * An error label which appears when the user tries to save the form missing a field.
+     */
     @FXML
     private Label allFieldsRequiredLabel;
 
+    /**
+     * An error label which shows if the user's description input exceeds the length allowed by the database.
+     */
     @FXML
     private Label descriptionLengthAlert;
 
+    /**
+     * An error label which shows if the user's location input exceeds the length allowed by the database.
+     */
     @FXML
     private Label locationLengthAlert;
 
+    /**
+     * An error label which shows if the user's title input exceeds the length allowed by the database.
+     */
     @FXML
     private Label titleLengthAlert;
 
+    /**
+     * A label informing the user that the save was successful.
+     */
     @FXML
     private Label saveSuccessfulLabel;
 
+    /**
+     * An error label informing the user that the entry was not saved. An entry may not save if the date and time
+     * validations fail. For example, if the start date is after the end date or if the appointment is in the past.
+     * Additionally, all fields must have input or selections and must comply with the length restrictions set forth
+     * in the database. Finally, appointments for a specific customer must not overlap.
+     * If failure any of these validations occur, the appointment will not save to the database.
+     * <p>
+     * Other causes of save errors, although less likely could be due to connectivity issues with the database, changes to the database tables, or changes to
+     * user account access.
+     */
     @FXML
     private Label saveErrorLabel;
 
@@ -394,6 +501,13 @@ public class AddAppointmentController extends TimezoneConversion implements Init
         return false;
     }
 
+    /**
+     * Validates that the user's selected start time and date are before the end time and date. Also validates that the
+     * selected appointment times are in the furture.
+     *
+     * @return Returns tru if the validation passes. False if the validation fails.
+     * @throws Exception The class Exception and its subclasses are a form of Throwable that indicates conditions that a reasonable application might want to catch.
+     */
     public boolean validateStartBeforeEndTime() throws Exception {
         try {
             if ((endDatePicker.getValue() != null) && (startDatePicker.getValue() != null) &&

@@ -23,133 +23,223 @@ import java.util.ResourceBundle;
 
 import static utilities.TimezoneConversion.convertUTCToUserTime;
 
+
+/**
+ * This class is a controller class which controls the schedule page.
+ */
 public class ScheduleController implements Initializable {
-
+    /**
+     * An observableList of all appointments.
+     */
     public ObservableList<Appointment> allAppointments = AppointmentsImplement.getAllAppointments;
-
+    /**
+     * The tab which shows all appointments.
+     */
     @FXML
     private Tab allAppointmentsTab;
-
+    /**
+     * The table to display all appointments under the all appointments tab
+     */
     @FXML
     private TableView<Appointment> appointmentTable;
-
+    /**
+     * The table to display appointments filtered by week under the week tab.
+     */
     @FXML
     private TableView<Appointment> appointmentTable1;
-
+    /**
+     * The table to display appointments filtered by month under the month tab.
+     */
     @FXML
     private TableView<Appointment> appointmentTable2;
-
+    /**
+     * Contact column in the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptContactColumn;
-
+    /**
+     * Contact column in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptContactColumn1;
-
+    /**
+     * Contact column in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptContactColumn2;
-
+    /**
+     * Description column in the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptDescriptioncolumn;
-
+    /**
+     * Description column in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptDescriptioncolumn1;
-
+    /**
+     * Description column in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptDescriptioncolumn2;
-
+    /**
+     * End date column in the all appointment table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptEndDateColumn;
-
+    /**
+     * End date column in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptEndDateColumn1;
-
+    /**
+     * End date column in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptEndDateColumn2;
-
+    /**
+     * End time column in the all appointment table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptEndTimeColumn;
-
+    /**
+     * End time column in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptEndTimeColumn1;
-
+    /**
+     * End time column in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptEndTimeColumn2;
-
+    /**
+     * The ID column of the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptIdColumn;
-
+    /**
+     * The ID column of the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptIdColumn1;
-
+    /**
+     * The ID column of the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> aptIdColumn2;
-
+    /**
+     * The location column of the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptLocationColumn;
-
+    /**
+     * The location column of the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptLocationColumn1;
-
+    /**
+     * The location column of the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptLocationColumn2;
-
+    /**
+     * The start date in the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptStartDateColumn;
-
+    /**
+     * The start date in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptStartDateColumn1;
-
+    /**
+     * The start date in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, LocalDate> aptStartDateColumn2;
-
+    /**
+     * The start time in the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptStartTimeColumn;
-
+    /**
+     * The start time in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptStartTimeColumn1;
-
+    /**
+     * The start time in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, LocalTime> aptStartTimeColumn2;
-
+    /**
+     * The title column in the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTitleColum;
-
+    /**
+     * The title column in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTitleColum1;
-
+    /**
+     * The title column in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTitleColum2;
-
+    /**
+     * The type column in the all appointment table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTypeColumn;
-
+    /**
+     * The type column in the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTypeColumn1;
-
+    /**
+     * The type column in the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, String> aptTypeColumn2;
-
+    /**
+     * the tab to show the appointments filtered by month.
+     */
     @FXML
     private Tab currentMonthTab;
-
+    /**
+     * The tab to show the appointments filtered by week.
+     */
     @FXML
     private Tab currentWeekTab;
-
+    /**
+     * The ID column of the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> custIdColumn;
-
+    /**
+     * The ID column of the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> custIdColumn1;
-
+    /**
+     * The ID column of the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> custIdColumn2;
-
+    /**
+     * The User ID column of the all appointments table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> userIdColumn;
-
+    /**
+     * The User ID column of the filter by week table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> userIdColumn1;
-
+    /**
+     * The User ID column of the filter by month table.
+     */
     @FXML
     private TableColumn<Appointment, Integer> userIdColumn2;
 
@@ -181,25 +271,25 @@ public class ScheduleController implements Initializable {
             String title = appointment.getTitle();
             String description = appointment.getDescription();
             String location = appointment.getLocation();
-        String type = appointment.getType();
-        int customerId = appointment.getCustomerId();
-        int userId = appointment.getUserId();
-        int contactId = appointment.getContactId();
+            String type = appointment.getType();
+            int customerId = appointment.getCustomerId();
+            int userId = appointment.getUserId();
+            int contactId = appointment.getContactId();
 
-        Appointment convertedTimesAppointment = new Appointment
-                (appointmentId, title, description, location, type, startDate, startTime,
-                        endDate, endTime, customerId, userId, contactId);
+            Appointment convertedTimesAppointment = new Appointment
+                    (appointmentId, title, description, location, type, startDate, startTime,
+                            endDate, endTime, customerId, userId, contactId);
 
-        appointmentsWithConvertedTimes.add(convertedTimesAppointment);
-    }
+            appointmentsWithConvertedTimes.add(convertedTimesAppointment);
+        }
 
-    ObservableList<Appointment>aptsThisWeek = FXCollections.observableArrayList();
+        ObservableList<Appointment>aptsThisWeek = FXCollections.observableArrayList();
 
-    LocalDate userToday = LocalDate.now();
-    int weekOfYear = userToday.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
-    appointmentsWithConvertedTimes.stream()
-            .filter(apt -> apt.getStartDate().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == weekOfYear)
-            .forEach(aptsThisWeek::add);
+        LocalDate userToday = LocalDate.now();
+        int weekOfYear = userToday.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+        appointmentsWithConvertedTimes.stream()
+                .filter(apt -> apt.getStartDate().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == weekOfYear)
+                .forEach(aptsThisWeek::add);
         System.out.println("Appointments this month  " + aptsThisWeek);
 
 
@@ -225,6 +315,9 @@ public class ScheduleController implements Initializable {
      *
      * @param url
      * @param resourceBundle
+     * @Lambda The lambda listens for a selection change on the tabs. If all appointments is selected it loads all
+     * the appointments into the table. If Month is selected the lambda for month loads the all months table. if week is
+     * selected the lambda for week loads the appointments this week table.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
