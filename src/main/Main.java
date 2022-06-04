@@ -38,6 +38,13 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * The main class and starting point of the application. The main class runs the program arguments. This class also
+     * opens and closes the database connection.
+     *
+     * @param args program arguments
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static void main(String[] args) throws SQLException {
         DatabaseConnection.makeConnection();
 
