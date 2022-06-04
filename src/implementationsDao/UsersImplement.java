@@ -1,41 +1,29 @@
 package implementationsDao;
 
-import Objects.Customer;
 import Objects.User;
-import interfacesDao.UsersInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UsersImplement extends DatabaseConnection implements UsersInterface  {
+/**
+ * Interacts wit the database to retrieve the users table and add the users to an observableList.
+ */
+public class UsersImplement extends DatabaseConnection {
 
-
-
-    ObservableList<User> getAllUsers = UsersInterface.getAllUsers();
+    /**
+     * An observable list of usernames and IDs.
+     */
     public static ObservableList<User> userNames = FXCollections.observableArrayList();
 
-    static Connection connection = DatabaseConnection.getConnection();
-    static PreparedStatement getUserNamesPreparedStatement;
-    static String sqlQuery = "SELECT * FROM users";
-
-
-    static {
-        try {
-            getUserNamesPreparedStatement = DatabaseConnection.makePreparedStatement(sqlQuery, connection);
-            System.out.println("allUsersPreparedStatement was successful");
-        } catch (SQLException e) {
-            System.out.println("allUsersPreparedStatement in the file UsersImplement encountered an error");
-            e.getMessage();
-            e.getCause();
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Gets all users from the database.
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static void getAllUserNames() throws SQLException {
         userNames.clear();
         String allCustomersQuery = "SELECT User_Name, User_ID" +
@@ -75,19 +63,5 @@ public class UsersImplement extends DatabaseConnection implements UsersInterface
             throwables.printStackTrace();
         }
     }
-
-    @Override
-    public void updateUser() {
-
-    }
-
-    @Override
-    public void deleteUser() {
-
-    }
-
-    @Override
-    public void addUser() {
-
-    }
 }
+

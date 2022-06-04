@@ -2,65 +2,44 @@ package implementationsDao;
 
 
 import Objects.Customer;
-import interfacesDao.CustomersInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
 
 import java.sql.*;
 
-public class CustomersImplement extends DatabaseConnection implements CustomersInterface {
+/**
+ * Interacts with the database to perform create, read, update, and delete operations.
+ */
+public class CustomersImplement extends DatabaseConnection {
 
-    private static String name;
-    private static String address;
-    private static String postalCode;
-    private static String phone;
-    private static int division;
-
-    private static String Customer_Name;
-    private static String Address;
-    private static String Postal_Code;
-    private static String Phone;
-    private static int Division_ID;
-
-    public static ObservableList<Customer> getAllCustomers = CustomersInterface.getAllCustomers();
-
-    //public static ObservableList<Customer> customersToSave = FXCollections.observableArrayList();
-
-    static Connection connection = DatabaseConnection.getConnection();
-    static PreparedStatement updateCustomersPreparedStatement;
-
-
-    static {
-        try {
-            String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, Country " +
-                    "FROM client_schedule.customers, first_level_divisions, countries " +
-                    "WHERE customers.Division_ID = first_level_divisions.Division_ID " +
-                    "AND first_level_divisions.Country_ID = countries.Country_ID";
-            updateCustomersPreparedStatement = DatabaseConnection.makePreparedStatement(allCustomersQuery, connection);
-            System.out.println("customersImplementPreparedStatement was successful");
-        } catch (SQLException e) {
-            System.out.println("customerImplementPreparedStatement in the file CustomersImplement encountered an error");
-            e.getMessage();
-            e.getCause();
-            e.printStackTrace();
-        }
-    }
+    /**
+     * An observableList to hold all customers from the database.
+     */
+    public static ObservableList<Customer> getAllCustomers = FXCollections.observableArrayList();
 
     public CustomersImplement() throws SQLException {
     }
 
-
+    /**
+     * Saves a customer in the database. The method takes in a customer object generated from the add customer controller
+     *
+     * @param customerToSave A customer object created in the AddCustomerController. The save function in the add
+     *                       customer controller takes user input and creates a customer object to save to the database.
+     * @return Returns a database response with the number of rows affected. Since we are saving one customer at a time,
+     * a successful response is 1. An unsuccessful update returns 0.
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static int addCustomer(Customer customerToSave) throws SQLException {
         int databaseResponseToUpdate = 0;
         try {
 
-                String name = customerToSave.getCustomerName();
-                String address = customerToSave.getCustomerAddress();
-                String postalCode = customerToSave.getCustomerPostalCode();
-                String phone = customerToSave.getCustomerPhone();
-                String country = customerToSave.getCountry();
-                int division = customerToSave.getCustomerDivisionId();
+            String name = customerToSave.getCustomerName();
+            String address = customerToSave.getCustomerAddress();
+            String postalCode = customerToSave.getCustomerPostalCode();
+            String phone = customerToSave.getCustomerPhone();
+            String country = customerToSave.getCountry();
+            int division = customerToSave.getCustomerDivisionId();
 
                 System.out.println("Customer to send to the DB: " + customerToSave);
 
@@ -87,8 +66,6 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                     System.out.println("databaseResponseToUpdate: " + databaseResponseToUpdate);
                     return databaseResponseToUpdate;
                 }
-
-
         } catch (SQLException e) {
             System.out.println("addCustomer encountered an error in the CustomersImplement file:");
             e.getCause();
@@ -98,7 +75,11 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         return databaseResponseToUpdate;
     }
 
-
+    /**
+     * Gets all customers from the database. The method gets all customers and adds them to the allCustomers observableList.
+     *
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static void getAllCustomers() throws SQLException {
         getAllCustomers.clear();
         String allCustomersQuery = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, customers.Division_ID, first_level_divisions.Division, Country" +
@@ -145,10 +126,10 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                     //System.out.println("Customer object populated in getAllCustomers list: " + customer);
                 }
             }
-            else{System.out.println("ResultSet was null");}
+            else{System.out.println("ResultSet was null");
+            }
 
-        }
-        catch(SQLException throwables){
+        } catch (SQLException throwables) {
             System.out.println("SQLException thrown in getAllCustomers method in the CustomerImplement file");
             throwables.getMessage();
             throwables.getCause();
@@ -156,16 +137,26 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         }
     }
 
-
-    public static int updateCustomer(Customer customerToUpdate) throws SQLException{
-            //(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) throws SQLException {
+    /**
+     * Updates an existing customer in the database. The method updates only the customer with the matching customer ID.
+     *
+     * @param customerToUpdate A customer object created in the ModifyCustomerController. The user selects a customer to
+     *                         update and the program creates a customer object from the information input by the user.
+     *                         The customer object is then sent to this method as a parameter to update the corresponding
+     *                         in the database.
+     * @return Returns a database response with the number of rows affected. Since we are saving one customer at a time,
+     * a successful response is 1. An unsuccessful update returns 0.
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
+    public static int updateCustomer(Customer customerToUpdate) throws SQLException {
+        //(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId) throws SQLException {
 
         int customerId = customerToUpdate.getCustomerId();
         String customerName = customerToUpdate.getCustomerName();
         String customerAddress = customerToUpdate.getCustomerAddress();
         String customerPostalCode = customerToUpdate.getCustomerPostalCode();
         String customerPhone = customerToUpdate.getCustomerPhone();
-        int customerDivisionId= customerToUpdate.getCustomerDivisionId();
+        int customerDivisionId = customerToUpdate.getCustomerDivisionId();
 
         String updateSql = "UPDATE  client_schedule.customers SET " +
                 "Customer_Name = ?," +
@@ -175,7 +166,7 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
                 "Division_ID = ? " +
                 "WHERE Customer_ID = " + customerId;
         PreparedStatement updateCustomersPreparedStatement = DatabaseConnection.getConnection().prepareStatement(updateSql);
-        
+
         updateCustomersPreparedStatement.setString(1, customerName);
         updateCustomersPreparedStatement.setString(2, customerAddress);
         updateCustomersPreparedStatement.setString(3, customerPostalCode);
@@ -185,17 +176,19 @@ public class CustomersImplement extends DatabaseConnection implements CustomersI
         return dbResponse;
     }
 
-
+    /**
+     * Deletes a customer from the database. Deletes only the corresponding customer with a matching customer ID.
+     *
+     * @param customerId The ID of the customer selected in the ModifyCustomerController.
+     * @return Returns a database response with the number of rows affected. Since we are saving one customer at a time,
+     * a successful response is 1. An unsuccessful update returns 0.
+     * @throws SQLException An exception that provides information on a database access error or other errors.
+     */
     public static int deleteCustomer(int customerId) throws SQLException {
-        String deleteSql = "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerId +";";
+        String deleteSql = "DELETE FROM client_schedule.customers WHERE Customer_ID = " + customerId + ";";
         PreparedStatement deleteCustomerPreparedStatement = DatabaseConnection.getConnection().prepareStatement(deleteSql);
         int dbResponse = deleteCustomerPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
     }
-
-
-
-
-
 
 }

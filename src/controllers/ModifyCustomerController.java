@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static implementationsDao.CustomersImplement.getAllCustomers;
-import static interfacesDao.CustomersInterface.allCustomers;
+
 import static java.lang.String.valueOf;
 
 
@@ -518,7 +518,7 @@ public class ModifyCustomerController implements Initializable {
             deleteCustButton.setDisable(true);
             allCustomersTable.getItems().clear();
             getAllCustomers();
-            populateCustomerTable(allCustomers);
+            populateCustomerTable(CustomersImplement.getAllCustomers);
             deleteAlert.close();
 
         } else if (result.get() == cancelButton) {

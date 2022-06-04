@@ -2,7 +2,6 @@ package implementationsDao;
 
 import Objects.Appointment;
 import controllers.AddAppointmentController;
-import interfacesDao.AppointmentsInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utilities.DatabaseConnection;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 /**
  * This class works with the database to create, read, update, and delete appointments. The class implements the appointments interface.
  */
-public class AppointmentsImplement implements AppointmentsInterface {
+public class AppointmentsImplement {
     /**
      * getAllAppointments is an observableList to store all appointments
      */
@@ -286,7 +285,5 @@ public class AppointmentsImplement implements AppointmentsInterface {
         int dbResponse = updateAppointmentPreparedStatement.executeUpdate(); //returns number of rows affected
         return dbResponse;
     }
-
-
 }
 
