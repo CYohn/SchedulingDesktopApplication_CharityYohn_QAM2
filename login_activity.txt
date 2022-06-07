@@ -2,3 +2,111 @@
 Successful login by user:  test 
 Timestamp: 2022-06-04 21:25:56.9882291 UTC Time
 
+Unsuccessful login attempt by user:   
+Timestamp: 2022-06-06 03:14:18.3585579 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-06 03:14:44.39244 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 03:24:10.5839274 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 16:48:40.479829 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 16:50:22.354262 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 16:53:52.5283339 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 16:54:58.0679988 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:05:21.694399 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:07:15.8938487 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:13:21.3501748 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:14:57.8022223 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:19:24.5955222 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:28:30.7564526 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:47:57.1402668 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 17:55:24.8337289 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:00:12.4401821 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:01:24.3293628 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:03:26.0514548 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:21:37.007276 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:27:38.7676703 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:31:11.7443943 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:35:18.7320871 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 18:40:08.333446 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 19:17:33.5110355 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 19:21:02.4059273 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 19:25:45.1374706 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 19:29:15.0719192 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 19:36:14.3091285 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 20:12:24.3244146 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 20:39:58.1010602 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 20:48:44.9606312 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 21:32:27.8601745 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 21:38:23.078174 UTC Time
+
+Successful login by user:  admin 
+Timestamp: 2022-06-07 21:39:41.6592482 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 21:44:08.0686388 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 21:44:46.6371721 UTC Time
+

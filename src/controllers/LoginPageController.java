@@ -184,7 +184,7 @@ public class LoginPageController implements Initializable {
 
             while (getUserResults.next()) {
                 int loggedUserId = getUserResults.getInt("User_ID");
-                System.out.println("Results from getUserPassword: User_Id from DB: " + loggedUserId);
+                System.out.println("Results from getUserPassword(): User_Id from DB : " + loggedUserId);
                 setLoggedUserId(loggedUserId);
 
                 userName = getUserResults.getString("User_Name");
@@ -292,12 +292,15 @@ public class LoginPageController implements Initializable {
 
 //            AppointmentsImplement.addAppointment(appointmentOnLaunch);
 
+            searchForUpcomingAppointments();
+
+
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/views/TabbedPaneView.fxml"))));
             stage.setScene(new Scene(scene));
             stage.show();
-            searchForUpcomingAppointments();
             alertOfUpcomingAppointment();
+
             try {
                 PrintWriter pw = new PrintWriter(new FileOutputStream(
                         new File("login_activity.txt"),//Change to login_activity.txt
@@ -332,8 +335,10 @@ public class LoginPageController implements Initializable {
 
         ObservableList<Appointment> allAppointments;
         ObservableList<Appointment> appointmentsWithConvertedTimes = FXCollections.observableArrayList();
+        ObservableList<Appointment> filteredList = FXCollections.observableArrayList();
         allAppointments = AppointmentsImplement.getAllAppointments;
         loggedUserId = getLoggedUserId();
+        System.out.println("In the method SearchForUpcomingAppointments() The userID used to search: " + loggedUserId);
 
         try {
             AppointmentsImplement.getAllAppointments();
@@ -362,19 +367,23 @@ public class LoginPageController implements Initializable {
             Appointment convertedTimesAppointment = new Appointment
                     (appointmentId, title, description, location, type, startDate, startTime,
                             endDate, endTime, customerId, userId, contactId);
-            appointmentsWithConvertedTimes.clear();
+            //appointmentsWithConvertedTimes.clear();
+            System.out.println("Start Date and Time for convertedTimesAppointment " +
+                    convertedTimesAppointment.getStartDate() + "  " + convertedTimesAppointment.getStartTime() + "  Apt ID: " + convertedTimesAppointment.getAppointmentId() +
+                    "  User ID: " + convertedTimesAppointment.getUserId());
             appointmentsWithConvertedTimes.add(convertedTimesAppointment);
-
-            LocalDate userToday = LocalDate.now();
-            LocalTime timePlus15Min = LocalTime.now().plusMinutes(15);
-            upcomingAppointments.clear();
-            appointmentsWithConvertedTimes.stream()
-                    .filter(apt -> apt.getUserId() == loggedUserId)
-                    .filter(apt -> apt.getStartDate().equals(userToday))
-                    .filter(apt -> apt.getStartTime().isBefore(timePlus15Min))
-                    .forEach(upcomingAppointments::add);
-            //System.out.println("Appointments within 15 minutes of login  "+ upcomingAppointments);
+            System.out.println("Converted Times Appointment ID From Login Page controller" + convertedTimesAppointment.getAppointmentId());
         }
+        LocalDate userToday = LocalDate.now();
+        LocalTime timePlus15Min = LocalTime.now().plusMinutes(15);
+        LocalTime timeNow = LocalTime.now();
+
+        appointmentsWithConvertedTimes.stream()
+                .filter(apt -> apt.getUserId() == loggedUserId)
+                .filter(apt -> apt.getStartDate().equals(userToday))
+                .filter(apt -> apt.getStartTime().isAfter(timeNow))
+                .filter(apt -> apt.getStartTime().isBefore(timePlus15Min))
+                .forEach(upcomingAppointments::add);
     }
 
 
@@ -384,7 +393,7 @@ public class LoginPageController implements Initializable {
     public void alertOfUpcomingAppointment() {
         int numberOfUpcomingAppointments = (int) upcomingAppointments.stream().count();
 
-        if (numberOfUpcomingAppointments == 1) {
+        if (numberOfUpcomingAppointments >= 1) {
             System.out.println("Upcoming appointments list in the alertOfUpcomingAppointments method: \n" +
                     upcomingAppointments);
             for (Appointment apt : upcomingAppointments) {
