@@ -279,7 +279,9 @@ public class ReportsController implements Initializable {
      * Checks which combo box is selected and modifies the search based on the selection.
      * for example if the user on selects the number of appointments in a month the result is for only the month. If the
      * user selects the number of appointments by type only, the result is appointments by type, and if the user makes a
-     * selection in both boxes the results are bother parameters.
+     * selection in both boxes the results are bother parameters. LAMBDA JUSTIFICATION: A lambda is used as part of the
+     * stream to improve the conciseness and readability of the code. Without the lambda, the filter would require many
+     * more lines of code and the code may not be as readable.
      *
      * @return Returns the number of appointments based on the user selection
      * @Lambda The lambdas filter the all appointments, checking against the selected month number to type, or both

@@ -52,8 +52,7 @@ addition to the filter by contact feature, I also added a filter by customer fea
 click off of the box and the table will populate with all appointments for the customer.
 
 Location of Lambdas:
-Every controller uses lambdas in the initialize method as active change listeners to show or hide various warning
-labels. You will find a lambda in the schedule controller in the loadCurrentWeek() method. this lambda is part of a stream
+ You will find a lambda in the schedule controller in the loadCurrentWeek() method. This lambda is part of a stream
 which filters appointments by the current number of the week of the year. Finally, you will find another lambda on the
 reports controller in the appointmentsCount(). This lambda is also part of a stream used to filter and count the number of
 appointments by month, type, and the combination of month and type.

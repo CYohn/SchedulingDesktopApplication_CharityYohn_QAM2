@@ -245,7 +245,9 @@ public class ScheduleController implements Initializable {
 
     /**
      * The method gets all the appointments from the database and translates the time from UTC to the user local time.
-     * The method then builds an appointment object which
+     * The method then builds an appointment object which. LAMBDA JUSTIFICATION: A lambda is used as part of the stream to improve the
+     * conciseness and readability of the code. Without the lambda, the filter would require many more lines of code and
+     * the code may not be as readable.
      *
      * @Lambda is filtered by the current week of the year
      * and then populates the table based on the filtered list.

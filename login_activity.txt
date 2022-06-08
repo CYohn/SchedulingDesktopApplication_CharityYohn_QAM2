@@ -110,3 +110,42 @@ Timestamp: 2022-06-07 21:44:08.0686388 UTC Time
 Successful login by user:  test 
 Timestamp: 2022-06-07 21:44:46.6371721 UTC Time
 
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:07:17.0981226 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:09:20.2742043 UTC Time
+
+Unsuccessful login attempt by user:  test 
+Timestamp: 2022-06-07 23:15:01.8240918 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:15:19.221571 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:27:57.1718683 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:29:57.3583323 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:31:33.7055146 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:33:07.5688504 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:41:12.455087 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:44:39.3073934 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-07 23:45:15.9203972 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-08 00:54:39.1845913 UTC Time
+
+Successful login by user:  test 
+Timestamp: 2022-06-08 00:55:39.4405587 UTC Time
+

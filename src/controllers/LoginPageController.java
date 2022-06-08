@@ -374,10 +374,15 @@ public class LoginPageController implements Initializable {
             appointmentsWithConvertedTimes.add(convertedTimesAppointment);
             System.out.println("Converted Times Appointment ID From Login Page controller" + convertedTimesAppointment.getAppointmentId());
         }
+
         LocalDate userToday = LocalDate.now();
+        System.out.println("Today's Date: " + userToday);
         LocalTime timePlus15Min = LocalTime.now().plusMinutes(15);
         LocalTime timeNow = LocalTime.now();
-
+        for (Appointment appointment : appointmentsWithConvertedTimes) {
+            System.out.println(appointment.getStartDate());
+        }
+        System.out.println("Converted times Appointments List..." + appointmentsWithConvertedTimes.size());
         appointmentsWithConvertedTimes.stream()
                 .filter(apt -> apt.getUserId() == loggedUserId)
                 .filter(apt -> apt.getStartDate().equals(userToday))
